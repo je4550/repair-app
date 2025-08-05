@@ -5,9 +5,13 @@ Rails.application.routes.draw do
   # Define constraint lambdas
   is_base_domain = lambda do |request|
     subdomain = request.subdomain
-    # Empty subdomain or Heroku app domain
-    subdomain.blank? || 
-    (request.host.match?(/\.herokuapp\.com$/) && subdomain.match?(/^[a-z0-9-]+-[a-f0-9]{16}$/))
+    result = subdomain.blank? || 
+             (request.host.match?(/\.herokuapp\.com$/) && subdomain.match?(/^[a-z0-9-]+-[a-f0-9]{16}$/))
+    Rails.logger.info "=== ROUTE CONSTRAINT ==="
+    Rails.logger.info "Host: #{request.host}"
+    Rails.logger.info "Subdomain: #{subdomain}"
+    Rails.logger.info "Is base domain: #{result}"
+    result
   end
   
   is_tenant_subdomain = lambda do |request|
