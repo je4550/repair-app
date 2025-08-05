@@ -60,7 +60,7 @@
           <div style="display: flex; gap: 32px;">
             <%= link_to "Features", "#features", class: "nav-link", style: "color: #000; text-decoration: none; font-size: 15px;" %>
             <%= link_to "Pricing", "#pricing", class: "nav-link", style: "color: #000; text-decoration: none; font-size: 15px;" %>
-            <%= link_to "Demo", root_url(subdomain: 'jeffs'), class: "nav-link", style: "color: #000; text-decoration: none; font-size: 15px;" %>
+            <%= link_to "Demo", demo_shop_url, class: "nav-link", style: "color: #000; text-decoration: none; font-size: 15px;" %>
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 16px;">
@@ -82,7 +82,7 @@
       </p>
       <div style="display: flex; gap: 16px; justify-content: center; align-items: center;">
         <%= link_to "Start free trial", new_shop_path, class: "primary-button", style: "padding: 16px 32px; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;" %>
-        <%= link_to "See it in action", root_url(subdomain: 'jeffs'), class: "secondary-button", style: "padding: 16px 32px; background: white; color: #000; text-decoration: none; border: 2px solid #000; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;" %>
+        <%= link_to "See it in action", demo_shop_url, class: "secondary-button", style: "padding: 16px 32px; background: white; color: #000; text-decoration: none; border: 2px solid #000; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;" %>
       </div>
       <p style="margin-top: 24px; color: #666; font-size: 14px;">
         No credit card required • 14-day free trial • Cancel anytime
@@ -256,7 +256,7 @@
         Explore a fully-featured demo of Jeff's Automotive repair shop.
       </p>
       <div style="display: flex; gap: 16px; justify-content: center; align-items: center;">
-        <%= link_to root_url(subdomain: 'jeffs'), class: "primary-button", style: "padding: 16px 32px; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;" do %>
+        <%= link_to demo_shop_url, class: "primary-button", style: "padding: 16px 32px; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; display: inline-block;" do %>
           Visit demo shop
         <% end %>
       </div>
@@ -294,7 +294,7 @@
           <ul style="list-style: none; padding: 0; margin: 0;">
             <li style="margin-bottom: 8px;"><%= link_to "Features", "#features", style: "color: #666; text-decoration: none; font-size: 14px;" %></li>
             <li style="margin-bottom: 8px;"><%= link_to "Pricing", "#pricing", style: "color: #666; text-decoration: none; font-size: 14px;" %></li>
-            <li style="margin-bottom: 8px;"><%= link_to "Demo", root_url(subdomain: 'jeffs'), style: "color: #666; text-decoration: none; font-size: 14px;" %></li>
+            <li style="margin-bottom: 8px;"><%= link_to "Demo", demo_shop_url, style: "color: #666; text-decoration: none; font-size: 14px;" %></li>
           </ul>
         </div>
         <div>

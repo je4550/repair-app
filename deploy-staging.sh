@@ -63,8 +63,12 @@ else
 fi
 
 # Set application-specific config
-heroku config:set APP_DOMAIN="autoplanner-staging.herokuapp.com" --app $APP_NAME
-heroku config:set MAILER_HOST="autoplanner-staging.herokuapp.com" --app $APP_NAME
+# Get the actual app URL from Heroku
+APP_URL=$(heroku info --app $APP_NAME | grep "Web URL" | awk '{print $3}' | sed 's|https://||' | sed 's|/$||')
+echo "   Setting APP_DOMAIN to: $APP_URL"
+
+heroku config:set APP_DOMAIN="$APP_URL" --app $APP_NAME
+heroku config:set MAILER_HOST="$APP_URL" --app $APP_NAME
 
 echo ""
 echo "4. Installing Heroku buildpacks..."
