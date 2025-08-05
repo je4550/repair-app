@@ -1,0 +1,42 @@
+# .slugignore - Files to exclude from Heroku slug compilation
+
+# Test files
+/test
+/spec
+*.test.*
+*_test.rb
+*_spec.rb
+
+# Documentation
+*.md
+README*
+LICENSE*
+CHANGELOG*
+docs/
+
+# Development files
+.env*
+.rubocop.yml
+.gitignore
+.git/
+.github/
+.vscode/
+
+# Deployment scripts
+deploy-*.sh
+
+# Seeds (if large)
+# db/seeds/
+
+# Local storage
+storage/
+tmp/cache/
+log/*.log
+
+# macOS
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
