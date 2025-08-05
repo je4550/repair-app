@@ -136,9 +136,14 @@ services.each do |service_attrs|
   end
 end
 
-# Create customers with vehicles
-puts "Creating customers and vehicles..."
-customers_data = [
+# Skip customer creation if customers already exist
+if Customer.count > 0
+  puts "Customers already exist, skipping customer creation..."
+  created_customers = Customer.all.to_a
+else
+  # Create customers with vehicles
+  puts "Creating customers and vehicles..."
+  customers_data = [
   {
     customer: { first_name: "John", last_name: "Smith", email: "john.smith@email.com", phone: "555-234-5678", 
                 address_line1: "123 Main St", city: "Rochester", state: "MI", zip: "48307" },
@@ -213,14 +218,15 @@ customers_data = [
   }
 ]
 
-created_customers = []
-customers_data.each do |data|
-  customer = Customer.create!(data[:customer].merge(location: main_location))
-  data[:vehicles].each do |vehicle_attrs|
-    customer.vehicles.create!(vehicle_attrs)
+  created_customers = []
+  customers_data.each do |data|
+    customer = Customer.create!(data[:customer].merge(location: main_location))
+    data[:vehicles].each do |vehicle_attrs|
+      customer.vehicles.create!(vehicle_attrs)
+    end
+    created_customers << customer
   end
-  created_customers << customer
-end
+end # End of customer creation
 
 # Create past appointments with services
 puts "Creating appointment history..."
