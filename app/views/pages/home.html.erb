@@ -1,0 +1,178 @@
+<div style="font-family: Arial, sans-serif;">
+  <!-- Navigation Header -->
+  <nav style="background-color: #fff; border-bottom: 1px solid #dee2e6; padding: 15px 0;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center;">
+        <%= image_tag "logo.png", alt: "AutoPlanner.ai", style: "height: 40px; margin-right: 15px;" %>
+        <span style="font-size: 24px; font-weight: bold; color: #333;">AutoPlanner.ai</span>
+      </div>
+      <div>
+        <%= link_to "Features", "#features", style: "margin: 0 15px; color: #333; text-decoration: none;" %>
+        <%= link_to "Pricing", "#pricing", style: "margin: 0 15px; color: #333; text-decoration: none;" %>
+        <%= link_to "Demo", "http://jeffs.localhost:3000", style: "margin: 0 15px; color: #333; text-decoration: none;" %>
+        <%= link_to "Login", "#", style: "margin: 0 15px; color: #333; text-decoration: none;" %>
+        <%= link_to "Start Free Trial", new_shop_path, style: "margin-left: 15px; padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;" %>
+      </div>
+    </div>
+  </nav>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <!-- Hero Section -->
+  <section style="text-align: center; padding: 60px 20px; background-color: #f8f9fa;">
+    <%= image_tag "logo.png", alt: "AutoPlanner.ai Logo", style: "max-width: 200px; margin-bottom: 30px;" %>
+    <h1 style="font-size: 48px; color: #333; margin-bottom: 20px;">
+      The CRM Built for Auto Repair Shops
+    </h1>
+    <p style="font-size: 20px; color: #666; margin-bottom: 30px;">
+      Manage customers, track vehicles, schedule appointments, and grow your business with AutoPlanner.ai
+    </p>
+    <div>
+      <%= link_to "Start Free Trial", new_shop_path, style: "display: inline-block; padding: 15px 30px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 18px;" %>
+      <%= link_to "Watch Demo", "#", style: "display: inline-block; padding: 15px 30px; background-color: transparent; color: #dc3545; text-decoration: none; border: 2px solid #dc3545; border-radius: 5px; font-size: 18px; margin-left: 10px;" %>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" style="padding: 60px 20px;">
+    <h2 style="text-align: center; font-size: 36px; margin-bottom: 50px;">Everything You Need to Run Your Shop</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+      <!-- Feature 1 -->
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">📅</div>
+        <h3 style="font-size: 24px; margin-bottom: 15px;">Smart Scheduling</h3>
+        <p style="color: #666;">Let customers book appointments online. Manage your shop's calendar and technician availability in real-time.</p>
+      </div>
+      
+      <!-- Feature 2 -->
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">🚗</div>
+        <h3 style="font-size: 24px; margin-bottom: 15px;">Vehicle Tracking</h3>
+        <p style="color: #666;">Keep detailed records of every vehicle's service history, upcoming maintenance, and customer preferences.</p>
+      </div>
+      
+      <!-- Feature 3 -->
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">📱</div>
+        <h3 style="font-size: 24px; margin-bottom: 15px;">Automated Communications</h3>
+        <p style="color: #666;">Send appointment reminders, service recommendations, and follow-ups via SMS and email automatically.</p>
+      </div>
+      
+      <!-- Feature 4 -->
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">⭐</div>
+        <h3 style="font-size: 24px; margin-bottom: 15px;">Reputation Management</h3>
+        <p style="color: #666;">Collect and manage customer reviews. Build your online reputation and attract new customers.</p>
+      </div>
+      
+      <!-- Feature 5 -->
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">📊</div>
+        <h3 style="font-size: 24px; margin-bottom: 15px;">Analytics & Insights</h3>
+        <p style="color: #666;">Track revenue, customer visits, and service trends. Make data-driven decisions to grow your business.</p>
+      </div>
+      
+      <!-- Feature 6 -->
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">🛠️</div>
+        <h3 style="font-size: 24px; margin-bottom: 15px;">Service Management</h3>
+        <p style="color: #666;">Manage your service catalog, pricing, and duration. Track parts inventory and labor costs.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" style="padding: 60px 20px; background-color: #f8f9fa;">
+    <h2 style="text-align: center; font-size: 36px; margin-bottom: 50px;">Simple, Transparent Pricing</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto;">
+      <!-- Free Tier -->
+      <div style="background-color: #fff; border: 2px solid #dee2e6; border-radius: 10px; padding: 30px; text-align: center;">
+        <h3 style="font-size: 28px; margin-bottom: 10px;">Free</h3>
+        <p style="font-size: 48px; font-weight: bold; margin: 20px 0;">$0</p>
+        <p style="color: #666; margin-bottom: 30px;">Perfect for getting started</p>
+        
+        <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left;">
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Up to 10 vehicles per month</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Basic appointment scheduling</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Customer management</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Service history tracking</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Email support</li>
+        </ul>
+        
+        <%= link_to "Start Free", new_shop_path, style: "display: block; padding: 15px 30px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 5px; font-size: 18px;" %>
+      </div>
+      
+      <!-- Pro Tier -->
+      <div style="background-color: #fff; border: 2px solid #dc3545; border-radius: 10px; padding: 30px; text-align: center; position: relative;">
+        <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background-color: #dc3545; color: white; padding: 5px 20px; border-radius: 20px; font-size: 14px;">
+          MOST POPULAR
+        </div>
+        <h3 style="font-size: 28px; margin-bottom: 10px;">Pro</h3>
+        <p style="font-size: 48px; font-weight: bold; margin: 20px 0;">$49.95<span style="font-size: 18px; font-weight: normal;">/month</span></p>
+        <p style="color: #666; margin-bottom: 30px;">Everything you need to grow</p>
+        
+        <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left;">
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ <strong>Unlimited vehicles</strong></li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ <strong>Unlimited SMS & email reminders</strong></li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Online booking widget</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Advanced reporting & analytics</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Review management</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Multiple technicians</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Priority phone & email support</li>
+        </ul>
+        
+        <%= link_to "Start 14-Day Free Trial", new_shop_path, style: "display: block; padding: 15px 30px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 18px;" %>
+      </div>
+      
+      <!-- Enterprise Tier -->
+      <div style="background-color: #fff; border: 2px solid #dee2e6; border-radius: 10px; padding: 30px; text-align: center;">
+        <h3 style="font-size: 28px; margin-bottom: 10px;">Enterprise</h3>
+        <p style="font-size: 48px; font-weight: bold; margin: 20px 0;">Custom</p>
+        <p style="color: #666; margin-bottom: 30px;">For multi-location shops</p>
+        
+        <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left;">
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Everything in Pro</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Multiple locations</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Custom integrations</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Dedicated account manager</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ Custom training</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ SLA guarantees</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid #eee;">✓ 24/7 phone support</li>
+        </ul>
+        
+        <%= link_to "Contact Sales", "#", style: "display: block; padding: 15px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 18px;" %>
+      </div>
+    </div>
+    
+    <p style="text-align: center; margin-top: 40px; color: #666;">
+      All plans include secure data backup, SSL encryption, and regular feature updates
+    </p>
+  </section>
+
+  <!-- Demo Shop Section -->
+  <section style="padding: 60px 20px; background-color: #fff; text-align: center;">
+    <h2 style="font-size: 36px; margin-bottom: 20px;">See It In Action</h2>
+    <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
+      Explore our demo shop to see how AutoPlanner.ai works
+    </p>
+    <div>
+      <a href="http://jeffs.localhost:3000" style="display: inline-block; padding: 15px 30px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 18px;">
+        Visit Jeff's Automotive Demo
+      </a>
+    </div>
+    <p style="margin-top: 20px; color: #666;">
+      <strong>Demo Login:</strong> admin@jeffsautomotive.com / password123
+    </p>
+  </section>
+
+  <!-- CTA Section -->
+  <section style="padding: 60px 20px; text-align: center;">
+    <h2 style="font-size: 36px; margin-bottom: 20px;">Ready to Modernize Your Shop?</h2>
+    <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
+      Join hundreds of auto repair shops using AutoPlanner.ai to streamline operations and grow revenue
+    </p>
+    <%= link_to "Get Started Free", new_shop_path, style: "display: inline-block; padding: 15px 30px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 18px;" %>
+  </section>
+  </div>
+</div>
