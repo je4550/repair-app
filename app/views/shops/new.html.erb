@@ -1,105 +1,201 @@
-<div style="max-width: 600px; margin: 50px auto; padding: 20px; font-family: Arial, sans-serif;">
-  <h1 style="text-align: center; color: #333; margin-bottom: 10px;">Start Your Free Trial</h1>
-  <p style="text-align: center; color: #666; margin-bottom: 40px;">
-    Get your auto repair shop online in minutes. No credit card required.
-  </p>
+<style>
+  body {
+    background-color: #fafafa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  .form-input {
+    transition: all 0.2s ease;
+    font-size: 16px !important;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #000 !important;
+    background-color: #fff !important;
+  }
+  
+  .form-input:hover {
+    background-color: #fafafa;
+  }
+  
+  .submit-button {
+    transition: all 0.2s ease;
+    background: #000;
+  }
+  
+  .submit-button:hover {
+    background: #333;
+    transform: translateY(-1px);
+  }
+  
+  .submit-button:active {
+    transform: translateY(0);
+  }
+  
+  .step-indicator {
+    background: #f5f5f5;
+    color: #999;
+    transition: all 0.3s ease;
+  }
+  
+  .step-indicator.active {
+    background: #000;
+    color: #fff;
+  }
+</style>
 
-  <%= form_with model: @shop, local: true do |form| %>
-    <% if @shop.errors.any? %>
-      <div style="padding: 15px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; margin-bottom: 20px;">
-        <h4 style="margin: 0 0 10px 0; color: #721c24;">Please fix the following errors:</h4>
-        <ul style="margin: 0; padding-left: 20px;">
-          <% @shop.errors.full_messages.each do |message| %>
-            <li style="color: #721c24;"><%= message %></li>
-          <% end %>
-        </ul>
+<div style="min-height: 100vh; background-color: #fff;">
+  <!-- Navigation -->
+  <nav style="padding: 20px 0; border-bottom: 1px solid #eee;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center;">
+        <%= link_to root_path do %>
+          <%= image_tag "logo.png", alt: "AutoPlanner.ai", style: "height: 32px;" %>
+        <% end %>
       </div>
+      <div>
+        Already have an account? 
+        <%= link_to "Sign in", "#", style: "color: #000; text-decoration: none; font-weight: 500;" %>
+      </div>
+    </div>
+  </nav>
+
+  <div style="max-width: 480px; margin: 60px auto; padding: 0 20px;">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="font-size: 32px; font-weight: 700; margin: 0 0 12px 0; color: #000;">Start your free trial</h1>
+      <p style="font-size: 18px; color: #666; margin: 0;">No credit card required. 14 days free.</p>
+    </div>
+
+    <!-- Trust badges -->
+    <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid #eee;">
+      <div style="text-align: center;">
+        <div style="font-size: 24px; font-weight: 700; color: #000;">2,500+</div>
+        <div style="font-size: 14px; color: #666;">Auto shops</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="font-size: 24px; font-weight: 700; color: #000;">4.9/5</div>
+        <div style="font-size: 14px; color: #666;">Rating</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="font-size: 24px; font-weight: 700; color: #000;">99.9%</div>
+        <div style="font-size: 14px; color: #666;">Uptime</div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <%= form_with model: @shop, local: true do |form| %>
+      <% if @shop.errors.any? %>
+        <div style="padding: 16px; background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; margin-bottom: 24px;">
+          <ul style="margin: 0; padding-left: 20px; color: #dc2626;">
+            <% @shop.errors.full_messages.each do |message| %>
+              <li style="font-size: 14px;"><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Step 1: Account -->
+      <div style="margin-bottom: 32px;">
+        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #000; display: flex; align-items: center;">
+          <span class="step-indicator active" style="width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; font-size: 12px;">1</span>
+          Create your account
+        </h2>
+        
+        <div style="margin-bottom: 16px;">
+          <%= form.email_field :email, placeholder: "Work email", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <%= password_field_tag :password, nil, placeholder: "Password", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+          <%= password_field_tag :password_confirmation, nil, placeholder: "Confirm password", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+        
+        <div style="margin-bottom: 16px;">
+          <%= form.text_field :owner_name, placeholder: "Full name", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+        
+        <div style="margin-bottom: 24px;">
+          <%= form.telephone_field :phone, placeholder: "Phone number", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+      </div>
+
+      <!-- Step 2: Shop Details -->
+      <div style="margin-bottom: 32px;">
+        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #000; display: flex; align-items: center;">
+          <span class="step-indicator" style="width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; font-size: 12px;">2</span>
+          Shop details
+        </h2>
+        
+        <div style="margin-bottom: 16px;">
+          <%= form.text_field :name, placeholder: "Shop name", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+        
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 14px; color: #666; margin-bottom: 8px;">Your shop URL</label>
+          <div style="display: flex; align-items: center;">
+            <%= form.text_field :subdomain, placeholder: "yourshop", class: "form-input", style: "flex: 1; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px 0 0 8px; font-size: 16px; background: #fafafa;" %>
+            <span style="padding: 12px 16px; background-color: #f5f5f5; border: 1px solid #e5e5e5; border-left: none; border-radius: 0 8px 8px 0; color: #666; font-size: 14px;">.autoplanner.ai</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Location -->
+      <div style="margin-bottom: 32px;">
+        <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 20px; color: #000; display: flex; align-items: center;">
+          <span class="step-indicator" style="width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; font-size: 12px;">3</span>
+          Location
+        </h2>
+        
+        <div style="margin-bottom: 16px;">
+          <%= form.text_field :address_line1, placeholder: "Street address", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+        
+        <div style="margin-bottom: 16px;">
+          <%= form.text_field :address_line2, placeholder: "Apt, suite, etc. (optional)", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px;">
+          <%= form.text_field :city, placeholder: "City", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+          <%= form.text_field :state, placeholder: "State", maxlength: 2, class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa; text-transform: uppercase;" %>
+          <%= form.text_field :zip, placeholder: "ZIP", class: "form-input", style: "width: 100%; padding: 12px 16px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 16px; background: #fafafa;" %>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div style="margin-top: 40px;">
+        <%= form.submit "Start free trial", class: "submit-button", style: "width: 100%; padding: 14px 24px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;" %>
+      </div>
+
+      <p style="text-align: center; margin-top: 16px; color: #666; font-size: 14px;">
+        By signing up, you agree to our <%= link_to "Terms", "#", style: "color: #000; text-decoration: underline;" %> and <%= link_to "Privacy Policy", "#", style: "color: #000; text-decoration: underline;" %>
+      </p>
     <% end %>
 
-    <h3 style="margin-bottom: 20px; color: #333;">Shop Information</h3>
-    
-    <div style="margin-bottom: 20px;">
-      <%= form.label :name, "Shop Name", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= form.text_field :name, placeholder: "Jeff's Automotive", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <%= form.label :subdomain, "Choose Your Subdomain", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <div style="display: flex; align-items: center;">
-        <%= form.text_field :subdomain, placeholder: "jeffs", style: "flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px 0 0 5px; font-size: 16px;" %>
-        <span style="padding: 10px 15px; background-color: #f8f9fa; border: 1px solid #ddd; border-left: none; border-radius: 0 5px 5px 0; color: #666;">.autoplanner.ai</span>
-      </div>
-      <small style="color: #666;">This will be your shop's unique web address</small>
-    </div>
-
-    <h3 style="margin: 30px 0 20px 0; color: #333;">Owner Information</h3>
-
-    <div style="margin-bottom: 20px;">
-      <%= form.label :owner_name, "Your Name", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= form.text_field :owner_name, placeholder: "John Smith", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <%= form.label :email, "Email Address", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= form.email_field :email, placeholder: "john@example.com", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-      <small style="color: #666;">This will be your login email</small>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <%= form.label :phone, "Phone Number", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= form.telephone_field :phone, placeholder: "(555) 123-4567", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <%= label_tag :password, "Choose a Password", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= password_field_tag :password, nil, placeholder: "Minimum 6 characters", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <%= label_tag :password_confirmation, "Confirm Password", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= password_field_tag :password_confirmation, nil, placeholder: "Re-enter your password", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <h3 style="margin: 30px 0 20px 0; color: #333;">Shop Address</h3>
-
-    <div style="margin-bottom: 20px;">
-      <%= form.label :address_line1, "Street Address", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= form.text_field :address_line1, placeholder: "123 Main Street", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <%= form.label :address_line2, "Address Line 2 (Optional)", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-      <%= form.text_field :address_line2, placeholder: "Suite 100", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-      <div>
-        <%= form.label :city, "City", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-        <%= form.text_field :city, placeholder: "Rochester", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-      </div>
-      <div>
-        <%= form.label :state, "State", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-        <%= form.text_field :state, placeholder: "MI", maxlength: 2, style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
-      </div>
-      <div>
-        <%= form.label :zip, "ZIP Code", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
-        <%= form.text_field :zip, placeholder: "48307", style: "width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" %>
+    <!-- Features reminder -->
+    <div style="margin-top: 48px; padding-top: 48px; border-top: 1px solid #eee;">
+      <p style="text-align: center; font-size: 14px; color: #666; margin-bottom: 24px;">Everything you need to manage your auto shop</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 14px; color: #666;">
+        <div style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">✓</span> Appointment scheduling
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">✓</span> Customer management
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">✓</span> Service history tracking
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">✓</span> SMS & email reminders
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">✓</span> Online booking
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="margin-right: 8px;">✓</span> Analytics & reporting
+        </div>
       </div>
     </div>
-
-    <div style="margin-top: 40px;">
-      <%= form.submit "Create My Shop", style: "width: 100%; padding: 15px; background-color: #dc3545; color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer;" %>
-    </div>
-
-    <p style="text-align: center; margin-top: 20px; color: #666;">
-      By creating an account, you agree to our 
-      <%= link_to "Terms of Service", "#", style: "color: #dc3545;" %> and 
-      <%= link_to "Privacy Policy", "#", style: "color: #dc3545;" %>.
-    </p>
-  <% end %>
-
-  <p style="text-align: center; margin-top: 30px;">
-    Already have an account? 
-    <%= link_to "Sign in here", "#", style: "color: #dc3545; font-weight: bold;" %>
-  </p>
+  </div>
 </div>
