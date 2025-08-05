@@ -1,0 +1,463 @@
+<% content_for :title, "New Message - #{current_tenant.name}" %>
+
+<style>
+  .message-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .form-header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .form-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .form-header p {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .message-type-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+  }
+  
+  .type-option {
+    flex: 1;
+    max-width: 200px;
+    padding: 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .type-option:hover {
+    border-color: #dc3545;
+    color: #dc3545;
+    text-decoration: none;
+  }
+  
+  .type-option.active {
+    border-color: #dc3545;
+    background: #dc3545;
+    color: white;
+  }
+  
+  .type-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .type-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .type-description {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  
+  .form-group {
+    margin-bottom: 24px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+  
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #dc3545;
+  }
+  
+  .customer-selector {
+    position: relative;
+  }
+  
+  .customer-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ced4da;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+  }
+  
+  .customer-option {
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f8f9fa;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .customer-option:hover {
+    background: #f8f9fa;
+  }
+  
+  .customer-option:last-child {
+    border-bottom: none;
+  }
+  
+  .customer-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #dc3545;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  
+  .customer-details {
+    flex: 1;
+  }
+  
+  .customer-name {
+    font-weight: 500;
+    color: #212529;
+  }
+  
+  .customer-contact {
+    font-size: 12px;
+    color: #6c757d;
+  }
+  
+  .character-count {
+    text-align: right;
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+  
+  .character-count.warning {
+    color: #ffc107;
+  }
+  
+  .character-count.danger {
+    color: #dc3545;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    justify-content: flex-end;
+  }
+  
+  .btn {
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .required {
+    color: #dc3545;
+  }
+  
+  .help-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #6c757d;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .back-link:hover {
+    color: #495057;
+  }
+  
+  @media (max-width: 768px) {
+    .message-type-selector {
+      flex-direction: column;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<!-- Back Navigation -->
+<%= link_to communications_path, class: "back-link" do %>
+  ← Back to Messages
+<% end %>
+
+<!-- Content -->
+<div class="content">
+  <div class="message-form-container">
+    <div class="form-header">
+      <h1>
+        <% if @communication.communication_type == 'email' %>
+          ✉️ New Email
+        <% else %>
+          💬 New SMS
+        <% end %>
+      </h1>
+      <p>Send a message to your customer</p>
+    </div>
+    
+    <!-- Message Type Selector -->
+    <div class="message-type-selector">
+      <%= link_to new_communication_path(type: 'email', customer_id: params[:customer_id]), 
+          class: "type-option #{'active' if @communication.communication_type == 'email'}" do %>
+        <span class="type-icon">📧</span>
+        <div class="type-title">Email</div>
+        <div class="type-description">Send detailed message</div>
+      <% end %>
+      
+      <%= link_to new_communication_path(type: 'sms', customer_id: params[:customer_id]), 
+          class: "type-option #{'active' if @communication.communication_type == 'sms'}" do %>
+        <span class="type-icon">💬</span>
+        <div class="type-title">SMS</div>
+        <div class="type-description">Quick text message</div>
+      <% end %>
+    </div>
+    
+    <%= form_with model: @communication, local: true do |form| %>
+      <% if @communication.errors.any? %>
+        <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+          <strong>Please fix the following errors:</strong>
+          <ul style="margin: 8px 0 0 20px; padding: 0;">
+            <% @communication.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <%= form.hidden_field :communication_type %>
+      
+      <!-- Customer Selection -->
+      <div class="form-group">
+        <%= form.label :customer_id, class: "form-label" do %>
+          Customer <span class="required">*</span>
+        <% end %>
+        <div class="customer-selector">
+          <%= form.collection_select :customer_id, 
+              Customer.joins(:shop).where(shops: { id: current_user.shop_id }).order(:last_name, :first_name), 
+              :id, :full_name, 
+              { prompt: "Select a customer..." },
+              { 
+                class: "form-control #{'is-invalid' if @communication.errors[:customer_id].any?}",
+                onchange: "updateCustomerContact(this)"
+              } %>
+        </div>
+        <% if @communication.errors[:customer_id].any? %>
+          <div class="invalid-feedback">
+            <%= @communication.errors[:customer_id].first %>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Email Subject (Email only) -->
+      <% if @communication.communication_type == 'email' %>
+        <div class="form-group">
+          <%= form.label :subject, class: "form-label" do %>
+            Subject <span class="required">*</span>
+          <% end %>
+          <%= form.text_field :subject, 
+              class: "form-control #{'is-invalid' if @communication.errors[:subject].any?}",
+              placeholder: "Enter email subject..." %>
+          <% if @communication.errors[:subject].any? %>
+            <div class="invalid-feedback">
+              <%= @communication.errors[:subject].first %>
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Email Address -->
+        <div class="form-group">
+          <%= form.label :to_email, "Email Address", class: "form-label" %>
+          <%= form.email_field :to_email, 
+              class: "form-control",
+              placeholder: "Customer's email address...",
+              readonly: true %>
+          <div class="help-text">
+            This will be automatically filled when you select a customer
+          </div>
+        </div>
+      <% else %>
+        <!-- Phone Number (SMS only) -->
+        <div class="form-group">
+          <%= form.label :to_phone, "Phone Number", class: "form-label" %>
+          <%= form.text_field :to_phone, 
+              class: "form-control",
+              placeholder: "Customer's phone number...",
+              readonly: true %>
+          <div class="help-text">
+            This will be automatically filled when you select a customer
+          </div>
+        </div>
+      <% end %>
+      
+      <!-- Message Content -->
+      <div class="form-group">
+        <%= form.label :content, "Message", class: "form-label" do %>
+          Message <span class="required">*</span>
+        <% end %>
+        <%= form.text_area :content, 
+            class: "form-control #{'is-invalid' if @communication.errors[:content].any?}",
+            rows: @communication.communication_type == 'sms' ? 4 : 8,
+            placeholder: @communication.communication_type == 'sms' ? "Type your SMS message..." : "Type your email message...",
+            onkeyup: "updateCharacterCount(this)" %>
+        <% if @communication.errors[:content].any? %>
+          <div class="invalid-feedback">
+            <%= @communication.errors[:content].first %>
+          </div>
+        <% end %>
+        <% if @communication.communication_type == 'sms' %>
+          <div class="character-count" id="char-count">0 / 160 characters</div>
+        <% end %>
+      </div>
+      
+      <div class="form-actions">
+        <%= form.submit "Send #{@communication.communication_type.humanize}", class: "btn btn-primary" %>
+        <%= link_to "Cancel", communications_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+// Customer data for auto-filling contact info
+const customers = {
+  <% Customer.joins(:shop).where(shops: { id: current_user.shop_id }).each do |customer| %>
+    <%= customer.id %>: {
+      email: '<%= customer.email %>',
+      phone: '<%= customer.phone %>'
+    },
+  <% end %>
+};
+
+function updateCustomerContact(select) {
+  const customerId = select.value;
+  const customer = customers[customerId];
+  
+  if (customer) {
+    const emailField = document.getElementById('communication_to_email');
+    const phoneField = document.getElementById('communication_to_phone');
+    
+    if (emailField) emailField.value = customer.email || '';
+    if (phoneField) phoneField.value = customer.phone || '';
+  }
+}
+
+function updateCharacterCount(textarea) {
+  const count = textarea.value.length;
+  const counter = document.getElementById('char-count');
+  
+  if (counter) {
+    counter.textContent = `${count} / 160 characters`;
+    
+    if (count > 160) {
+      counter.className = 'character-count danger';
+    } else if (count > 140) {
+      counter.className = 'character-count warning';
+    } else {
+      counter.className = 'character-count';
+    }
+  }
+}
+
+// Auto-select customer if passed in URL
+document.addEventListener('DOMContentLoaded', function() {
+  const customerId = '<%= params[:customer_id] %>';
+  if (customerId) {
+    const select = document.getElementById('communication_customer_id');
+    if (select) {
+      select.value = customerId;
+      updateCustomerContact(select);
+    }
+  }
+});
+</script>

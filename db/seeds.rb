@@ -293,23 +293,112 @@ end
 # Create some communications
 puts "Creating communication history..."
 created_customers.sample(6).each do |customer|
-  # Welcome email
-  customer.communications.create!(
+  # Welcome email thread
+  thread_id = "email_#{customer.id}_#{SecureRandom.hex(8)}"
+  
+  welcome_email = customer.communications.create!(
     communication_type: 'email',
+    direction: 'outbound',
     subject: 'Welcome to Jeff\'s Automotive!',
-    content: 'Thank you for choosing Jeff\'s Automotive for your vehicle service needs.',
+    content: "Hi #{customer.first_name},\n\nThank you for choosing Jeff's Automotive for your vehicle service needs. We're committed to providing you with the best automotive care in Rochester.\n\nIf you have any questions, feel free to reply to this email or give us a call.\n\nBest regards,\nThe Jeff's Automotive Team",
     status: 'delivered',
-    sent_at: 2.weeks.ago
+    sent_at: 2.weeks.ago,
+    thread_id: thread_id,
+    to_email: customer.email,
+    user: admin_user
   )
   
-  # Appointment reminder SMS
+  # Customer reply (simulate inbound email)
+  if rand < 0.3  # 30% chance of customer reply
+    customer.communications.create!(
+      communication_type: 'email',
+      direction: 'inbound',
+      subject: 'Re: Welcome to Jeff\'s Automotive!',
+      content: "Thank you for the welcome! I'm looking forward to bringing my #{customer.vehicles.first&.year} #{customer.vehicles.first&.make} #{customer.vehicles.first&.model} in for service.",
+      status: 'delivered',
+      sent_at: 1.week.ago,
+      thread_id: thread_id,
+      from_email: customer.email,
+      message_id: "msg_#{SecureRandom.hex(16)}"
+    )
+  end
+  
+  # SMS reminders
+  if customer.phone.present?
+    sms_thread_id = "sms_#{customer.id}_#{SecureRandom.hex(8)}"
+    
+    # Appointment reminder SMS
+    customer.communications.create!(
+      communication_type: 'sms',
+      direction: 'outbound',
+      content: "Hi #{customer.first_name}, this is Jeff's Automotive. Your appointment is scheduled for tomorrow at 10 AM. Please reply CONFIRM to confirm or call us at (555) 123-4567.",
+      status: 'delivered',
+      sent_at: 1.day.ago,
+      thread_id: sms_thread_id,
+      to_phone: customer.phone,
+      user: receptionist
+    )
+    
+    # Customer SMS confirmation (simulate inbound)
+    if rand < 0.7  # 70% chance of SMS confirmation
+      customer.communications.create!(
+        communication_type: 'sms',
+        direction: 'inbound',
+        content: 'CONFIRM',
+        status: 'delivered',
+        sent_at: 20.hours.ago,
+        thread_id: sms_thread_id,
+        from_phone: customer.phone,
+        message_id: "sms_#{SecureRandom.hex(16)}"
+      )
+      
+      # Follow-up SMS
+      customer.communications.create!(
+        communication_type: 'sms',
+        direction: 'outbound',
+        content: "Perfect! We've confirmed your appointment for tomorrow at 10 AM. See you then!",
+        status: 'delivered',
+        sent_at: 19.hours.ago,
+        thread_id: sms_thread_id,
+        to_phone: customer.phone,
+        user: receptionist
+      )
+    end
+  end
+end
+
+# Create some unread messages
+puts "Creating recent unread messages..."
+recent_customers = created_customers.last(3)
+recent_customers.each do |customer|
+  # Unread inquiry email
+  thread_id = "email_#{customer.id}_#{SecureRandom.hex(8)}"
   customer.communications.create!(
-    communication_type: 'sms',
-    subject: 'Appointment Reminder',
-    content: 'Reminder: You have an appointment at Jeff\'s Automotive tomorrow at 10 AM.',
+    communication_type: 'email',
+    direction: 'inbound',
+    subject: 'Question about service pricing',
+    content: "Hi, I was wondering if you could provide a quote for a brake pad replacement on my #{customer.vehicles.first&.year} #{customer.vehicles.first&.make} #{customer.vehicles.first&.model}? Thanks!",
     status: 'delivered',
-    sent_at: 1.day.ago
+    created_at: rand(4.hours).seconds.ago,
+    thread_id: thread_id,
+    from_email: customer.email,
+    message_id: "msg_#{SecureRandom.hex(16)}"
   )
+  
+  # Unread SMS
+  if customer.phone.present?
+    sms_thread_id = "sms_#{customer.id}_#{SecureRandom.hex(8)}"
+    customer.communications.create!(
+      communication_type: 'sms',
+      direction: 'inbound',
+      content: 'Hi, can I reschedule my appointment for next week?',
+      status: 'delivered',
+      created_at: rand(2.hours).seconds.ago,
+      thread_id: sms_thread_id,
+      from_phone: customer.phone,
+      message_id: "sms_#{SecureRandom.hex(16)}"
+    )
+  end
 end
 
 puts "\n=== Seeding Complete! ==="

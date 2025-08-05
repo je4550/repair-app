@@ -31,6 +31,16 @@ Rails.application.routes.draw do
       resources :communications
     end
 
+    resources :communications do
+      member do
+        post :reply
+        patch :mark_as_read
+      end
+      collection do
+        patch :mark_all_as_read
+      end
+    end
+
     resources :vehicles
     resources :services do
       member do

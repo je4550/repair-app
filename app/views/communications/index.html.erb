@@ -1,0 +1,378 @@
+<% content_for :title, "Messages - #{current_tenant.name}" %>
+
+<style>
+  .messages-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  
+  .messages-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f8f9fa;
+  }
+  
+  .messages-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #212529;
+  }
+  
+  .stats-bar {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    font-size: 14px;
+  }
+  
+  .stat-count {
+    font-weight: 600;
+    color: #dc3545;
+  }
+  
+  .messages-toolbar {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .search-box {
+    flex: 1;
+    max-width: 400px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .toolbar-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .btn-outline {
+    background: transparent;
+    color: #6c757d;
+    border: 1px solid #ced4da;
+  }
+  
+  .btn-outline:hover {
+    background: #f8f9fa;
+  }
+  
+  .messages-list {
+    max-height: 600px;
+    overflow-y: auto;
+  }
+  
+  .message-thread {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .message-thread:hover {
+    background: #f8f9fa;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .message-thread.unread {
+    background: #fff8e1;
+    border-left: 4px solid #ffc107;
+  }
+  
+  .message-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .customer-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .customer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #dc3545;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .customer-name {
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  .message-type {
+    background: #e9ecef;
+    color: #495057;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .message-type.email {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .message-type.sms {
+    background: #d1ecf1;
+    color: #0c5460;
+  }
+  
+  .message-time {
+    font-size: 12px;
+    color: #6c757d;
+  }
+  
+  .message-subject {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .message-preview {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .unread-indicator {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #dc3545;
+    border-radius: 50%;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+  }
+  
+  .empty-state h3 {
+    margin: 0 0 10px 0;
+    color: #495057;
+  }
+  
+  .pagination-wrapper {
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+  }
+  
+  @media (max-width: 768px) {
+    .stats-bar {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .messages-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .search-box {
+      max-width: none;
+    }
+    
+    .customer-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Messages</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="messages-container">
+    <div class="messages-header">
+      <h1>Inbox</h1>
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span>📧</span>
+          <span class="stat-count"><%= @unread_count %></span>
+          <span>Unread</span>
+        </div>
+        <div class="stat-item">
+          <span>💬</span>
+          <span class="stat-count"><%= @total_count %></span>
+          <span>Total</span>
+        </div>
+        <div class="stat-item">
+          <span>📮</span>
+          <span class="stat-count"><%= @email_count %></span>
+          <span>Emails</span>
+        </div>
+        <div class="stat-item">
+          <span>📱</span>
+          <span class="stat-count"><%= @sms_count %></span>
+          <span>SMS</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="messages-toolbar">
+      <%= form_with url: communications_path, method: :get, local: true, class: "search-box" do |form| %>
+        <%= form.search_field :search, 
+            placeholder: "Search messages...", 
+            value: params[:search],
+            class: "search-input" %>
+      <% end %>
+      
+      <div class="toolbar-actions">
+        <% if @unread_count > 0 %>
+          <%= link_to mark_all_as_read_communications_path, method: :patch, class: "btn btn-outline" do %>
+            📖 Mark All Read
+          <% end %>
+        <% end %>
+        <%= link_to new_communication_path(type: 'email'), class: "btn btn-primary" do %>
+          ✉️ New Email
+        <% end %>
+        <%= link_to new_communication_path(type: 'sms'), class: "btn btn-secondary" do %>
+          💬 New SMS
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="messages-list">
+      <% if @grouped_communications.any? %>
+        <% @grouped_communications.each do |thread_id, messages| %>
+          <% latest_message = messages.first %>
+          <% has_unread = messages.any?(&:unread?) %>
+          
+          <%= link_to communication_path(latest_message), class: "message-thread #{'unread' if has_unread}" do %>
+            <div class="message-meta">
+              <div class="customer-info">
+                <div class="customer-avatar">
+                  <%= latest_message.customer.initials %>
+                </div>
+                <div>
+                  <div class="customer-name">
+                    <%= latest_message.customer.full_name %>
+                  </div>
+                  <div class="message-type <%= latest_message.communication_type %>">
+                    <%= latest_message.display_type %>
+                  </div>
+                </div>
+              </div>
+              <div class="message-time">
+                <%= time_ago_in_words(latest_message.created_at) %> ago
+              </div>
+            </div>
+            
+            <% if latest_message.subject.present? %>
+              <div class="message-subject">
+                <%= truncate(latest_message.subject, length: 60) %>
+              </div>
+            <% end %>
+            
+            <div class="message-preview">
+              <%= truncate(latest_message.content, length: 120) %>
+            </div>
+            
+            <% if has_unread %>
+              <div class="unread-indicator"></div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <h3>No messages yet</h3>
+          <p>Start communicating with your customers by sending an email or SMS.</p>
+          <%= link_to "Send Email", new_communication_path(type: 'email'), class: "btn btn-primary" %>
+          <%= link_to "Send SMS", new_communication_path(type: 'sms'), class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+    
+    <% if @communications.respond_to?(:current_page) %>
+      <div class="pagination-wrapper">
+        <%#= paginate @communications %>
+      </div>
+    <% end %>
+  </div>
+</div>

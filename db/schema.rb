@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_012045) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_033958) do
   create_table "appointment_services", force: :cascade do |t|
     t.integer "appointment_id", null: false
     t.integer "service_id", null: false
@@ -51,7 +51,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_012045) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "direction", default: "outbound", null: false
+    t.string "from_phone"
+    t.string "to_phone"
+    t.string "from_email"
+    t.string "to_email"
+    t.datetime "read_at"
+    t.string "message_id"
+    t.string "thread_id"
+    t.integer "user_id"
+    t.index ["customer_id", "communication_type", "direction"], name: "idx_comms_on_cust_type_dir"
     t.index ["customer_id"], name: "index_communications_on_customer_id"
+    t.index ["direction"], name: "index_communications_on_direction"
+    t.index ["message_id"], name: "index_communications_on_message_id"
+    t.index ["thread_id"], name: "index_communications_on_thread_id"
+    t.index ["user_id"], name: "index_communications_on_user_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -188,6 +202,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_012045) do
   add_foreign_key "appointments", "customers"
   add_foreign_key "appointments", "vehicles"
   add_foreign_key "communications", "customers"
+  add_foreign_key "communications", "users"
   add_foreign_key "customers", "shops"
   add_foreign_key "reviews", "appointments"
   add_foreign_key "reviews", "customers"

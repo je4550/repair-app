@@ -1,0 +1,417 @@
+<% content_for :title, "Message Conversation - #{current_tenant.name}" %>
+
+<style>
+  .conversation-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .conversation-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f8f9fa;
+    flex-shrink: 0;
+  }
+  
+  .conversation-title {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    color: #212529;
+  }
+  
+  .conversation-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #6c757d;
+    font-size: 14px;
+  }
+  
+  .customer-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .customer-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #dc3545;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .customer-details h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #212529;
+  }
+  
+  .customer-contact {
+    color: #6c757d;
+    font-size: 14px;
+  }
+  
+  .message-type-badge {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  
+  .message-type-badge.email {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .message-type-badge.sms {
+    background: #d1ecf1;
+    color: #0c5460;
+  }
+  
+  .conversation-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f8f9fa;
+  }
+  
+  .message-bubble {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+  }
+  
+  .message-bubble.outbound {
+    flex-direction: row-reverse;
+  }
+  
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  
+  .message-avatar.inbound {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .message-avatar.outbound {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .message-content {
+    max-width: 70%;
+    background: white;
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  
+  .message-bubble.outbound .message-content {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .message-bubble.outbound .message-content::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: -8px;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-left-color: #dc3545;
+  }
+  
+  .message-bubble.inbound .message-content::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-right-color: white;
+  }
+  
+  .message-subject {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  .message-text {
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  .message-time {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 8px;
+    text-align: right;
+  }
+  
+  .message-bubble.inbound .message-time {
+    text-align: left;
+  }
+  
+  .message-status {
+    font-size: 11px;
+    margin-top: 4px;
+    opacity: 0.7;
+    text-align: right;
+  }
+  
+  .status-sent {
+    color: #28a745;
+  }
+  
+  .status-delivered {
+    color: #17a2b8;
+  }
+  
+  .status-failed {
+    color: #dc3545;
+  }
+  
+  .reply-form {
+    border-top: 1px solid #e5e5e5;
+    padding: 20px;
+    background: white;
+    flex-shrink: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #6c757d;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .back-link:hover {
+    color: #495057;
+  }
+  
+  @media (max-width: 768px) {
+    .conversation-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .message-content {
+      max-width: 85%;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<!-- Back Navigation -->
+<%= link_to communications_path, class: "back-link" do %>
+  ← Back to Messages
+<% end %>
+
+<!-- Content -->
+<div class="content">
+  <div class="conversation-container">
+    <!-- Header -->
+    <div class="conversation-header">
+      <div class="conversation-meta">
+        <div class="customer-info">
+          <div class="customer-avatar">
+            <%= @communication.customer.initials %>
+          </div>
+          <div class="customer-details">
+            <h3><%= @communication.customer.full_name %></h3>
+            <div class="customer-contact">
+              <% if @communication.communication_type == 'email' %>
+                📧 <%= @communication.customer.email %>
+              <% else %>
+                📱 <%= @communication.customer.phone %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="message-type-badge <%= @communication.communication_type %>">
+          <%= @communication.display_type %> Conversation
+        </div>
+      </div>
+    </div>
+    
+    <!-- Messages -->
+    <div class="conversation-messages">
+      <% @conversation.each do |message| %>
+        <div class="message-bubble <%= message.direction %>">
+          <div class="message-avatar <%= message.direction %>">
+            <% if message.outbound? %>
+              <%= message.user&.first_name&.first || 'U' %>
+            <% else %>
+              <%= message.customer.initials %>
+            <% end %>
+          </div>
+          
+          <div class="message-content">
+            <% if message.subject.present? && message.communication_type == 'email' %>
+              <div class="message-subject">
+                <%= message.subject %>
+              </div>
+            <% end %>
+            
+            <div class="message-text">
+              <%= simple_format(h(message.content)) %>
+            </div>
+            
+            <div class="message-time">
+              <%= message.created_at.strftime("%b %d at %I:%M %p") %>
+              <% if message.outbound? %>
+                <div class="message-status status-<%= message.status %>">
+                  <%= message.status.humanize %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Reply Form -->
+    <div class="reply-form">
+      <%= form_with model: @reply, url: reply_communication_path(@communication), method: :post, local: true do |form| %>
+        <% if @communication.communication_type == 'email' %>
+          <div class="form-group">
+            <%= form.label :subject, class: "form-label" %>
+            <%= form.text_field :subject, 
+                class: "form-control",
+                placeholder: "Re: #{@communication.subject}",
+                value: @communication.subject.present? ? "Re: #{@communication.subject}" : "" %>
+          </div>
+        <% end %>
+        
+        <div class="form-group">
+          <%= form.label :content, "Message", class: "form-label" %>
+          <%= form.text_area :content, 
+              class: "form-control",
+              rows: 4,
+              placeholder: @communication.communication_type == 'sms' ? "Type your SMS reply..." : "Type your email reply...",
+              required: true %>
+        </div>
+        
+        <div class="form-actions">
+          <%= form.submit "Send #{@communication.display_type}", class: "btn btn-primary" %>
+          <%= link_to "Cancel", communications_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+// Auto-scroll to bottom of messages
+document.addEventListener('DOMContentLoaded', function() {
+  const messagesContainer = document.querySelector('.conversation-messages');
+  if (messagesContainer) {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+  
+  // Focus on reply textarea
+  const replyTextarea = document.querySelector('#communication_content');
+  if (replyTextarea) {
+    replyTextarea.focus();
+  }
+});
+</script>
