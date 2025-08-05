@@ -1,0 +1,161 @@
+<%= form_with(model: user, local: true) do |form| %>
+  <% if user.errors.any? %>
+    <div style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; padding: 16px; margin-bottom: 20px;">
+      <h4 style="margin: 0 0 8px 0; color: #721c24;">Please fix the following errors:</h4>
+      <ul style="margin: 0; padding-left: 20px;">
+        <% user.errors.full_messages.each do |message| %>
+          <li style="color: #721c24;"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+    <!-- Personal Information -->
+    <div style="background: white; border-radius: 8px; padding: 24px;">
+      <h3 style="margin: 0 0 20px 0; font-size: 18px;">Personal Information</h3>
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <%= form.label :first_name, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+        <%= form.text_field :first_name, 
+            class: "form-control", 
+            required: true,
+            style: "width: 100%;" %>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <%= form.label :last_name, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+        <%= form.text_field :last_name, 
+            class: "form-control", 
+            required: true,
+            style: "width: 100%;" %>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <%= form.label :email, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+        <%= form.email_field :email, 
+            class: "form-control", 
+            required: true,
+            style: "width: 100%;" %>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <%= form.label :phone, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+        <%= form.telephone_field :phone, 
+            class: "form-control", 
+            required: true,
+            placeholder: "555-555-5555",
+            style: "width: 100%;" %>
+      </div>
+    </div>
+    
+    <!-- Account Settings -->
+    <div style="background: white; border-radius: 8px; padding: 24px;">
+      <h3 style="margin: 0 0 20px 0; font-size: 18px;">Account Settings</h3>
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <%= form.label :role, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+        <%= form.select :role, 
+            options_for_select(
+              User::ROLES.map { |r| [r.capitalize, r] },
+              user.role
+            ),
+            {},
+            class: "form-control",
+            style: "width: 100%;",
+            disabled: (current_user.manager? && user.admin?) %>
+        <% if current_user.manager? && user.persisted? && user.admin? %>
+          <small style="color: #666;">Managers cannot change admin roles</small>
+        <% end %>
+      </div>
+      
+      <% if current_user.admin? %>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <%= form.label :location_id, "Location", style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+          <%= form.select :location_id,
+              grouped_options_for_select(
+                @locations.group_by(&:region).map { |region, locations|
+                  [region.name, locations.map { |l| [l.name, l.id] }]
+                },
+                user.location_id
+              ),
+              {},
+              class: "form-control",
+              style: "width: 100%;" %>
+        </div>
+      <% end %>
+      
+      <div class="form-group" style="margin-bottom: 16px;">
+        <%= form.label :active, style: "display: block; margin-bottom: 8px; font-weight: 500;" %>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <%= form.check_box :active, style: "width: 16px; height: 16px;" %>
+          <span>User is active and can sign in</span>
+        </label>
+      </div>
+      
+      <% if user.new_record? %>
+        <div style="background: #e7f3ff; border: 1px solid #b3d7ff; border-radius: 4px; padding: 12px; margin-top: 20px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #004085;">Password Options</h4>
+          
+          <div style="margin-bottom: 12px;">
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <%= radio_button_tag 'password_option', 'auto', true, 
+                  onchange: "document.getElementById('manual-password').style.display = 'none';" %>
+              <span>Generate temporary password (recommended)</span>
+            </label>
+          </div>
+          
+          <div>
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <%= radio_button_tag 'password_option', 'manual', false,
+                  onchange: "document.getElementById('manual-password').style.display = 'block';" %>
+              <span>Set password manually</span>
+            </label>
+          </div>
+          
+          <div id="manual-password" style="display: none; margin-top: 16px;">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <%= form.label :password, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+              <%= form.password_field :password, 
+                  class: "form-control",
+                  style: "width: 100%;" %>
+              <small style="color: #666;">Minimum 6 characters</small>
+            </div>
+            
+            <div class="form-group">
+              <%= form.label :password_confirmation, style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+              <%= form.password_field :password_confirmation, 
+                  class: "form-control",
+                  style: "width: 100%;" %>
+            </div>
+          </div>
+        </div>
+      <% elsif user.persisted? && (current_user.admin? || current_user == user) %>
+        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 12px; margin-top: 20px;">
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #856404;">Change Password (Optional)</h4>
+          <p style="margin: 0 0 12px 0; font-size: 14px; color: #856404;">Leave blank to keep current password</p>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <%= form.label :password, "New Password", style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+            <%= form.password_field :password, 
+                class: "form-control",
+                style: "width: 100%;" %>
+            <small style="color: #666;">Minimum 6 characters</small>
+          </div>
+          
+          <div class="form-group">
+            <%= form.label :password_confirmation, "Confirm New Password", style: "display: block; margin-bottom: 4px; font-weight: 500;" %>
+            <%= form.password_field :password_confirmation, 
+                class: "form-control",
+                style: "width: 100%;" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <div style="margin-top: 24px; display: flex; gap: 12px;">
+    <%= form.submit user.new_record? ? "Create User" : "Update User", class: "btn btn-primary" %>
+    <%= link_to "Cancel", user.new_record? ? users_path : user, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

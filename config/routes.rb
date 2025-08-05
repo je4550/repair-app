@@ -20,6 +20,13 @@ Rails.application.routes.draw do
     authenticated :user do
       root to: "dashboard#index", as: :authenticated_root
       get "switch_location", to: "dashboard#switch_location"
+      
+      resources :users do
+        member do
+          post :reset_password
+          patch :toggle_active
+        end
+      end
     end
 
     unauthenticated do

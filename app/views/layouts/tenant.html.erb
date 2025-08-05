@@ -177,6 +177,11 @@
           <%= link_to reports_revenue_path, class: "sidebar-item #{'active' if controller_name.include?('reports')}" do %>
             <span style="margin-right: 12px;">📊</span> Reports
           <% end %>
+          <% if current_user.can_manage_users? || current_user.manager? %>
+            <%= link_to users_path, class: "sidebar-item #{'active' if controller_name == 'users'}" do %>
+              <span style="margin-right: 12px;">👤</span> Users
+            <% end %>
+          <% end %>
           <%= link_to "#", class: "sidebar-item" do %>
             <span style="margin-right: 12px;">⚙️</span> Settings
           <% end %>

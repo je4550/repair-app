@@ -1,0 +1,311 @@
+<% content_for :title, "#{@user.full_name} - Users" %>
+
+<style>
+  .profile-header {
+    background: white;
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .info-card {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .info-row:last-child {
+    border-bottom: none;
+  }
+  
+  .info-label {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .info-value {
+    font-weight: 500;
+  }
+  
+  .activity-stat {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .activity-stat h3 {
+    margin: 0 0 8px 0;
+    font-size: 32px;
+    color: #333;
+  }
+  
+  .activity-stat p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    border-color: #bd2130;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .btn-outline-secondary {
+    background: white;
+    color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  .btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .role-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .role-badge.admin {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .role-badge.manager {
+    background: #17a2b8;
+    color: white;
+  }
+  
+  .role-badge.technician {
+    background: #28a745;
+    color: white;
+  }
+  
+  .role-badge.receptionist {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .status-badge.active {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <%= link_to users_path, style: "color: #666; text-decoration: none;" do %>
+      ← Back to Users
+    <% end %>
+  </div>
+</div>
+
+<!-- Profile Header -->
+<div class="profile-header">
+  <div class="profile-info">
+    <div class="profile-avatar">
+      <%= @user.first_name[0].upcase %><%= @user.last_name[0].upcase %>
+    </div>
+    <div>
+      <h1 style="margin: 0 0 8px 0; font-size: 28px;"><%= @user.full_name %></h1>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="role-badge <%= @user.role %>"><%= @user.role.capitalize %></span>
+        <span class="status-badge <%= @user.active? ? 'active' : 'inactive' %>">
+          <%= @user.active? ? 'Active' : 'Inactive' %>
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <div style="display: flex; gap: 12px;">
+    <% if current_user.admin? || (current_user.manager? && !@user.admin?) %>
+      <%= link_to edit_user_path(@user), class: "btn btn-primary" do %>
+        Edit Profile
+      <% end %>
+      
+      <% if current_user != @user %>
+        <%= link_to reset_password_user_path(@user), method: :post,
+            data: { turbo_method: :post, turbo_confirm: 'Are you sure you want to reset this user\'s password?' },
+            class: "btn btn-outline-secondary" do %>
+          Reset Password
+        <% end %>
+        
+        <%= link_to toggle_active_user_path(@user), method: :patch,
+            data: { turbo_method: :patch },
+            class: "btn btn-outline-secondary" do %>
+          <%= @user.active? ? 'Deactivate' : 'Activate' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+  <!-- User Information -->
+  <div>
+    <div class="info-card">
+      <h2 style="margin: 0 0 20px 0; font-size: 20px;">Contact Information</h2>
+      
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value"><%= @user.email %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value"><%= @user.phone %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Location</span>
+        <span class="info-value"><%= @user.location.name %> (<%= @user.location.region.name %>)</span>
+      </div>
+    </div>
+    
+    <div class="info-card">
+      <h2 style="margin: 0 0 20px 0; font-size: 20px;">Account Information</h2>
+      
+      <div class="info-row">
+        <span class="info-label">Role</span>
+        <span class="info-value"><%= @user.role.capitalize %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="info-value"><%= @user.active? ? 'Active' : 'Inactive' %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Member Since</span>
+        <span class="info-value"><%= @user.created_at.strftime("%B %d, %Y") %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Last Sign In</span>
+        <span class="info-value">
+          <% if @user.last_sign_in_at %>
+            <%= @user.last_sign_in_at.strftime("%B %d, %Y at %l:%M %p") %>
+          <% else %>
+            Never
+          <% end %>
+        </span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Sign In Count</span>
+        <span class="info-value"><%= @user.sign_in_count || 0 %></span>
+      </div>
+    </div>
+    
+    <div class="info-card">
+      <h2 style="margin: 0 0 20px 0; font-size: 20px;">Permissions</h2>
+      
+      <div class="info-row">
+        <span class="info-label">Can Manage Appointments</span>
+        <span class="info-value"><%= @user.can_manage_appointments? ? '✓ Yes' : '✗ No' %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Can Manage Customers</span>
+        <span class="info-value"><%= @user.can_manage_customers? ? '✓ Yes' : '✗ No' %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Can View Reports</span>
+        <span class="info-value"><%= @user.can_view_reports? ? '✓ Yes' : '✗ No' %></span>
+      </div>
+      
+      <div class="info-row">
+        <span class="info-label">Can Manage Users</span>
+        <span class="info-value"><%= @user.can_manage_users? ? '✓ Yes' : '✗ No' %></span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Activity Stats -->
+  <div>
+    <div class="info-card">
+      <h2 style="margin: 0 0 20px 0; font-size: 20px;">Recent Activity</h2>
+      
+      <div style="display: grid; gap: 16px;">
+        <div class="activity-stat">
+          <h3><%= @recent_activity[:customers_created] %></h3>
+          <p>Customers Added (30 days)</p>
+        </div>
+        
+        <div class="activity-stat">
+          <h3><%= @recent_activity[:appointments_handled] %></h3>
+          <p>Appointments (30 days)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

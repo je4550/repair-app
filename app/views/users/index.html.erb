@@ -1,0 +1,339 @@
+<% content_for :title, "Users - #{current_tenant.name}" %>
+
+<style>
+  .btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    border-color: #bd2130;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+    border-color: #6c757d;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+    border-color: #545b62;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .btn-outline-primary {
+    background: white;
+    color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-outline-primary:hover {
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .btn-outline-secondary {
+    background: white;
+    color: #6c757d;
+    border-color: #6c757d;
+  }
+  
+  .btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .btn-sm {
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+  
+  .form-control {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+  }
+  
+  .role-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .role-badge.admin {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .role-badge.manager {
+    background: #17a2b8;
+    color: white;
+  }
+  
+  .role-badge.technician {
+    background: #28a745;
+    color: white;
+  }
+  
+  .role-badge.receptionist {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .status-badge.active {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .users-table th {
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #666;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  .users-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .users-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .user-details h3 {
+    margin: 0 0 2px 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .user-details p {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <h1 style="margin: 0; font-size: 24px;">Users</h1>
+    <p style="margin: 5px 0 0 0; color: #666;">Manage team members and their roles</p>
+  </div>
+  <div style="display: flex; gap: 12px;">
+    <%= link_to new_user_path, class: "btn btn-primary" do %>
+      + Add User
+    <% end %>
+  </div>
+</div>
+
+<!-- Filters -->
+<div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+  <%= form_with url: users_path, method: :get, local: true do |f| %>
+    <div style="display: flex; gap: 16px; align-items: center;">
+      <div style="flex: 1;">
+        <%= text_field_tag :search, params[:search], 
+            placeholder: "Search by name or email...", 
+            class: "form-control",
+            style: "width: 100%;" %>
+      </div>
+      
+      <div>
+        <%= select_tag :role, 
+            options_for_select([
+              ['All Roles', ''],
+              ['Admin', 'admin'],
+              ['Manager', 'manager'],
+              ['Technician', 'technician'],
+              ['Receptionist', 'receptionist']
+            ], params[:role]), 
+            class: "form-control",
+            onchange: "this.form.submit();" %>
+      </div>
+      
+      <% if current_user.admin? %>
+        <div>
+          <%= select_tag :location_id,
+              options_for_select(
+                [['All Locations', '']] + @locations.map { |loc| 
+                  ["#{loc.region.name} - #{loc.name}", loc.id] 
+                },
+                params[:location_id]
+              ),
+              class: "form-control",
+              onchange: "this.form.submit();" %>
+        </div>
+      <% end %>
+      
+      <%= submit_tag "Search", class: "btn btn-secondary" %>
+      
+      <% if params[:search].present? || params[:role].present? || params[:location_id].present? %>
+        <%= link_to "Clear", users_path, class: "btn btn-outline-secondary" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Users Table -->
+<div style="background: white; border-radius: 8px; overflow: hidden;">
+  <% if @users.any? %>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Contact</th>
+          <th>Location</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Last Sign In</th>
+          <th style="text-align: right;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td>
+              <div class="user-info">
+                <div class="user-avatar">
+                  <%= user.first_name[0].upcase %><%= user.last_name[0].upcase %>
+                </div>
+                <div class="user-details">
+                  <h3><%= link_to user.full_name, user, style: "text-decoration: none; color: #333;" %></h3>
+                  <p><%= user.email %></p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <%= user.phone %>
+            </td>
+            <td>
+              <div>
+                <div style="font-weight: 500;"><%= user.location.name %></div>
+                <div style="font-size: 12px; color: #666;"><%= user.location.region.name %></div>
+              </div>
+            </td>
+            <td>
+              <span class="role-badge <%= user.role %>"><%= user.role %></span>
+            </td>
+            <td>
+              <span class="status-badge <%= user.active? ? 'active' : 'inactive' %>">
+                <%= user.active? ? 'Active' : 'Inactive' %>
+              </span>
+            </td>
+            <td>
+              <% if user.last_sign_in_at %>
+                <div><%= user.last_sign_in_at.strftime("%b %d, %Y") %></div>
+                <div style="font-size: 12px; color: #666;"><%= user.last_sign_in_at.strftime("%l:%M %p") %></div>
+              <% else %>
+                <span style="color: #999;">Never</span>
+              <% end %>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                <%= link_to "View", user, class: "btn btn-sm btn-outline-secondary" %>
+                
+                <% if current_user.admin? || (current_user.manager? && !user.admin?) %>
+                  <%= link_to "Edit", edit_user_path(user), class: "btn btn-sm btn-outline-primary" %>
+                <% end %>
+                
+                <% if current_user != user && !(current_user.manager? && user.admin?) && (current_user.admin? || current_user.manager?) %>
+                  <%= link_to toggle_active_user_path(user), method: :patch, 
+                      data: { turbo_method: :patch },
+                      class: "btn btn-sm btn-outline-secondary" do %>
+                    <%= user.active? ? 'Deactivate' : 'Activate' %>
+                  <% end %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <!-- Pagination -->
+    <div style="padding: 24px; border-top: 1px solid #f0f0f0;">
+      <%== pagy_nav(@pagy) %>
+    </div>
+  <% else %>
+    <div style="text-align: center; padding: 60px 0; color: #999;">
+      <div style="font-size: 48px; margin-bottom: 16px;">👥</div>
+      <p style="margin: 0 0 8px 0; font-size: 18px;">No users found</p>
+      <p style="margin: 0; color: #666;">
+        <% if params[:search].present? || params[:role].present? || params[:location_id].present? %>
+          Try adjusting your filters
+        <% else %>
+          Add your first team member to get started
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+</div>

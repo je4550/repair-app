@@ -1,0 +1,13 @@
+<% content_for :title, "New User - #{current_tenant.name}" %>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <h1 style="margin: 0; font-size: 24px;">Add New User</h1>
+    <p style="margin: 5px 0 0 0; color: #666;">Create a new team member account</p>
+  </div>
+</div>
+
+<div style="max-width: 1000px; margin: 0 auto;">
+  <%= render 'form', user: @user %>
+</div>
