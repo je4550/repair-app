@@ -2,8 +2,20 @@ Rails.application.routes.draw do
   # Health check available on all subdomains
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Define constraint lambdas
+  is_base_domain = lambda do |request|
+    subdomain = request.subdomain
+    # Empty subdomain or Heroku app domain
+    subdomain.blank? || 
+    (request.host.match?(/\.herokuapp\.com$/) && subdomain.match?(/^[a-z0-9-]+-[a-f0-9]{16}$/))
+  end
+  
+  is_tenant_subdomain = lambda do |request|
+    !is_base_domain.call(request)
+  end
+
   # Routes without subdomain constraint (main website)
-  constraints Constraints::BaseDomainConstraint.new do
+  constraints is_base_domain do
     root to: "pages#home"
     get "about", to: "pages#about"
     get "pricing", to: "pages#pricing"
@@ -14,7 +26,7 @@ Rails.application.routes.draw do
   end
 
   # Routes with subdomain constraint (tenant-specific)
-  constraints Constraints::TenantSubdomainConstraint.new do
+  constraints is_tenant_subdomain do
     devise_for :users
 
     authenticated :user do
