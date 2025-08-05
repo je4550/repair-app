@@ -1,5 +1,3 @@
-require 'constraints/base_domain_constraint'
-
 Rails.application.routes.draw do
   # Health check available on all subdomains
   get "up" => "rails/health#show", as: :rails_health_check
