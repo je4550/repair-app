@@ -10,8 +10,22 @@ module TenantScoped
   private
 
   def set_tenant
-    # First check if we're on a subdomain
-    if request.subdomain.present? && request.subdomain != 'www'
+    # Debug logging for Heroku
+    Rails.logger.info "=== TENANT DEBUG ==="
+    Rails.logger.info "Host: #{request.host}"
+    Rails.logger.info "Domain: #{request.domain}"
+    Rails.logger.info "Subdomain: #{request.subdomain}"
+    Rails.logger.info "Controller: #{controller_name}"
+    Rails.logger.info "Public?: #{public_controller?}"
+    
+    # Special handling for Heroku domains
+    # On Heroku, the app URL like autoplanner-staging-17cdee2cd69f.herokuapp.com
+    # is the base domain, not a subdomain
+    is_heroku_base = request.host.match?(/\.herokuapp\.com$/) && 
+                     request.subdomain.match?(/^[a-z0-9-]+-[a-f0-9]{16}$/)
+    
+    # First check if we're on a subdomain (but not the Heroku base domain)
+    if request.subdomain.present? && request.subdomain != 'www' && !is_heroku_base
       # If accessing via subdomain, find the shop
       shop = Shop.find_by(subdomain: request.subdomain, active: true)
       if shop
