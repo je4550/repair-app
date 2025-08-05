@@ -108,9 +108,14 @@ receptionist = User.find_or_create_by!(email: "reception@jeffsautomotive.com") d
   user.location = main_location
 end
 
-# Create additional services beyond the defaults
-puts "Creating additional services..."
+# Create services
+puts "Creating services..."
 services = [
+  # Default services that are referenced later
+  { name: "Oil Change", description: "Full synthetic oil change and filter replacement", price: 49.99, duration_minutes: 30 },
+  { name: "Tire Rotation", description: "Rotate tires for even wear", price: 19.99, duration_minutes: 20 },
+  { name: "Brake Inspection", description: "Comprehensive brake system inspection", price: 0.00, duration_minutes: 20 },
+  # Additional services
   { name: "Brake Pad Replacement", description: "Replace front or rear brake pads", price: 149.99, duration_minutes: 60 },
   { name: "Transmission Fluid Change", description: "Drain and refill transmission fluid", price: 89.99, duration_minutes: 45 },
   { name: "Coolant Flush", description: "Flush cooling system and refill with fresh coolant", price: 79.99, duration_minutes: 30 },
