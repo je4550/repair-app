@@ -129,7 +129,11 @@ services = [
 ]
 
 services.each do |service_attrs|
-  main_location.services.create!(service_attrs)
+  main_location.services.find_or_create_by!(name: service_attrs[:name]) do |service|
+    service.description = service_attrs[:description]
+    service.price = service_attrs[:price]
+    service.duration_minutes = service_attrs[:duration_minutes]
+  end
 end
 
 # Create customers with vehicles
