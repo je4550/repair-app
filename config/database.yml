@@ -65,26 +65,8 @@ staging:
 
 # Production environment uses PostgreSQL
 production:
-  primary:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("DATABASE_POOL", 25) %>
-    url: <%= ENV['DATABASE_URL'] %>
-  cache:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    url: <%= ENV['DATABASE_URL']&.sub(/\/\w+(\?|$)/, '/\0_cache\1') %>
-    migrations_paths: db/cache_migrate
-  queue:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    url: <%= ENV['DATABASE_URL']&.sub(/\/\w+(\?|$)/, '/\0_queue\1') %>
-    migrations_paths: db/queue_migrate
-  cable:
-    adapter: postgresql
-    encoding: unicode
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    url: <%= ENV['DATABASE_URL']&.sub(/\/\w+(\?|$)/, '/\0_cable\1') %>
-    migrations_paths: db/cable_migrate
+  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("DATABASE_POOL", 25) %>
+  url: <%= ENV['DATABASE_URL'] %>
