@@ -17,14 +17,21 @@ module TenantScoped
       if shop
         set_current_tenant(shop)
       else
-        # Shop not found, redirect to sign in
-        redirect_to new_user_session_url(host: ENV['APP_DOMAIN'] || request.domain), alert: 'Shop not found', allow_other_host: true
+        # Shop not found, redirect to base domain (marketing site)
+        base_domain = ENV['APP_DOMAIN'] || request.domain
+        redirect_to "https://#{base_domain}", alert: 'Shop not found', allow_other_host: true
       end
     elsif user_signed_in?
-      # If user is signed in but no subdomain, use their shop through location
-      set_current_tenant(current_user.location.region.shop)
+      # If user is signed in but no subdomain, redirect to their shop subdomain
+      if current_user.location&.region&.shop.present?
+        redirect_to root_url(subdomain: current_user.location.region.shop.subdomain), allow_other_host: true
+      else
+        # User has no shop assigned - this shouldn't happen in normal flow
+        redirect_to new_user_session_path, alert: 'No shop assigned to your account'
+      end
     else
-      # No tenant set - redirect to sign in page
+      # No subdomain and not signed in - this is fine for public pages
+      # The public_controller? check ensures only public pages are accessible
       unless public_controller?
         redirect_to new_user_session_path, alert: 'Please sign in to continue'
       end
