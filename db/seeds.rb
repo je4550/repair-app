@@ -46,9 +46,7 @@ ActsAsTenant.without_tenant do
 
 # Create region and location for Jeff's Automotive
 puts "Creating or finding region and location..."
-rochester_region = Region.find_or_create_by!(shop: jeffs_shop, name: "Rochester") do |region|
-  region.active = true
-end
+rochester_region = Region.find_or_create_by!(shop: jeffs_shop, name: "Rochester")
 
 main_location = Location.find_or_create_by!(region: rochester_region, name: "Main Location") do |location|
   location.address_line1 = "202 South St"
