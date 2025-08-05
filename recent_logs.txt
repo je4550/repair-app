@@ -1,0 +1,100 @@
+2025-08-05T06:47:22.152715+00:00 app[web.1]: [2] *   Master PID: 2
+2025-08-05T06:47:22.152716+00:00 app[web.1]: [2] *      Workers: 2
+2025-08-05T06:47:22.152733+00:00 app[web.1]: [2] *     Restarts: (✔) hot (✖) phased (✖) refork
+2025-08-05T06:47:22.152734+00:00 app[web.1]: [2] * Preloading application
+2025-08-05T06:47:25.265989+00:00 app[web.1]: [2] * Listening on http://0.0.0.0:38814
+2025-08-05T06:47:25.266063+00:00 app[web.1]: [2] Use Ctrl-C to stop
+2025-08-05T06:47:25.274553+00:00 app[web.1]: [2] - Worker 0 (PID: 8) booted in 0.0s, phase: 0
+2025-08-05T06:47:25.275238+00:00 app[web.1]: [2] - Worker 1 (PID: 21) booted in 0.0s, phase: 0
+2025-08-05T06:47:25.313261+00:00 heroku[web.1]: State changed from starting to up
+2025-08-05T06:47:28.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.93 sample#load-avg-5m=2.075 sample#load-avg-15m=2.1 sample#read-iops=0 sample#write-iops=0.23158 sample#max-iops=3000 sample#iops-percentage-used=0.00008 sample#memory-total=16167804kB sample#memory-free=7245296kB sample#memory-percentage-used=0.55187 sample#memory-cached=2699992kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:47:28.209557+00:00 app[web.1]: [8dc014f4-44d8-cb60-7fb0-1172e8ba19bc] Started GET "/" for 108.215.140.100 at 2025-08-05 06:47:28 +0000
+2025-08-05T06:47:28.213073+00:00 app[web.1]: [8dc014f4-44d8-cb60-7fb0-1172e8ba19bc] Processing by PagesController#home as HTML
+2025-08-05T06:47:28.251122+00:00 app[web.1]: [8dc014f4-44d8-cb60-7fb0-1172e8ba19bc]   Rendered layout layouts/application.html.erb (Duration: 18.3ms | GC: 0.0ms)
+2025-08-05T06:47:28.251557+00:00 app[web.1]: [8dc014f4-44d8-cb60-7fb0-1172e8ba19bc] Completed 200 OK in 38ms (Views: 19.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+2025-08-05T06:47:28.253845+00:00 heroku[router]: at=info method=GET path="/" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=8dc014f4-44d8-cb60-7fb0-1172e8ba19bc fwd="108.215.140.100" dyno=web.1 connect=0ms service=49ms status=200 bytes=20081 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.350963+00:00 heroku[router]: at=info method=GET path="/assets/application-8b441ae0.css" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=a3f0ae0d-5c9a-95ae-8bc8-c734598202e7 fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=491 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.602704+00:00 heroku[router]: at=info method=GET path="/assets/logo-4ec58c04.png" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=4faa3cd7-0530-c01d-9a4f-84e55ad0c270 fwd="108.215.140.100" dyno=web.1 connect=0ms service=69ms status=200 bytes=2151115 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.696657+00:00 heroku[router]: at=info method=GET path="/assets/application-bfcdf840.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=45afa477-5ad0-1427-8fae-96c966a2bbd3 fwd="108.215.140.100" dyno=web.1 connect=0ms service=3ms status=200 bytes=157 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.734532+00:00 heroku[router]: at=info method=GET path="/assets/controllers/hello_controller-708796bd.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=cf6cba33-538d-0f31-14cf-2e9c651345c6 fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=157 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.737816+00:00 heroku[router]: at=info method=GET path="/assets/stimulus.min-4b1e420e.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=b28dcdb6-e569-ac63-0b9c-ef63e498789a fwd="108.215.140.100" dyno=web.1 connect=0ms service=3ms status=200 bytes=45657 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.740955+00:00 heroku[router]: at=info method=GET path="/assets/stimulus-loading-1fc53fe7.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=33a68bcc-6f15-d037-175c-067ad8d431e0 fwd="108.215.140.100" dyno=web.1 connect=0ms service=6ms status=200 bytes=3315 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.743548+00:00 heroku[router]: at=info method=GET path="/assets/turbo.min-3a2e143f.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=ec585097-a25f-5e6f-b93b-6313d2256fdd fwd="108.215.140.100" dyno=web.1 connect=0ms service=7ms status=200 bytes=105417 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.745714+00:00 heroku[router]: at=info method=GET path="/assets/controllers/application-3affb389.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=bf1ad357-5b21-d6a2-f168-cb18d77f82ec fwd="108.215.140.100" dyno=web.1 connect=0ms service=5ms status=200 bytes=218 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.770509+00:00 heroku[router]: at=info method=GET path="/assets/controllers/index-ee64e1f1.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=0072cf83-a3f3-423a-b699-36cd361f31ea fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=272 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.778950+00:00 heroku[router]: at=info method=GET path="/assets/controllers/search_controller-20e7c83f.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=ecb332fe-c170-f4e6-e597-54f78724c858 fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=504 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.903049+00:00 heroku[router]: at=info method=GET path="/icon.png" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=779f2b49-5ad2-b895-8367-802242680724 fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=4166 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:28.903228+00:00 heroku[router]: at=info method=GET path="/icon.svg" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=e1abed28-c1ef-9ab9-cc71-dc4913fc88cb fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=122 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:47:29.451393+00:00 app[web.1]: [2aa95368-2386-30b5-75c8-14e842afc687] Started GET "/" for 108.215.140.100 at 2025-08-05 06:47:29 +0000
+2025-08-05T06:47:29.452352+00:00 app[web.1]: [2aa95368-2386-30b5-75c8-14e842afc687] Processing by PagesController#home as */*
+2025-08-05T06:47:29.458000+00:00 app[web.1]: [2aa95368-2386-30b5-75c8-14e842afc687]   Rendered layout layouts/application.html.erb (Duration: 4.6ms | GC: 0.0ms)
+2025-08-05T06:47:29.458222+00:00 app[web.1]: [2aa95368-2386-30b5-75c8-14e842afc687] Completed 200 OK in 6ms (Views: 5.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+2025-08-05T06:47:29.459790+00:00 heroku[router]: at=info method=GET path="/" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=2aa95368-2386-30b5-75c8-14e842afc687 fwd="108.215.140.100" dyno=web.1 connect=0ms service=9ms status=200 bytes=20081 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:48:02.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.72 sample#load-avg-5m=2.02 sample#load-avg-15m=2.08 sample#read-iops=0 sample#write-iops=0.24138 sample#max-iops=3000 sample#iops-percentage-used=0.00008 sample#memory-total=16167804kB sample#memory-free=7232088kB sample#memory-percentage-used=0.55269 sample#memory-cached=2699996kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:48:27.000000+00:00 app[api]: Build started by user je4550@gmail.com
+2025-08-05T06:48:53.476770+00:00 app[api]: Running release v27 commands by user je4550@gmail.com
+2025-08-05T06:48:53.476770+00:00 app[api]: Deploy de4361e2 by user je4550@gmail.com
+2025-08-05T06:48:54.114819+00:00 app[api]: Starting process with command `/bin/sh -c 'if curl $HEROKU_RELEASE_LOG_STREAM --silent --connect-timeout 10 --retry 3 --retry-delay 1 >/tmp/log-stream; then
+2025-08-05T06:48:54.114819+00:00 app[api]: chmod u+x /tmp/log-stream
+2025-08-05T06:48:54.114819+00:00 app[api]: /tmp/log-stream /bin/sh -c '"'"'bundle exec rails db:migrate'"'"'
+2025-08-05T06:48:54.114819+00:00 app[api]: else
+2025-08-05T06:48:54.114819+00:00 app[api]: bundle exec rails db:migrate
+2025-08-05T06:48:54.114819+00:00 app[api]: fi'` by user je4550@gmail.com
+2025-08-05T06:48:56.765395+00:00 heroku[release.3103]: Starting process with command `/bin/sh -c 'if curl https://heroku-release-output.s3.amazonaws.com/log-stream?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZSXS6CXKUD5IMVTI%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T064853Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=3a0c3962521a53373554da2b1cb42c6c776628b8dc6b4c613191d631be49dc28 --silent --connect-timeout 10 --retry 3 --retry-delay 1 >/tmp/log-stream; then
+2025-08-05T06:48:57.375286+00:00 heroku[release.3103]: State changed from starting to up
+2025-08-05T06:49:00.196662+00:00 heroku[release.3103]: Process exited with status 0
+2025-08-05T06:49:00.222044+00:00 heroku[release.3103]: State changed from up to complete
+2025-08-05T06:49:00.814499+00:00 app[api]: Release v27 created by user je4550@gmail.com
+2025-08-05T06:49:01.112693+00:00 heroku[web.1]: Restarting
+2025-08-05T06:49:01.166723+00:00 heroku[web.1]: State changed from up to starting
+2025-08-05T06:49:01.733698+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2025-08-05T06:49:01.750969+00:00 app[web.1]: [2] === puma shutdown: 2025-08-05 06:49:01 +0000 ===
+2025-08-05T06:49:01.750984+00:00 app[web.1]: [2] - Goodbye!
+2025-08-05T06:49:01.751005+00:00 app[web.1]: [2] - Gracefully shutting down workers...
+2025-08-05T06:49:02.000000+00:00 app[api]: Build succeeded
+2025-08-05T06:49:02.033532+00:00 heroku[web.1]: Process exited with status 143
+2025-08-05T06:49:03.976732+00:00 heroku[web.1]: Starting process with command `bundle exec puma -C config/puma.rb`
+2025-08-05T06:49:04.774663+00:00 app[web.1]: [2] Puma starting in cluster mode...
+2025-08-05T06:49:04.774686+00:00 app[web.1]: [2] * Puma version: 6.6.1 ("Return to Forever")
+2025-08-05T06:49:04.774687+00:00 app[web.1]: [2] * Ruby version: ruby 3.3.8 (2025-04-09 revision b200bad6cd) [x86_64-linux]
+2025-08-05T06:49:04.774687+00:00 app[web.1]: [2] *  Min threads: 5
+2025-08-05T06:49:04.774687+00:00 app[web.1]: [2] *  Max threads: 5
+2025-08-05T06:49:04.774688+00:00 app[web.1]: [2] *  Environment: production
+2025-08-05T06:49:04.774688+00:00 app[web.1]: [2] *   Master PID: 2
+2025-08-05T06:49:04.774705+00:00 app[web.1]: [2] *      Workers: 2
+2025-08-05T06:49:04.774717+00:00 app[web.1]: [2] *     Restarts: (✔) hot (✖) phased (✖) refork
+2025-08-05T06:49:04.774725+00:00 app[web.1]: [2] * Preloading application
+2025-08-05T06:49:07.715995+00:00 app[web.1]: [2] * Listening on http://0.0.0.0:7683
+2025-08-05T06:49:07.716058+00:00 app[web.1]: [2] Use Ctrl-C to stop
+2025-08-05T06:49:07.728226+00:00 app[web.1]: [2] - Worker 0 (PID: 8) booted in 0.01s, phase: 0
+2025-08-05T06:49:07.728816+00:00 app[web.1]: [2] - Worker 1 (PID: 21) booted in 0.0s, phase: 0
+2025-08-05T06:49:08.090563+00:00 heroku[web.1]: State changed from starting to up
+2025-08-05T06:49:09.947485+00:00 app[web.1]: [a0f36b8a-e514-89c4-cf81-2877b2368d4b] Started GET "/" for 108.215.140.100 at 2025-08-05 06:49:09 +0000
+2025-08-05T06:49:09.951350+00:00 app[web.1]: [a0f36b8a-e514-89c4-cf81-2877b2368d4b] Processing by PagesController#home as HTML
+2025-08-05T06:49:09.990617+00:00 app[web.1]: [a0f36b8a-e514-89c4-cf81-2877b2368d4b]   Rendered layout layouts/application.html.erb (Duration: 18.3ms | GC: 0.0ms)
+2025-08-05T06:49:09.991070+00:00 app[web.1]: [a0f36b8a-e514-89c4-cf81-2877b2368d4b] Completed 200 OK in 39ms (Views: 19.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+2025-08-05T06:49:09.993683+00:00 heroku[router]: at=info method=GET path="/" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=a0f36b8a-e514-89c4-cf81-2877b2368d4b fwd="108.215.140.100" dyno=web.1 connect=0ms service=51ms status=200 bytes=20209 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.081980+00:00 heroku[router]: at=info method=GET path="/assets/application-8b441ae0.css" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=5e5b2a8d-ab6a-7c81-6292-e39470cb6625 fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=491 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.152980+00:00 heroku[router]: at=info method=GET path="/assets/logo-4ec58c04.png" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=c4d79423-868a-a251-e407-837d34439ab1 fwd="108.215.140.100" dyno=web.1 connect=0ms service=37ms status=200 bytes=2151115 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.196670+00:00 heroku[router]: at=info method=GET path="/assets/application-bfcdf840.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=1f46e17f-1d18-6bae-d7e9-763a46fe9e01 fwd="108.215.140.100" dyno=web.1 connect=0ms service=3ms status=200 bytes=157 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.232015+00:00 heroku[router]: at=info method=GET path="/assets/controllers/hello_controller-708796bd.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=20f17ed3-962a-8f1e-63b6-58c000d3f1e5 fwd="108.215.140.100" dyno=web.1 connect=0ms service=0ms status=200 bytes=157 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.268278+00:00 heroku[router]: at=info method=GET path="/assets/controllers/index-ee64e1f1.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=43f32ab9-5456-f166-c191-a6f480f1295c fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=272 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.289893+00:00 heroku[router]: at=info method=GET path="/assets/stimulus-loading-1fc53fe7.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=c1a62918-7e4c-c396-c58f-c011ced6624d fwd="108.215.140.100" dyno=web.1 connect=0ms service=6ms status=200 bytes=3315 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.290931+00:00 heroku[router]: at=info method=GET path="/assets/stimulus.min-4b1e420e.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=7300040f-fe88-324b-3e80-05845049cd89 fwd="108.215.140.100" dyno=web.1 connect=0ms service=6ms status=200 bytes=45657 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.295065+00:00 heroku[router]: at=info method=GET path="/assets/controllers/application-3affb389.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=075f11cb-e60e-f56b-8b51-cb190ad3bb54 fwd="108.215.140.100" dyno=web.1 connect=0ms service=6ms status=200 bytes=218 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.296227+00:00 heroku[router]: at=info method=GET path="/assets/turbo.min-3a2e143f.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=9c18b9ba-7fd1-c427-5b37-44430d04016d fwd="108.215.140.100" dyno=web.1 connect=0ms service=7ms status=200 bytes=105417 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.304063+00:00 heroku[router]: at=info method=GET path="/assets/controllers/search_controller-20e7c83f.js" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=06ada775-c638-1908-f0bc-82d968e6a352 fwd="108.215.140.100" dyno=web.1 connect=0ms service=0ms status=200 bytes=504 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.460688+00:00 heroku[router]: at=info method=GET path="/icon.png" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=0ba4e3f7-f4b8-0c14-0c3b-0c6f58a353e1 fwd="108.215.140.100" dyno=web.1 connect=0ms service=1ms status=200 bytes=4166 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.465053+00:00 heroku[router]: at=info method=GET path="/icon.svg" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=e20eb6be-a9b8-93a3-5a33-29666d79595c fwd="108.215.140.100" dyno=web.1 connect=0ms service=0ms status=200 bytes=122 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:10.598462+00:00 app[web.1]: [38f5539b-647c-c135-4360-178e5b4c97b5] Started GET "/" for 108.215.140.100 at 2025-08-05 06:49:10 +0000
+2025-08-05T06:49:10.602310+00:00 app[web.1]: [38f5539b-647c-c135-4360-178e5b4c97b5] Processing by PagesController#home as */*
+2025-08-05T06:49:10.623277+00:00 app[web.1]: [38f5539b-647c-c135-4360-178e5b4c97b5]   Rendered layout layouts/application.html.erb (Duration: 11.6ms | GC: 0.0ms)
+2025-08-05T06:49:10.623744+00:00 app[web.1]: [38f5539b-647c-c135-4360-178e5b4c97b5] Completed 200 OK in 21ms (Views: 12.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+2025-08-05T06:49:10.626520+00:00 heroku[router]: at=info method=GET path="/" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=38f5539b-647c-c135-4360-178e5b4c97b5 fwd="108.215.140.100" dyno=web.1 connect=0ms service=31ms status=200 bytes=20209 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:49:14.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.725 sample#load-avg-5m=1.96 sample#load-avg-15m=2.055 sample#read-iops=0 sample#write-iops=0.077922 sample#max-iops=3000 sample#iops-percentage-used=0.00003 sample#memory-total=16167804kB sample#memory-free=7244568kB sample#memory-percentage-used=0.55191 sample#memory-cached=2700008kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:49:15.481068+00:00 app[web.1]: [01a54c22-3cf3-6020-1970-89ab39a716ab] Started GET "/favicon.ico" for 108.215.140.100 at 2025-08-05 06:49:15 +0000
+2025-08-05T06:49:15.481794+00:00 app[web.1]: [01a54c22-3cf3-6020-1970-89ab39a716ab]
+2025-08-05T06:49:15.481796+00:00 app[web.1]: [01a54c22-3cf3-6020-1970-89ab39a716ab] ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+2025-08-05T06:49:15.481796+00:00 app[web.1]: [01a54c22-3cf3-6020-1970-89ab39a716ab]
+2025-08-05T06:49:15.482671+00:00 heroku[router]: sock=client at=warning code=H27 desc="Client Request Interrupted" method=GET path="/favicon.ico" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=01a54c22-3cf3-6020-1970-89ab39a716ab fwd="108.215.140.100" dyno=web.1 connect=0ms service=2ms status=404 bytes=3279 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:50:26.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.64 sample#load-avg-5m=1.895 sample#load-avg-15m=2.025 sample#read-iops=0 sample#write-iops=0.16667 sample#max-iops=3000 sample#iops-percentage-used=0.00006 sample#memory-total=16167804kB sample#memory-free=7240052kB sample#memory-percentage-used=0.55219 sample#memory-cached=2700032kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0

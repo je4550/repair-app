@@ -45,6 +45,26 @@ ActsAsTenant.without_tenant do
   active: true
 )
 
+# Create region and location for Jeff's Automotive
+puts "Creating region and location..."
+rochester_region = Region.create!(
+  shop: jeffs_shop,
+  name: "Rochester",
+  active: true
+)
+
+main_location = Location.create!(
+  region: rochester_region,
+  name: "Main Location",
+  address_line1: "202 South St",
+  city: "Rochester",
+  state: "MI",
+  zip: "48307",
+  phone: "555-123-4567",
+  email: "main@jeffsautomotive.com",
+  active: true
+)
+
 # Set current tenant for seeding
 ActsAsTenant.current_tenant = jeffs_shop
 
@@ -57,7 +77,7 @@ admin_user = User.create!(
   last_name: "Thompson",
   phone: "555-123-4567",
   role: "admin",
-  shop: jeffs_shop
+  location: main_location
 )
 
 manager_user = User.create!(
@@ -67,7 +87,7 @@ manager_user = User.create!(
   last_name: "Johnson",
   phone: "555-123-4568",
   role: "manager",
-  shop: jeffs_shop
+  location: main_location
 )
 
 technician1 = User.create!(
@@ -77,7 +97,7 @@ technician1 = User.create!(
   last_name: "Wilson",
   phone: "555-123-4569",
   role: "technician",
-  shop: jeffs_shop
+  location: main_location
 )
 
 technician2 = User.create!(
@@ -87,7 +107,7 @@ technician2 = User.create!(
   last_name: "Davis",
   phone: "555-123-4570",
   role: "technician",
-  shop: jeffs_shop
+  location: main_location
 )
 
 receptionist = User.create!(
@@ -97,7 +117,7 @@ receptionist = User.create!(
   last_name: "Brown",
   phone: "555-123-4571",
   role: "receptionist",
-  shop: jeffs_shop
+  location: main_location
 )
 
 # Create additional services beyond the defaults
@@ -116,7 +136,7 @@ services = [
 ]
 
 services.each do |service_attrs|
-  jeffs_shop.services.create!(service_attrs)
+  main_location.services.create!(service_attrs)
 end
 
 # Create customers with vehicles
@@ -198,7 +218,7 @@ customers_data = [
 
 created_customers = []
 customers_data.each do |data|
-  customer = Customer.create!(data[:customer].merge(shop: jeffs_shop))
+  customer = Customer.create!(data[:customer].merge(location: main_location))
   data[:vehicles].each do |vehicle_attrs|
     customer.vehicles.create!(vehicle_attrs)
   end
@@ -207,11 +227,11 @@ end
 
 # Create past appointments with services
 puts "Creating appointment history..."
-oil_change = jeffs_shop.services.find_by(name: "Oil Change")
-tire_rotation = jeffs_shop.services.find_by(name: "Tire Rotation")
-brake_inspection = jeffs_shop.services.find_by(name: "Brake Inspection")
-brake_replacement = jeffs_shop.services.find_by(name: "Brake Pad Replacement")
-air_filter = jeffs_shop.services.find_by(name: "Air Filter Replacement")
+oil_change = main_location.services.find_by(name: "Oil Change")
+tire_rotation = main_location.services.find_by(name: "Tire Rotation")
+brake_inspection = main_location.services.find_by(name: "Brake Inspection")
+brake_replacement = main_location.services.find_by(name: "Brake Pad Replacement")
+air_filter = main_location.services.find_by(name: "Air Filter Replacement")
 
 # Create completed appointments for history
 created_customers.each_with_index do |customer, index|
@@ -409,6 +429,8 @@ end
 
   puts "\n=== Seeding Complete! ==="
   puts "Shop created: #{jeffs_shop.name} (subdomain: #{jeffs_shop.subdomain})"
+  puts "Region created: #{rochester_region.name}"
+  puts "Location created: #{main_location.name}"
   puts "Users created: #{User.count}"
   puts "Customers created: #{Customer.count}"
   puts "Vehicles created: #{Vehicle.count}"
