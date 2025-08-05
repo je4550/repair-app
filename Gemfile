@@ -34,6 +34,9 @@ gem "pundit", "~> 2.3"
 # Background jobs
 gem "sidekiq", "~> 7.3"
 
+# Redis for caching and ActionCable in production
+gem "redis", ">= 4.0.1"
+
 # Pagination
 gem "pagy", "~> 9.0"
 
