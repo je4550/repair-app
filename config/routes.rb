@@ -1,9 +1,11 @@
+require 'constraints/base_domain_constraint'
+
 Rails.application.routes.draw do
   # Health check available on all subdomains
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Routes without subdomain constraint (main website)
-  constraints subdomain: "" do
+  constraints Constraints::BaseDomainConstraint.new do
     root to: "pages#home"
     get "about", to: "pages#about"
     get "pricing", to: "pages#pricing"
@@ -14,7 +16,7 @@ Rails.application.routes.draw do
   end
 
   # Routes with subdomain constraint (tenant-specific)
-  constraints subdomain: /.+/ do
+  constraints Constraints::TenantSubdomainConstraint.new do
     devise_for :users
 
     authenticated :user do
