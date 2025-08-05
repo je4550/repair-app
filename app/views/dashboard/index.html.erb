@@ -16,25 +16,25 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
       <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 5px;">
         <h3 style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Total Customers</h3>
-        <p style="margin: 0; font-size: 32px; font-weight: bold; color: #333;"><%= ActsAsTenant.with_tenant(current_tenant) { Customer.count } %></p>
+        <p style="margin: 0; font-size: 32px; font-weight: bold; color: #333;"><%= Customer.count %></p>
       </div>
       
       <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 5px;">
         <h3 style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Active Vehicles</h3>
-        <p style="margin: 0; font-size: 32px; font-weight: bold; color: #333;"><%= ActsAsTenant.with_tenant(current_tenant) { Vehicle.count } %></p>
+        <p style="margin: 0; font-size: 32px; font-weight: bold; color: #333;"><%= Vehicle.count %></p>
       </div>
       
       <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 5px;">
         <h3 style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Today's Appointments</h3>
-        <p style="margin: 0; font-size: 32px; font-weight: bold; color: #333;"><%= ActsAsTenant.with_tenant(current_tenant) { Appointment.scheduled.where(scheduled_at: Date.current.all_day).count } %></p>
+        <p style="margin: 0; font-size: 32px; font-weight: bold; color: #333;"><%= Appointment.scheduled.where(scheduled_at: Date.current.all_day).count %></p>
       </div>
       
       <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 5px;">
         <h3 style="margin: 0 0 10px 0; color: #666; font-size: 14px;">This Month's Revenue</h3>
         <p style="margin: 0; font-size: 32px; font-weight: bold; color: #28a745;">
-          <%= number_to_currency(ActsAsTenant.with_tenant(current_tenant) { 
-            Appointment.completed.where(completed_at: Date.current.beginning_of_month..Date.current.end_of_month).sum(:total_price_cents) / 100.0 
-          }) %>
+          <%= number_to_currency(
+            Appointment.completed.where(updated_at: Date.current.beginning_of_month..Date.current.end_of_month).sum(:total_price_cents) / 100.0 
+          ) %>
         </p>
       </div>
     </div>
@@ -43,7 +43,7 @@
     <div style="background-color: #fff; padding: 20px; border: 1px solid #dee2e6; border-radius: 5px; margin-bottom: 40px;">
       <h2 style="margin: 0 0 20px 0; font-size: 24px;">Recent Activity</h2>
       
-      <% recent_appointments = ActsAsTenant.with_tenant(current_tenant) { Appointment.includes(:customer, :vehicle).order(created_at: :desc).limit(5) } %>
+      <% recent_appointments = Appointment.includes(:customer, :vehicle).order(created_at: :desc).limit(5) %>
       
       <% if recent_appointments.any? %>
         <table style="width: 100%; border-collapse: collapse;">

@@ -3,17 +3,15 @@ module TenantScoped
 
   included do
     set_current_tenant_through_filter
-    before_action :set_tenant
+    prepend_before_action :set_tenant
     helper_method :current_shop
   end
 
   private
 
   def set_tenant
-    if user_signed_in?
-      # If user is signed in, use their shop
-      set_current_tenant(current_user.shop)
-    elsif request.subdomain.present? && request.subdomain != 'www'
+    # First check if we're on a subdomain
+    if request.subdomain.present? && request.subdomain != 'www'
       # If accessing via subdomain, find the shop
       shop = Shop.find_by(subdomain: request.subdomain, active: true)
       if shop
@@ -21,6 +19,9 @@ module TenantScoped
       else
         redirect_to root_url(subdomain: false), alert: 'Shop not found'
       end
+    elsif user_signed_in?
+      # If user is signed in but no subdomain, use their shop
+      set_current_tenant(current_user.shop)
     else
       # No tenant set - redirect to main site or show selection
       unless public_controller?
@@ -35,10 +36,9 @@ module TenantScoped
 
   def public_controller?
     # Define controllers that don't require a tenant
-    controller_name == 'sessions' || 
-    controller_name == 'registrations' ||
-    controller_name == 'passwords' ||
-    (controller_name == 'pages' && action_name == 'home')
+    devise_controller? ||
+    controller_name == 'pages' ||
+    controller_name == 'shops'
   end
 
   def after_sign_in_path_for(resource)

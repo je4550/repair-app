@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  # Include tenant-safe loading for Devise
+  include TenantSafeUser
+  
   acts_as_tenant(:shop)
   
   # Include default devise modules. Others available are:
