@@ -1,0 +1,410 @@
+<style>
+  .customer-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .customer-header {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .customer-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #dc3545, #fd7e14);
+  }
+  
+  .customer-avatar {
+    width: 80px;
+    height: 80px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .customer-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+  }
+  
+  .info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  
+  .info-value {
+    font-size: 16px;
+    color: #212529;
+  }
+  
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  
+  .vehicle-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .vehicle-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    border-color: #dc3545;
+  }
+  
+  .vehicle-icon {
+    width: 50px;
+    height: 50px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .appointment-item {
+    border-left: 3px solid #e9ecef;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .appointment-item::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 8px;
+    width: 9px;
+    height: 9px;
+    background: #dc3545;
+    border-radius: 50%;
+  }
+  
+  .appointment-item.completed {
+    border-left-color: #28a745;
+  }
+  
+  .appointment-item.completed::before {
+    background: #28a745;
+  }
+  
+  .stat-box {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .badge-success {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .badge-warning {
+    background: #fff3cd;
+    color: #856404;
+  }
+  
+  .badge-info {
+    background: #d1ecf1;
+    color: #0c5460;
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Customer Details</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="customer-detail-container">
+    <!-- Customer Header -->
+    <div class="customer-header">
+      <div class="action-buttons">
+        <%= link_to edit_customer_path(@customer), class: "btn btn-primary btn-sm" do %>
+          ✏️ Edit
+        <% end %>
+        <%= link_to customers_path, class: "btn btn-secondary btn-sm" do %>
+          ← Back
+        <% end %>
+      </div>
+      
+      <div class="customer-avatar">
+        <%= @customer.first_name[0].upcase %><%= @customer.last_name[0].upcase %>
+      </div>
+      
+      <h1 style="margin: 0 0 10px 0; font-size: 32px;"><%= @customer.full_name %></h1>
+      <p style="color: #6c757d; margin: 0;">Customer since <%= @customer.created_at.strftime("%B %Y") %></p>
+      
+      <div class="customer-info">
+        <div class="info-group">
+          <span class="info-label">Email</span>
+          <span class="info-value"><%= @customer.email %></span>
+        </div>
+        <div class="info-group">
+          <span class="info-label">Phone</span>
+          <span class="info-value"><%= @customer.phone %></span>
+        </div>
+        <div class="info-group">
+          <span class="info-label">Address</span>
+          <span class="info-value">
+            <%= @customer.address_line1 %><%= ", #{@customer.address_line2}" if @customer.address_line2.present? %><br>
+            <%= @customer.city %>, <%= @customer.state %> <%= @customer.zip %>
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Stats Row -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 24px;">
+      <div class="stat-box">
+        <div class="stat-value"><%= @vehicles.count %></div>
+        <div class="stat-label">Vehicles</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value"><%= @customer.appointments.count %></div>
+        <div class="stat-label">Total Visits</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="color: #28a745;"><%= number_to_currency(@customer.total_spent) %></div>
+        <div class="stat-label">Total Spent</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">
+          <% if @customer.last_visit %>
+            <%= time_ago_in_words(@customer.last_visit) %> ago
+          <% else %>
+            Never
+          <% end %>
+        </div>
+        <div class="stat-label">Last Visit</div>
+      </div>
+    </div>
+    
+    <!-- Vehicles Section -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">Vehicles</h2>
+        <%= link_to new_customer_vehicle_path(@customer), class: "btn btn-primary btn-sm" do %>
+          ➕ Add Vehicle
+        <% end %>
+      </div>
+      
+      <% if @vehicles.any? %>
+        <div class="vehicle-grid">
+          <% @vehicles.each do |vehicle| %>
+            <%= link_to customer_vehicle_path(@customer, vehicle), style: "text-decoration: none; color: inherit;" do %>
+              <div class="vehicle-card">
+                <div class="vehicle-icon">🚗</div>
+                <h3 style="margin: 0 0 8px 0; font-size: 18px;">
+                  <%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>
+                </h3>
+                <p style="margin: 0 0 12px 0; color: #6c757d; font-size: 14px;">
+                  VIN: <%= vehicle.vin %><br>
+                  License: <%= vehicle.license_plate || "Not provided" %><br>
+                  Mileage: <%= number_with_delimiter(vehicle.mileage || 0) %> miles
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <% if vehicle.appointments.any? %>
+                    <span class="badge badge-info"><%= vehicle.appointments.count %> services</span>
+                  <% end %>
+                  <% if vehicle.appointments.where(status: 'scheduled').any? %>
+                    <span class="badge badge-warning">Appointment scheduled</span>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <div style="font-size: 48px; margin-bottom: 16px;">🚗</div>
+          <p>No vehicles on file</p>
+          <%= link_to "Add First Vehicle", new_customer_vehicle_path(@customer), class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Recent Appointments -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">Recent Appointments</h2>
+        <%= link_to new_customer_appointment_path(@customer), class: "btn btn-primary btn-sm" do %>
+          ➕ Schedule Appointment
+        <% end %>
+      </div>
+      
+      <% if @recent_appointments.any? %>
+        <% @recent_appointments.each do |appointment| %>
+          <div class="appointment-item <%= 'completed' if appointment.completed? %>">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+              <div>
+                <h4 style="margin: 0 0 4px 0; font-size: 16px;">
+                  <%= appointment.vehicle.year %> <%= appointment.vehicle.make %> <%= appointment.vehicle.model %>
+                </h4>
+                <p style="margin: 0 0 8px 0; color: #6c757d; font-size: 14px;">
+                  <%= appointment.scheduled_at.strftime("%B %d, %Y at %l:%M %p") %>
+                </p>
+                <% if appointment.appointment_services.any? %>
+                  <p style="margin: 0; font-size: 14px;">
+                    Services: <%= appointment.appointment_services.map { |as| as.service.name }.join(", ") %>
+                  </p>
+                <% end %>
+              </div>
+              <div style="text-align: right;">
+                <span class="badge badge-<%= appointment.completed? ? 'success' : 'warning' %>">
+                  <%= appointment.status.humanize %>
+                </span>
+                <p style="margin: 8px 0 0 0; font-weight: 600; color: #28a745;">
+                  <%= number_to_currency(appointment.total_price) %>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <div style="font-size: 48px; margin-bottom: 16px;">📅</div>
+          <p>No appointment history</p>
+        </div>
+      <% end %>
+    </div>
+    
+    <% if @customer.notes.present? %>
+      <!-- Notes Section -->
+      <div class="section-card">
+        <h2 class="section-title">Notes</h2>
+        <p style="margin: 0; white-space: pre-wrap;"><%= @customer.notes %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+  
   def appointment_status_color(status)
     case status
     when 'scheduled'

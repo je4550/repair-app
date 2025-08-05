@@ -20,6 +20,9 @@ class Customer < ApplicationRecord
   # Phone number validation
   validates :phone, phone: { possible: true, allow_blank: false }
   
+  # Nested attributes
+  accepts_nested_attributes_for :vehicles, reject_if: :all_blank, allow_destroy: true
+  
   # Scopes
   scope :active, -> { where(deleted_at: nil) }
   scope :with_vehicles, -> { includes(:vehicles) }
@@ -39,7 +42,7 @@ class Customer < ApplicationRecord
   end
   
   def total_spent
-    appointments.completed.sum(:total_price)
+    appointments.completed.sum(:total_price_cents) / 100.0
   end
   
   def vehicle_count

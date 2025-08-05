@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
+  # Pagination
+  include Pagy::Backend
+  
   private
   
   def user_not_authorized
