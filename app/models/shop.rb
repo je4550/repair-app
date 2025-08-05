@@ -1,9 +1,13 @@
 class Shop < ApplicationRecord
-  # Associations
-  has_many :users, dependent: :destroy
-  has_many :customers, dependent: :destroy
+  # New hierarchy associations
+  has_many :regions, dependent: :destroy
+  has_many :locations, through: :regions
+  
+  # Associations through locations
+  has_many :users, through: :locations
+  has_many :customers, through: :locations
   has_many :vehicles, through: :customers
-  has_many :services, dependent: :destroy
+  has_many :services, through: :locations
   has_many :appointments, through: :customers
   has_many :communications, through: :customers
   has_many :reviews, through: :customers
@@ -27,7 +31,7 @@ class Shop < ApplicationRecord
   
   # Callbacks
   before_validation :normalize_subdomain
-  after_create :create_default_services
+  after_create :create_default_region_and_location
   
   # Instance methods
   def full_address
@@ -67,18 +71,34 @@ class Shop < ApplicationRecord
     self.subdomain = subdomain&.downcase&.strip
   end
   
-  def create_default_services
+  def create_default_region_and_location
+    # Create default region and location for new shops
+    region = regions.create!(name: "Main Region")
+    
+    location = region.locations.create!(
+      name: "Main Location",
+      address_line1: address_line1,
+      address_line2: address_line2,
+      city: city,
+      state: state,
+      zip: zip,
+      phone: phone,
+      email: email,
+      active: active
+    )
+    
+    # Create default services for the location
     default_services = [
-      { name: "Oil Change", description: "Standard oil change service", price: 39.99, duration_minutes: 30 },
-      { name: "Tire Rotation", description: "Rotate all four tires", price: 25.00, duration_minutes: 20 },
-      { name: "Brake Inspection", description: "Complete brake system inspection", price: 0.00, duration_minutes: 15 },
-      { name: "Battery Test", description: "Battery and charging system test", price: 0.00, duration_minutes: 10 },
-      { name: "Multi-Point Inspection", description: "Comprehensive vehicle inspection", price: 0.00, duration_minutes: 30 }
+      { name: "Oil Change", description: "Standard oil change service", price_cents: 3999, duration_minutes: 30 },
+      { name: "Tire Rotation", description: "Rotate all four tires", price_cents: 2500, duration_minutes: 20 },
+      { name: "Brake Inspection", description: "Complete brake system inspection", price_cents: 0, duration_minutes: 15 },
+      { name: "Battery Test", description: "Battery and charging system test", price_cents: 0, duration_minutes: 10 },
+      { name: "Multi-Point Inspection", description: "Comprehensive vehicle inspection", price_cents: 0, duration_minutes: 30 }
     ]
     
     ActsAsTenant.with_tenant(self) do
       default_services.each do |service_attrs|
-        services.create!(service_attrs)
+        location.services.create!(service_attrs)
       end
     end
   end

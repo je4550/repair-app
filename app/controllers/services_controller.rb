@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy, :toggle_active]
 
   def index
-    @services = Service.includes(:shop)
+    @services = Service.where(location_id: current_location.id)
     
     # Search functionality
     if params[:search].present?
@@ -62,6 +62,7 @@ class ServicesController < ApplicationController
 
   def create
     @service = Service.new(service_params)
+    @service.location = current_location
     
     if @service.save
       redirect_to @service, notice: 'Service was successfully created.'
@@ -101,7 +102,9 @@ class ServicesController < ApplicationController
   private
 
   def set_service
-    @service = Service.find(params[:id])
+    @service = Service.where(location_id: current_location.id).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to services_path, alert: 'Service not found at this location.'
   end
 
   def service_params

@@ -45,7 +45,7 @@ class Reports::CustomersController < ApplicationController
   private
 
   def current_customers
-    @current_customers ||= Customer.where(shop_id: current_user.shop_id)
+    @current_customers ||= Customer.where(location_id: location_ids_for_current_user)
                                   .where(deleted_at: nil)
   end
 
@@ -193,7 +193,7 @@ class Reports::CustomersController < ApplicationController
         SELECT customers.id, COUNT(appointments.id) as appointment_count
         FROM customers 
         INNER JOIN appointments ON appointments.customer_id = customers.id
-        WHERE customers.shop_id = ? 
+        WHERE customers.location_id IN (?)
           AND customers.deleted_at IS NULL
           AND appointments.status = 'completed'
         GROUP BY customers.id
@@ -201,8 +201,9 @@ class Reports::CustomersController < ApplicationController
       GROUP BY frequency_bucket
     SQL
     
+    location_ids = location_ids_for_current_user
     result = ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.send(:sanitize_sql_array, [sql, current_user.shop_id])
+      ActiveRecord::Base.send(:sanitize_sql_array, [sql, location_ids])
     )
     
     # Initialize buckets with 0 counts
@@ -238,7 +239,7 @@ class Reports::CustomersController < ApplicationController
         SELECT customers.id, SUM(appointments.total_price_cents) / 100.0 as total_spent_dollars
         FROM customers 
         INNER JOIN appointments ON appointments.customer_id = customers.id
-        WHERE customers.shop_id = ? 
+        WHERE customers.location_id IN (?)
           AND customers.deleted_at IS NULL
           AND appointments.status = 'completed'
         GROUP BY customers.id
@@ -246,8 +247,9 @@ class Reports::CustomersController < ApplicationController
       GROUP BY ltv_bucket
     SQL
     
+    location_ids = location_ids_for_current_user
     result = ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.send(:sanitize_sql_array, [sql, current_user.shop_id])
+      ActiveRecord::Base.send(:sanitize_sql_array, [sql, location_ids])
     )
     
     # Initialize buckets with 0 counts

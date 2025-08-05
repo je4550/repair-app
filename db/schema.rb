@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_033958) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_05_043631) do
   create_table "appointment_services", force: :cascade do |t|
     t.integer "appointment_id", null: false
     t.integer "service_id", null: false
@@ -82,12 +82,42 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_033958) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "shop_id", null: false
+    t.integer "location_id", null: false
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["last_name", "first_name"], name: "index_customers_on_last_name_and_first_name"
+    t.index ["location_id"], name: "index_customers_on_location_id"
     t.index ["phone"], name: "index_customers_on_phone"
-    t.index ["shop_id"], name: "index_customers_on_shop_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address_line1"
+    t.string "address_line2"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.string "phone"
+    t.string "email"
+    t.boolean "active", default: true
+    t.integer "region_id", null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active"], name: "index_locations_on_active"
+    t.index ["city", "state"], name: "index_locations_on_city_and_state"
+    t.index ["deleted_at"], name: "index_locations_on_deleted_at"
+    t.index ["region_id"], name: "index_locations_on_region_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "shop_id", null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_regions_on_deleted_at"
+    t.index ["shop_id"], name: "index_regions_on_shop_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -128,11 +158,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_033958) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "shop_id", null: false
+    t.integer "location_id", null: false
     t.index ["active"], name: "index_services_on_active"
     t.index ["deleted_at"], name: "index_services_on_deleted_at"
-    t.index ["shop_id", "name"], name: "index_services_on_shop_id_and_name", unique: true
-    t.index ["shop_id"], name: "index_services_on_shop_id"
+    t.index ["location_id"], name: "index_services_on_location_id"
+    t.index ["name"], name: "index_services_on_shop_id_and_name", unique: true
   end
 
   create_table "shops", force: :cascade do |t|
@@ -172,10 +202,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_033958) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "shop_id", null: false
+    t.integer "location_id", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["location_id"], name: "index_users_on_location_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["shop_id"], name: "index_users_on_shop_id"
   end
 
   create_table "vehicles", force: :cascade do |t|
@@ -203,13 +233,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_033958) do
   add_foreign_key "appointments", "vehicles"
   add_foreign_key "communications", "customers"
   add_foreign_key "communications", "users"
-  add_foreign_key "customers", "shops"
+  add_foreign_key "customers", "locations"
+  add_foreign_key "locations", "regions"
+  add_foreign_key "regions", "shops"
   add_foreign_key "reviews", "appointments"
   add_foreign_key "reviews", "customers"
   add_foreign_key "service_reminders", "customers"
   add_foreign_key "service_reminders", "services"
   add_foreign_key "service_reminders", "vehicles"
-  add_foreign_key "services", "shops"
-  add_foreign_key "users", "shops"
+  add_foreign_key "services", "locations"
+  add_foreign_key "users", "locations"
   add_foreign_key "vehicles", "customers"
 end

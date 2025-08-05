@@ -1,9 +1,15 @@
 class Service < ApplicationRecord
-  acts_as_tenant(:shop)
   acts_as_paranoid
   
   # Associations
-  belongs_to :shop
+  belongs_to :location
+  has_one :region, through: :location
+  has_one :shop, through: :region
+  
+  # Acts as tenant - use shop through location
+  def current_tenant
+    location.region.shop
+  end
   
   # Money
   monetize :price_cents, allow_nil: false
@@ -14,7 +20,7 @@ class Service < ApplicationRecord
   has_many :service_reminders, dependent: :destroy
   
   # Validations
-  validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :shop_id }
+  validates :name, presence: true, uniqueness: { case_sensitive: false, scope: :location_id }
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :duration_minutes, presence: true, numericality: { greater_than: 0 }
   validates :active, inclusion: { in: [true, false] }

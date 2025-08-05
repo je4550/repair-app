@@ -66,8 +66,8 @@ class Reports::ServicesController < ApplicationController
   end
 
   def appointment_services_in_period
-    @appointment_services_in_period ||= AppointmentService.joins(appointment: { customer: :shop })
-                                                         .where(shops: { id: current_user.shop_id })
+    @appointment_services_in_period ||= AppointmentService.joins(appointment: { customer: { location: { region: :shop } } })
+                                                         .where(customers: { location_id: location_ids_for_current_user })
                                                          .joins(:appointment)
                                                          .where(appointments: { status: 'completed', updated_at: @start_date..@end_date })
   end
@@ -85,8 +85,8 @@ class Reports::ServicesController < ApplicationController
     prev_start = @start_date - days_diff.days
     prev_end = @start_date - 1.day
     
-    AppointmentService.joins(appointment: { customer: :shop })
-                     .where(shops: { id: current_user.shop_id })
+    AppointmentService.joins(appointment: { customer: { location: { region: :shop } } })
+                     .where(customers: { location_id: location_ids_for_current_user })
                      .joins(:appointment)
                      .where(appointments: { status: 'completed', updated_at: prev_start..prev_end })
                      .count
@@ -97,8 +97,8 @@ class Reports::ServicesController < ApplicationController
     prev_start = @start_date - days_diff.days
     prev_end = @start_date - 1.day
     
-    AppointmentService.joins(appointment: { customer: :shop })
-                     .where(shops: { id: current_user.shop_id })
+    AppointmentService.joins(appointment: { customer: { location: { region: :shop } } })
+                     .where(customers: { location_id: location_ids_for_current_user })
                      .joins(:appointment)
                      .where(appointments: { status: 'completed', updated_at: prev_start..prev_end })
                      .sum(:price_cents) / 100.0
@@ -120,13 +120,13 @@ class Reports::ServicesController < ApplicationController
   end
 
   def service_completion_rate
-    total_appointments = Appointment.joins(customer: :shop)
-                                   .where(shops: { id: current_user.shop_id })
+    total_appointments = Appointment.joins(customer: { location: { region: :shop } })
+                                   .where(customers: { location_id: location_ids_for_current_user })
                                    .where(appointments: { scheduled_at: @start_date..@end_date })
                                    .count
     
-    completed_appointments = Appointment.joins(customer: :shop)
-                                       .where(shops: { id: current_user.shop_id })
+    completed_appointments = Appointment.joins(customer: { location: { region: :shop } })
+                                       .where(customers: { location_id: location_ids_for_current_user })
                                        .where(appointments: { status: 'completed' })
                                        .where(appointments: { scheduled_at: @start_date..@end_date })
                                        .count
@@ -167,8 +167,8 @@ class Reports::ServicesController < ApplicationController
       date_start = date.beginning_of_day
       date_end = date.end_of_day
       
-      services_count = AppointmentService.joins(appointment: { customer: :shop })
-                                        .where(shops: { id: current_user.shop_id })
+      services_count = AppointmentService.joins(appointment: { customer: { location: { region: :shop } } })
+                                        .where(customers: { location_id: location_ids_for_current_user })
                                         .joins(:appointment)
                                         .where(appointments: { status: 'completed', updated_at: date_start..date_end })
                                         .count
@@ -182,8 +182,8 @@ class Reports::ServicesController < ApplicationController
 
   def average_service_duration
     # Calculate average duration from scheduled appointments
-    completed_appointments = Appointment.joins(customer: :shop)
-                                       .where(shops: { id: current_user.shop_id })
+    completed_appointments = Appointment.joins(customer: { location: { region: :shop } })
+                                       .where(customers: { location_id: location_ids_for_current_user })
                                        .where(appointments: { status: 'completed' })
                                        .where(appointments: { updated_at: @start_date..@end_date })
     
@@ -197,11 +197,11 @@ class Reports::ServicesController < ApplicationController
   end
 
   def duration_by_service_type
-    Service.where(shop_id: current_user.shop_id)
+    Service.where(location_id: location_ids_for_current_user)
            .joins(:appointment_services)
            .joins('JOIN appointments ON appointment_services.appointment_id = appointments.id')
            .joins('JOIN customers ON appointments.customer_id = customers.id')
-           .where(customers: { shop_id: current_user.shop_id })
+           .where(customers: { location_id: location_ids_for_current_user })
            .where(appointments: { status: 'completed', updated_at: @start_date..@end_date })
            .group('services.name')
            .average('services.duration_minutes')

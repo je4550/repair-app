@@ -5,7 +5,7 @@ class CommunicationsController < ApplicationController
   before_action :set_customer, only: [:new, :create]
 
   def index
-    @communications = Communication.includes(:customer, :user).recent
+    @communications = Communication.joins(:customer).where(customers: { location_id: current_location.id }).includes(:customer, :user).recent
     
     # Simple search functionality
     if params[:search].present?
@@ -93,11 +93,13 @@ class CommunicationsController < ApplicationController
   private
 
   def set_communication
-    @communication = Communication.find(params[:id])
+    @communication = Communication.joins(:customer).where(customers: { location_id: current_location.id }).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to communications_path, alert: 'Communication not found at this location.'
   end
 
   def set_customer
-    @customer = Customer.find(params[:customer_id]) if params[:customer_id]
+    @customer = Customer.where(location_id: current_location.id).find(params[:customer_id]) if params[:customer_id]
   end
 
   def communication_params

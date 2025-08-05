@@ -2,15 +2,20 @@ class User < ApplicationRecord
   # Include tenant-safe loading for Devise
   include TenantSafeUser
   
-  acts_as_tenant(:shop)
-  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable
          
   # Associations
-  belongs_to :shop
+  belongs_to :location
+  has_one :region, through: :location
+  has_one :shop, through: :region
+  
+  # Acts as tenant - use shop through location
+  def current_tenant
+    location.region.shop
+  end
          
   # Constants
   ROLES = %w[admin manager technician receptionist].freeze

@@ -10,8 +10,17 @@ module TenantSafeUser
       end
       
       # Set the tenant if user exists
-      if record && record.shop
-        ActsAsTenant.current_tenant = record.shop
+      if record
+        begin
+          shop = record.location&.region&.shop
+          if shop
+            ActsAsTenant.current_tenant = shop
+          else
+            Rails.logger.warn "User #{record.id} has incomplete hierarchy: location=#{record.location_id}, location_exists=#{!!record.location}, region_exists=#{!!record.location&.region}, shop_exists=#{!!record.location&.region&.shop}"
+          end
+        rescue => e
+          Rails.logger.error "Error loading tenant for user #{record.id}: #{e.message}"
+        end
       end
       
       record if record && record.authenticatable_salt == salt

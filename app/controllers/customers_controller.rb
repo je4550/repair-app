@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
 
   def index
-    @customers = Customer.includes(:vehicles).order(created_at: :desc)
+    @customers = Customer.where(location_id: current_location.id).includes(:vehicles).order(created_at: :desc)
     @customers = @customers.search(params[:search]) if params[:search].present?
     @pagy, @customers = pagy(@customers)
   end
@@ -21,6 +21,7 @@ class CustomersController < ApplicationController
 
   def create
     @customer = Customer.new(customer_params)
+    @customer.location = current_location
     
     if @customer.save
       redirect_to @customer, notice: 'Customer was successfully created.'
@@ -48,7 +49,9 @@ class CustomersController < ApplicationController
   private
 
   def set_customer
-    @customer = Customer.find(params[:id])
+    @customer = Customer.where(location_id: current_location.id).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to customers_path, alert: 'Customer not found at this location.'
   end
 
   def customer_params

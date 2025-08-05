@@ -5,7 +5,7 @@ class VehiclesController < ApplicationController
   before_action :load_customers, only: [:new, :create, :edit, :update]
 
   def index
-    @vehicles = Vehicle.includes(:customer)
+    @vehicles = Vehicle.joins(:customer).where(customers: { location_id: current_location.id }).includes(:customer)
     
     # Search functionality
     if params[:search].present?
@@ -99,7 +99,9 @@ class VehiclesController < ApplicationController
   private
 
   def set_vehicle
-    @vehicle = Vehicle.find(params[:id])
+    @vehicle = Vehicle.joins(:customer).where(customers: { location_id: current_location.id }).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to vehicles_path, alert: 'Vehicle not found at this location.'
   end
 
   def vehicle_params
@@ -107,6 +109,6 @@ class VehiclesController < ApplicationController
   end
 
   def load_customers
-    @customers = Customer.order(:last_name, :first_name)
+    @customers = Customer.where(location_id: current_location.id).order(:last_name, :first_name)
   end
 end

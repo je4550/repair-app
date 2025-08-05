@@ -5,7 +5,7 @@ class AppointmentsController < ApplicationController
   before_action :load_customers_and_services, only: [:new, :create, :edit, :update]
 
   def index
-    @appointments = Appointment.includes(:customer, :vehicle, :services)
+    @appointments = Appointment.joins(:customer).where(customers: { location_id: current_location.id }).includes(:customer, :vehicle, :services)
     
     # Filter by status if provided
     @appointments = @appointments.by_status(params[:status]) if params[:status].present?
@@ -194,6 +194,8 @@ class AppointmentsController < ApplicationController
   def calendar
     @date = params[:date].present? ? Date.parse(params[:date]) : Date.today
     @appointments = Appointment
+      .joins(:customer)
+      .where(customers: { location_id: current_location.id })
       .includes(:customer, :vehicle)
       .where.not(status: [:cancelled, :no_show])
       .where(scheduled_at: @date.beginning_of_month..@date.end_of_month)
@@ -205,7 +207,9 @@ class AppointmentsController < ApplicationController
   private
 
   def set_appointment
-    @appointment = Appointment.find(params[:id])
+    @appointment = Appointment.joins(:customer).where(customers: { location_id: current_location.id }).find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to appointments_path, alert: 'Appointment not found at this location.'
   end
 
   def appointment_params
@@ -222,8 +226,8 @@ class AppointmentsController < ApplicationController
   end
 
   def load_customers_and_services
-    @customers = Customer.includes(:vehicles).order(:last_name, :first_name)
-    @services = Service.active.order(:name)
+    @customers = Customer.where(location_id: current_location.id).includes(:vehicles).order(:last_name, :first_name)
+    @services = Service.where(location_id: current_location.id).active.order(:name)
     @vehicles = if @appointment&.customer_id.present?
                   Vehicle.where(customer_id: @appointment.customer_id)
                 else

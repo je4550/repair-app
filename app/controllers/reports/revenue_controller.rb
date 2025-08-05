@@ -37,8 +37,8 @@ class Reports::RevenueController < ApplicationController
   private
 
   def completed_appointments
-    @completed_appointments ||= Appointment.joins(customer: :shop)
-                                          .where(shops: { id: current_user.shop_id })
+    @completed_appointments ||= Appointment.joins(customer: { location: { region: :shop } })
+                                          .where(customers: { location_id: location_ids_for_current_user })
                                           .where(appointments: { status: 'completed' })
                                           .where(appointments: { updated_at: @start_date..@end_date })
   end
@@ -67,8 +67,8 @@ class Reports::RevenueController < ApplicationController
     prev_start = @start_date - days_diff.days
     prev_end = @start_date - 1.day
     
-    Appointment.joins(customer: :shop)
-               .where(shops: { id: current_user.shop_id })
+    Appointment.joins(customer: { location: { region: :shop } })
+               .where(customers: { location_id: location_ids_for_current_user })
                .where(appointments: { status: 'completed' })
                .where(appointments: { updated_at: prev_start..prev_end })
                .sum(:total_price_cents) / 100.0
@@ -79,8 +79,8 @@ class Reports::RevenueController < ApplicationController
     prev_start = @start_date - days_diff.days
     prev_end = @start_date - 1.day
     
-    prev_appointments = Appointment.joins(customer: :shop)
-                                  .where(shops: { id: current_user.shop_id })
+    prev_appointments = Appointment.joins(customer: { location: { region: :shop } })
+                                  .where(customers: { location_id: location_ids_for_current_user })
                                   .where(appointments: { status: 'completed' })
                                   .where(appointments: { updated_at: prev_start..prev_end })
     
@@ -95,8 +95,8 @@ class Reports::RevenueController < ApplicationController
     prev_start = @start_date - days_diff.days
     prev_end = @start_date - 1.day
     
-    Appointment.joins(customer: :shop)
-               .where(shops: { id: current_user.shop_id })
+    Appointment.joins(customer: { location: { region: :shop } })
+               .where(customers: { location_id: location_ids_for_current_user })
                .where(appointments: { status: 'completed' })
                .where(appointments: { updated_at: prev_start..prev_end })
                .count
@@ -121,8 +121,8 @@ class Reports::RevenueController < ApplicationController
 
   def service_revenue_breakdown
     # Get revenue by service through appointment_services
-    AppointmentService.joins(appointment: { customer: :shop })
-                     .where(shops: { id: current_user.shop_id })
+    AppointmentService.joins(appointment: { customer: { location: { region: :shop } } })
+                     .where(customers: { location_id: location_ids_for_current_user })
                      .joins(:appointment)
                      .where(appointments: { status: 'completed', updated_at: @start_date..@end_date })
                      .joins(:service)
@@ -134,8 +134,8 @@ class Reports::RevenueController < ApplicationController
   end
 
   def top_services_by_revenue
-    AppointmentService.joins(appointment: { customer: :shop })
-                     .where(shops: { id: current_user.shop_id })
+    AppointmentService.joins(appointment: { customer: { location: { region: :shop } } })
+                     .where(customers: { location_id: location_ids_for_current_user })
                      .joins(:appointment)
                      .where(appointments: { status: 'completed', updated_at: @start_date..@end_date })
                      .joins(:service)
@@ -159,8 +159,8 @@ class Reports::RevenueController < ApplicationController
       month_start = (i + 1).months.ago.beginning_of_month
       month_end = (i + 1).months.ago.end_of_month
       
-      revenue = Appointment.joins(customer: :shop)
-                          .where(shops: { id: current_user.shop_id })
+      revenue = Appointment.joins(customer: { location: { region: :shop } })
+                          .where(customers: { location_id: location_ids_for_current_user })
                           .where(appointments: { status: 'completed' })
                           .where(appointments: { updated_at: month_start..month_end })
                           .sum(:total_price_cents) / 100.0

@@ -4,7 +4,7 @@ module TenantScoped
   included do
     set_current_tenant_through_filter
     prepend_before_action :set_tenant
-    helper_method :current_shop
+    helper_method :current_shop, :current_location, :current_region
   end
 
   private
@@ -20,8 +20,8 @@ module TenantScoped
         redirect_to root_url(subdomain: false), alert: 'Shop not found'
       end
     elsif user_signed_in?
-      # If user is signed in but no subdomain, use their shop
-      set_current_tenant(current_user.shop)
+      # If user is signed in but no subdomain, use their shop through location
+      set_current_tenant(current_user.location.region.shop)
     else
       # No tenant set - redirect to main site or show selection
       unless public_controller?
@@ -33,6 +33,46 @@ module TenantScoped
   def current_shop
     current_tenant
   end
+  
+  def current_location
+    # Check if admin/manager has selected a different location
+    if user_signed_in? && (current_user.admin? || current_user.manager?) && session[:current_location_id]
+      @current_location ||= ActsAsTenant.without_tenant do
+        Location.find_by(id: session[:current_location_id])
+      end
+    end
+    
+    # Fall back to user's assigned location
+    @current_location ||= if user_signed_in?
+      current_user.location
+    else
+      # For subdomain access, get the default location for the shop
+      current_shop&.locations&.first
+    end
+  end
+  
+  def current_region
+    current_location&.region
+  end
+  
+  # Helper methods for report aggregation
+  def location_ids_for_current_user
+    case report_scope
+    when 'location'
+      [current_location.id]
+    when 'region'
+      current_region.locations.pluck(:id)
+    when 'company'
+      current_shop.regions.joins(:locations).pluck('locations.id')
+    else
+      [current_location.id] # default to location
+    end
+  end
+  
+  def report_scope
+    # Default to location level, but allow override via params
+    params[:scope] || 'location'
+  end
 
   def public_controller?
     # Define controllers that don't require a tenant
@@ -43,8 +83,8 @@ module TenantScoped
 
   def after_sign_in_path_for(resource)
     # Redirect to shop subdomain after sign in
-    if resource.is_a?(User) && resource.shop.present?
-      root_url(subdomain: resource.shop.subdomain)
+    if resource.is_a?(User) && resource.location&.region&.shop.present?
+      root_url(subdomain: resource.location.region.shop.subdomain)
     else
       super
     end

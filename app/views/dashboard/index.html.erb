@@ -209,7 +209,29 @@
 <div class="header">
   <h1 style="margin: 0; font-size: 24px;">Dashboard</h1>
   <div style="display: flex; align-items: center; gap: 20px;">
-    <span style="color: #666;"><%= current_shop.name %></span>
+    <div style="display: flex; flex-direction: column; align-items: flex-end;">
+      <span style="color: #666; font-size: 16px;"><%= current_shop.name %></span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <% if current_user.admin? || current_user.manager? %>
+          <select onchange="window.location.href='/switch_location?location_id=' + this.value" 
+                  style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; cursor: pointer;">
+            <% ActsAsTenant.without_tenant do %>
+              <% Region.includes(:locations).order(:name).each do |region| %>
+                <optgroup label="<%= region.name %>">
+                  <% region.locations.active.order(:name).each do |location| %>
+                    <option value="<%= location.id %>" <%= 'selected' if location.id == current_location.id %>>
+                      <%= location.name %>
+                    </option>
+                  <% end %>
+                </optgroup>
+              <% end %>
+            <% end %>
+          </select>
+        <% else %>
+          <span style="color: #999; font-size: 12px;"><%= current_region.name %> • <%= current_location.name %></span>
+        <% end %>
+      </div>
+    </div>
     <div style="position: relative;">
       <span style="cursor: pointer; padding: 8px 16px; background: #f0f0f0; border-radius: 20px;">
         <%= current_user.full_name %> ▼
@@ -224,8 +246,8 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-content">
-            <h3>Total Customers</h3>
-            <p><%= Customer.count %></p>
+            <h3>Location Customers</h3>
+            <p><%= Customer.where(location_id: current_location.id).count %></p>
           </div>
           <div class="stat-icon">👥</div>
         </div>
@@ -233,7 +255,7 @@
         <div class="stat-card">
           <div class="stat-content">
             <h3>Active Vehicles</h3>
-            <p><%= Vehicle.count %></p>
+            <p><%= Vehicle.joins(:customer).where(customers: { location_id: current_location.id }).count %></p>
           </div>
           <div class="stat-icon">🚗</div>
         </div>
@@ -241,7 +263,7 @@
         <div class="stat-card">
           <div class="stat-content">
             <h3>Today's Appointments</h3>
-            <p><%= Appointment.scheduled.where(scheduled_at: Date.current.all_day).count %></p>
+            <p><%= Appointment.joins(:customer).where(customers: { location_id: current_location.id }).scheduled.where(scheduled_at: Date.current.all_day).count %></p>
           </div>
           <div class="stat-icon">📅</div>
         </div>
@@ -251,7 +273,7 @@
             <h3>Monthly Revenue</h3>
             <p style="color: #28a745;">
               <%= number_to_currency(
-                Appointment.completed.where(updated_at: Date.current.beginning_of_month..Date.current.end_of_month).sum(:total_price_cents) / 100.0,
+                Appointment.joins(:customer).where(customers: { location_id: current_location.id }).completed.where(updated_at: Date.current.beginning_of_month..Date.current.end_of_month).sum(:total_price_cents) / 100.0,
                 precision: 0
               ) %>
             </p>
@@ -266,11 +288,11 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h2 style="margin: 0; font-size: 20px;">Vehicles</h2>
             <span style="background: #f0f0f0; padding: 4px 12px; border-radius: 20px; font-size: 14px;">
-              <%= Vehicle.count %>
+              <%= Vehicle.joins(:customer).where(customers: { location_id: current_location.id }).count %>
             </span>
           </div>
           
-          <% Vehicle.includes(:customer).limit(5).each do |vehicle| %>
+          <% Vehicle.joins(:customer).where(customers: { location_id: current_location.id }).includes(:customer).limit(5).each do |vehicle| %>
             <div class="vehicle-card">
               <div class="vehicle-image">🚗</div>
               <div class="vehicle-info">
@@ -336,7 +358,7 @@
           <%= link_to "View All →", appointments_path, style: "color: #dc3545; text-decoration: none; font-size: 14px;" %>
         </div>
         
-        <% todays_appointments = Appointment.includes(:customer, :vehicle).where(scheduled_at: Date.current.all_day).limit(8) %>
+        <% todays_appointments = Appointment.joins(:customer).where(customers: { location_id: current_location.id }).includes(:customer, :vehicle).where(scheduled_at: Date.current.all_day).limit(8) %>
         
         <% if todays_appointments.any? %>
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
