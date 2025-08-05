@@ -95,3 +95,6 @@ Procfile.dev
 /config/credentials/*.key
 /config/credentials/*.yml.enc
 !/config/credentials/.keep
+
+# Ignore mockups
+/mockups
