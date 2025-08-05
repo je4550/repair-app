@@ -31,94 +31,84 @@ ActsAsTenant.without_tenant do
   end
 
   # Create demo shop: Jeff's Automotive
-  puts "Creating Jeff's Automotive shop..."
-  jeffs_shop = Shop.create!(
-  name: "Jeff's Automotive",
-  subdomain: "jeffs",
-  owner_name: "Jeff Thompson",
-  phone: "555-123-4567",
-  email: "jeff@jeffsautomotive.com",
-  address_line1: "202 South St",
-  city: "Rochester",
-  state: "MI",
-  zip: "48307",
-  active: true
-)
+  puts "Creating or finding Jeff's Automotive shop..."
+  jeffs_shop = Shop.find_or_create_by!(subdomain: "jeffs") do |shop|
+    shop.name = "Jeff's Automotive"
+    shop.owner_name = "Jeff Thompson"
+    shop.phone = "555-123-4567"
+    shop.email = "jeff@jeffsautomotive.com"
+    shop.address_line1 = "202 South St"
+    shop.city = "Rochester"
+    shop.state = "MI"
+    shop.zip = "48307"
+    shop.active = true
+  end
 
 # Create region and location for Jeff's Automotive
-puts "Creating region and location..."
-rochester_region = Region.create!(
-  shop: jeffs_shop,
-  name: "Rochester",
-  active: true
-)
+puts "Creating or finding region and location..."
+rochester_region = Region.find_or_create_by!(shop: jeffs_shop, name: "Rochester") do |region|
+  region.active = true
+end
 
-main_location = Location.create!(
-  region: rochester_region,
-  name: "Main Location",
-  address_line1: "202 South St",
-  city: "Rochester",
-  state: "MI",
-  zip: "48307",
-  phone: "555-123-4567",
-  email: "main@jeffsautomotive.com",
-  active: true
-)
+main_location = Location.find_or_create_by!(region: rochester_region, name: "Main Location") do |location|
+  location.address_line1 = "202 South St"
+  location.city = "Rochester"
+  location.state = "MI"
+  location.zip = "48307"
+  location.phone = "555-123-4567"
+  location.email = "main@jeffsautomotive.com"
+  location.active = true
+end
 
 # Set current tenant for seeding
 ActsAsTenant.current_tenant = jeffs_shop
 
 # Create users for Jeff's Automotive
-puts "Creating users..."
-admin_user = User.create!(
-  email: "admin@jeffsautomotive.com",
-  password: "password123",
-  first_name: "Jeff",
-  last_name: "Thompson",
-  phone: "555-123-4567",
-  role: "admin",
-  location: main_location
-)
+puts "Creating or finding users..."
+admin_user = User.find_or_create_by!(email: "admin@jeffsautomotive.com") do |user|
+  user.password = "password123"
+  user.first_name = "Jeff"
+  user.last_name = "Thompson"
+  user.phone = "555-123-4567"
+  user.role = "admin"
+  user.location = main_location
+end
 
-manager_user = User.create!(
-  email: "manager@jeffsautomotive.com",
-  password: "password123",
-  first_name: "Sarah",
-  last_name: "Johnson",
-  phone: "555-123-4568",
-  role: "manager",
-  location: main_location
-)
+manager_user = User.find_or_create_by!(email: "manager@jeffsautomotive.com") do |user|
+  user.password = "password123"
+  user.first_name = "Sarah"
+  user.last_name = "Johnson"
+  user.phone = "555-123-4568"
+  user.role = "manager"
+  user.location = main_location
+end
 
-technician1 = User.create!(
-  email: "tech1@jeffsautomotive.com",
-  password: "password123",
-  first_name: "Mike",
-  last_name: "Wilson",
-  phone: "555-123-4569",
-  role: "technician",
-  location: main_location
-)
+technician1 = User.find_or_create_by!(email: "tech1@jeffsautomotive.com") do |user|
+  user.password = "password123"
+  user.first_name = "Mike"
+  user.last_name = "Wilson"
+  user.phone = "555-123-4569"
+  user.role = "technician"
+  user.location = main_location
+end
 
-technician2 = User.create!(
-  email: "tech2@jeffsautomotive.com",
-  password: "password123",
-  first_name: "Tom",
-  last_name: "Davis",
-  phone: "555-123-4570",
-  role: "technician",
-  location: main_location
-)
+technician2 = User.find_or_create_by!(email: "tech2@jeffsautomotive.com") do |user|
+  user.password = "password123"
+  user.first_name = "Tom"
+  user.last_name = "Davis"
+  user.phone = "555-123-4570"
+  user.role = "technician"
+  user.location = main_location
+end
 
-receptionist = User.create!(
-  email: "reception@jeffsautomotive.com",
-  password: "password123",
-  first_name: "Emily",
-  last_name: "Brown",
-  phone: "555-123-4571",
-  role: "receptionist",
-  location: main_location
-)
+receptionist = User.find_or_create_by!(email: "reception@jeffsautomotive.com") do |user|
+  user.password = "password123"
+  user.first_name = "Emily"
+  user.last_name = "Brown"
+  user.phone = "555-123-4571"
+  user.role = "receptionist"
+  user.location = main_location
+end
 
 # Create additional services beyond the defaults
 puts "Creating additional services..."
