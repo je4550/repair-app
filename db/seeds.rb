@@ -2,31 +2,37 @@
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
-# Clear existing data (be careful in production!)
-if Rails.env.development?
-  puts "Clearing existing data..."
-  # Temporarily disable foreign key constraints for SQLite
-  ActiveRecord::Base.connection.execute("PRAGMA foreign_keys = OFF") if ActiveRecord::Base.connection.adapter_name == 'SQLite'
-  
-  # Clear all tables directly
-  ActiveRecord::Base.connection.execute("DELETE FROM service_reminders")
-  ActiveRecord::Base.connection.execute("DELETE FROM communications")
-  ActiveRecord::Base.connection.execute("DELETE FROM reviews")
-  ActiveRecord::Base.connection.execute("DELETE FROM appointment_services")
-  ActiveRecord::Base.connection.execute("DELETE FROM appointments")
-  ActiveRecord::Base.connection.execute("DELETE FROM vehicles")
-  ActiveRecord::Base.connection.execute("DELETE FROM customers")
-  ActiveRecord::Base.connection.execute("DELETE FROM services")
-  ActiveRecord::Base.connection.execute("DELETE FROM users")
-  ActiveRecord::Base.connection.execute("DELETE FROM shops")
-  
-  # Re-enable foreign key constraints
-  ActiveRecord::Base.connection.execute("PRAGMA foreign_keys = ON") if ActiveRecord::Base.connection.adapter_name == 'SQLite'
-end
+# Wrap everything in without_tenant to avoid tenant issues during seeding
+ActsAsTenant.without_tenant do
+  # Clear existing data (be careful in production!)
+  if Rails.env.development?
+    puts "Clearing existing data..."
+    # Clear all tables directly (order matters due to foreign keys)
+    tables = %w[
+      service_reminders
+      communications
+      reviews
+      appointment_services
+      appointments
+      vehicles
+      customers
+      services
+      users
+      locations
+      regions
+      shops
+    ]
+    
+    tables.each do |table|
+      if ActiveRecord::Base.connection.table_exists?(table)
+        ActiveRecord::Base.connection.execute("DELETE FROM #{table}")
+      end
+    end
+  end
 
-# Create demo shop: Jeff's Automotive
-puts "Creating Jeff's Automotive shop..."
-jeffs_shop = Shop.create!(
+  # Create demo shop: Jeff's Automotive
+  puts "Creating Jeff's Automotive shop..."
+  jeffs_shop = Shop.create!(
   name: "Jeff's Automotive",
   subdomain: "jeffs",
   owner_name: "Jeff Thompson",
@@ -401,15 +407,16 @@ recent_customers.each do |customer|
   end
 end
 
-puts "\n=== Seeding Complete! ==="
-puts "Shop created: #{jeffs_shop.name} (subdomain: #{jeffs_shop.subdomain})"
-puts "Users created: #{User.count}"
-puts "Customers created: #{Customer.count}"
-puts "Vehicles created: #{Vehicle.count}"
-puts "Services available: #{Service.count}"
-puts "Appointments created: #{Appointment.count}"
-puts "Reviews created: #{Review.count}"
-puts "Service reminders created: #{ServiceReminder.count}"
-puts "Communications sent: #{Communication.count}"
-puts "\nYou can now sign in at http://jeffs.localhost:3000"
-puts "Admin login: admin@jeffsautomotive.com / password123"
+  puts "\n=== Seeding Complete! ==="
+  puts "Shop created: #{jeffs_shop.name} (subdomain: #{jeffs_shop.subdomain})"
+  puts "Users created: #{User.count}"
+  puts "Customers created: #{Customer.count}"
+  puts "Vehicles created: #{Vehicle.count}"
+  puts "Services available: #{Service.count}"
+  puts "Appointments created: #{Appointment.count}"
+  puts "Reviews created: #{Review.count}"
+  puts "Service reminders created: #{ServiceReminder.count}"
+  puts "Communications sent: #{Communication.count}"
+  puts "\nYou can now sign in at http://jeffs.localhost:3000"
+  puts "Admin login: admin@jeffsautomotive.com / password123"
+end # ActsAsTenant.without_tenant
