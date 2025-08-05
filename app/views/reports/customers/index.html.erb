@@ -1,0 +1,740 @@
+<% content_for :title, "Customer Reports - #{current_tenant.name}" %>
+
+<style>
+  .reports-container {
+    padding: 20px;
+  }
+  
+  .reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e5e5e5;
+  }
+  
+  .reports-title {
+    margin: 0;
+    font-size: 28px;
+    color: #2c3e50;
+    font-weight: 700;
+  }
+  
+  .date-range-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .date-range-buttons {
+    display: flex;
+    gap: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .date-btn {
+    padding: 8px 16px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: #666;
+  }
+  
+  .date-btn:hover {
+    background: #f8f9fa;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .date-btn.active {
+    background: #17a2b8;
+    color: white;
+  }
+  
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .metric-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  
+  .metric-card.total {
+    border-left-color: #6f42c1;
+  }
+  
+  .metric-card.new {
+    border-left-color: #28a745;
+  }
+  
+  .metric-card.active {
+    border-left-color: #17a2b8;
+  }
+  
+  .metric-card.value {
+    border-left-color: #fd7e14;
+  }
+  
+  .metric-card.retention {
+    border-left-color: #e83e8c;
+  }
+  
+  .metric-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .metric-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  
+  .metric-card.total .metric-icon {
+    background: rgba(111, 66, 193, 0.1);
+    color: #6f42c1;
+  }
+  
+  .metric-card.new .metric-icon {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+  }
+  
+  .metric-card.active .metric-icon {
+    background: rgba(23, 162, 184, 0.1);
+    color: #17a2b8;
+  }
+  
+  .metric-card.value .metric-icon {
+    background: rgba(253, 126, 20, 0.1);
+    color: #fd7e14;
+  }
+  
+  .metric-card.retention .metric-icon {
+    background: rgba(232, 62, 140, 0.1);
+    color: #e83e8c;
+  }
+  
+  .metric-title {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .metric-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+  
+  .metric-change {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .metric-change.positive {
+    color: #28a745;
+  }
+  
+  .metric-change.negative {
+    color: #dc3545;
+  }
+  
+  .metric-change.neutral {
+    color: #666;
+  }
+  
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+  }
+  
+  .chart-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .chart-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .chart-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23dee2e6' fill-opacity='0.4'%3E%3Cpath d='m40 40c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-20.5-16.5c-2.485 0-4.5-2.015-4.5-4.5s2.015-4.5 4.5-4.5 4.5 2.015 4.5 4.5-2.015 4.5-4.5 4.5zm7 4c-2.485 0-4.5-2.015-4.5-4.5s2.015-4.5 4.5-4.5 4.5 2.015 4.5 4.5-2.015 4.5-4.5 4.5z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  .donut-chart {
+    height: 300px;
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .donut-chart::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Ccircle cx='30' cy='30' r='12'/%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  .tables-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .table-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table th {
+    text-align: left;
+    padding: 12px 8px;
+    border-bottom: 2px solid #eee;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .data-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 14px;
+  }
+  
+  .data-table tr:hover {
+    background: #f8f9fa;
+  }
+  
+  .customer-name {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .customer-email {
+    color: #666;
+    font-size: 12px;
+  }
+  
+  .revenue-amount {
+    font-weight: 600;
+    color: #28a745;
+  }
+  
+  .appointment-count {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .distribution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .distribution-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  
+  .distribution-item:last-child {
+    border-bottom: none;
+  }
+  
+  .distribution-label {
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .distribution-value {
+    background: #17a2b8;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .distribution-bar {
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    margin: 0 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .distribution-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #17a2b8, #138496);
+    border-radius: 4px;
+    transition: width 0.8s ease;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+  
+  .empty-state h3 {
+    margin: 0 0 10px 0;
+    color: #999;
+  }
+  
+  @media (max-width: 768px) {
+    .reports-header {
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .tables-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .distribution-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .date-range-selector {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .date-range-buttons {
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Reports</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <%= render 'reports/navigation' %>
+  
+  <div class="reports-container">
+    <div class="reports-header">
+      <h1 class="reports-title">👥 Customer Analytics</h1>
+      
+      <div class="date-range-selector">
+        <div class="date-range-buttons">
+          <%= link_to "7 Days", reports_customers_path(date_range: '7_days'), 
+              class: "date-btn #{'active' if @date_range == '7_days'}" %>
+          <%= link_to "30 Days", reports_customers_path(date_range: '30_days'), 
+              class: "date-btn #{'active' if @date_range == '30_days'}" %>
+          <%= link_to "90 Days", reports_customers_path(date_range: '90_days'), 
+              class: "date-btn #{'active' if @date_range == '90_days'}" %>
+          <%= link_to "1 Year", reports_customers_path(date_range: '1_year'), 
+              class: "date-btn #{'active' if @date_range == '1_year'}" %>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card total">
+        <div class="metric-header">
+          <div class="metric-icon">👥</div>
+          <div class="metric-title">Total Customers</div>
+        </div>
+        <div class="metric-value"><%= number_with_delimiter(@total_customers) %></div>
+        <div class="metric-change neutral">
+          Active customer base
+        </div>
+      </div>
+      
+      <div class="metric-card new">
+        <div class="metric-header">
+          <div class="metric-icon">✨</div>
+          <div class="metric-title">New Customers</div>
+        </div>
+        <div class="metric-value"><%= number_with_delimiter(@new_customers) %></div>
+        <div class="metric-change <%= @customer_growth > 0 ? 'positive' : @customer_growth < 0 ? 'negative' : 'neutral' %>">
+          <%= @customer_growth > 0 ? '↗' : @customer_growth < 0 ? '↘' : '→' %>
+          <%= @customer_growth.abs %>% vs previous period
+        </div>
+      </div>
+      
+      <div class="metric-card active">
+        <div class="metric-header">
+          <div class="metric-icon">⚡</div>
+          <div class="metric-title">Active Customers</div>
+        </div>
+        <div class="metric-value"><%= number_with_delimiter(@active_customers) %></div>
+        <div class="metric-change <%= @activity_change > 0 ? 'positive' : @activity_change < 0 ? 'negative' : 'neutral' %>">
+          <%= @activity_change > 0 ? '↗' : @activity_change < 0 ? '↘' : '→' %>
+          <%= @activity_change.abs %>% vs previous period
+        </div>
+      </div>
+      
+      <div class="metric-card value">
+        <div class="metric-header">
+          <div class="metric-icon">💎</div>
+          <div class="metric-title">Avg Customer Value</div>
+        </div>
+        <div class="metric-value">$<%= number_with_delimiter(@avg_customer_value) %></div>
+        <div class="metric-change <%= @value_change > 0 ? 'positive' : @value_change < 0 ? 'negative' : 'neutral' %>">
+          <%= @value_change > 0 ? '↗' : @value_change < 0 ? '↘' : '→' %>
+          <%= @value_change.abs %>% vs previous period
+        </div>
+      </div>
+      
+      <div class="metric-card retention">
+        <div class="metric-header">
+          <div class="metric-icon">🔄</div>
+          <div class="metric-title">Retention Rate</div>
+        </div>
+        <div class="metric-value"><%= @retention_rate %>%</div>
+        <div class="metric-change neutral">
+          <%= @returning_customers %> returning customers
+        </div>
+      </div>
+    </div>
+    
+    <!-- Charts Section -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">📈 New Customer Acquisition</h3>
+        <% if @new_customers_trend.any? %>
+          <div class="chart-container">
+            <canvas id="customerAcquisitionChart"></canvas>
+          </div>
+        <% else %>
+          <div class="chart-placeholder">
+            No new customer data available for this period
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="chart-card">
+        <h3 class="chart-title">📍 Customer Locations</h3>
+        <% if @customer_locations.any? %>
+          <div class="chart-container">
+            <canvas id="customerLocationsChart"></canvas>
+          </div>
+        <% else %>
+          <div class="chart-placeholder">
+            No location data available
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Data Tables -->
+    <div class="tables-grid">
+      <div class="table-card">
+        <h3 class="chart-title">🏆 Top Customers by Spending</h3>
+        <% if @top_customers.any? %>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Visits</th>
+                <th>Total Spent</th>
+                <th>Avg Ticket</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @top_customers.each do |customer| %>
+                <tr>
+                  <td>
+                    <div class="customer-name"><%= customer[:name] %></div>
+                    <div class="customer-email"><%= customer[:email] %></div>
+                  </td>
+                  <td><span class="appointment-count"><%= customer[:appointment_count] %></span></td>
+                  <td class="revenue-amount">$<%= number_with_delimiter(customer[:total_spent].round(2)) %></td>
+                  <td>$<%= number_with_delimiter(customer[:avg_ticket].round(2)) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <div class="empty-state">
+            <h3>No Customer Data</h3>
+            <p>No customer spending data available for the selected period.</p>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="table-card">
+        <h3 class="chart-title">🗺️ Customer Distribution</h3>
+        <% if @customer_locations.any? %>
+          <% max_count = @customer_locations.first[1] %>
+          <% @customer_locations.each do |city, count| %>
+            <div class="distribution-item">
+              <span class="distribution-label"><%= city %></span>
+              <div class="distribution-bar">
+                <div class="distribution-fill" style="width: <%= (count.to_f / max_count * 100).round(1) %>%"></div>
+              </div>
+              <span class="distribution-value"><%= count %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="empty-state">
+            <h3>No Location Data</h3>
+            <p>Customer location information not available.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Customer Behavior Analysis -->
+    <div class="distribution-grid">
+      <div class="table-card">
+        <h3 class="chart-title">🔢 Visit Frequency Distribution</h3>
+        <% if @visit_frequency.any? %>
+          <% max_frequency = @visit_frequency.values.max %>
+          <% @visit_frequency.each do |frequency, count| %>
+            <div class="distribution-item">
+              <span class="distribution-label"><%= frequency %></span>
+              <div class="distribution-bar">
+                <div class="distribution-fill" style="width: <%= max_frequency > 0 ? (count.to_f / max_frequency * 100).round(1) : 0 %>%"></div>
+              </div>
+              <span class="distribution-value"><%= count %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="empty-state">
+            <h3>No Visit Data</h3>
+            <p>Customer visit frequency data not available.</p>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="table-card">
+        <h3 class="chart-title">💰 Customer Value Distribution</h3>
+        <% if @ltv_distribution.any? %>
+          <div class="chart-container">
+            <canvas id="customerValueChart"></canvas>
+          </div>
+        <% else %>
+          <div class="empty-state">
+            <h3>No Value Data</h3>
+            <p>Customer lifetime value data not available.</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Customer Acquisition Chart
+  <% if @new_customers_trend.any? %>
+  const customerAcquisitionCtx = document.getElementById('customerAcquisitionChart');
+  if (customerAcquisitionCtx) {
+    new Chart(customerAcquisitionCtx, {
+      type: 'line',
+      data: {
+        labels: <%= @new_customers_trend.keys.to_json.html_safe %>,
+        datasets: [{
+          label: 'New Customers',
+          data: <%= @new_customers_trend.values.to_json.html_safe %>,
+          borderColor: '#17a2b8',
+          backgroundColor: 'rgba(23, 162, 184, 0.1)',
+          borderWidth: 3,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      }
+    });
+  }
+  <% end %>
+
+  // Customer Locations Chart
+  <% if @customer_locations.any? %>
+  const customerLocationsCtx = document.getElementById('customerLocationsChart');
+  if (customerLocationsCtx) {
+    const locationLabels = <%= @customer_locations.map(&:first).to_json.html_safe %>;
+    const locationData = <%= @customer_locations.map(&:last).to_json.html_safe %>;
+    const colors = [
+      '#17a2b8', '#28a745', '#ffc107', '#dc3545', '#6f42c1',
+      '#fd7e14', '#20c997', '#6c757d', '#e83e8c', '#007bff'
+    ];
+    
+    new Chart(customerLocationsCtx, {
+      type: 'doughnut',
+      data: {
+        labels: locationLabels,
+        datasets: [{
+          data: locationData,
+          backgroundColor: colors.slice(0, locationLabels.length),
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              usePointStyle: true,
+              padding: 15
+            }
+          }
+        }
+      }
+    });
+  }
+  <% end %>
+
+  // Customer Value Distribution Chart
+  <% if @ltv_distribution.any? %>
+  const customerValueCtx = document.getElementById('customerValueChart');
+  if (customerValueCtx) {
+    new Chart(customerValueCtx, {
+      type: 'bar',
+      data: {
+        labels: <%= @ltv_distribution.keys.to_json.html_safe %>,
+        datasets: [{
+          label: 'Number of Customers',
+          data: <%= @ltv_distribution.values.to_json.html_safe %>,
+          backgroundColor: 'rgba(253, 126, 20, 0.8)',
+          borderColor: '#fd7e14',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      }
+    });
+  }
+  <% end %>
+});
+</script>

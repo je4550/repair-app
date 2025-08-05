@@ -17,6 +17,9 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -171,7 +174,7 @@
           <%= link_to communications_path, class: "sidebar-item #{'active' if controller_name == 'communications'}" do %>
             <span style="margin-right: 12px;">💬</span> Messages
           <% end %>
-          <%= link_to "#", class: "sidebar-item" do %>
+          <%= link_to reports_revenue_path, class: "sidebar-item #{'active' if controller_name.include?('reports')}" do %>
             <span style="margin-right: 12px;">📊</span> Reports
           <% end %>
           <%= link_to "#", class: "sidebar-item" do %>
