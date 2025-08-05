@@ -17,7 +17,9 @@ module TenantScoped
       if shop
         set_current_tenant(shop)
       else
-        redirect_to root_url(subdomain: false), alert: 'Shop not found'
+        # Use the base domain from the request or APP_DOMAIN env variable
+        base_domain = ENV['APP_DOMAIN'] || request.domain
+        redirect_to "https://#{base_domain}", alert: 'Shop not found', allow_other_host: true
       end
     elsif user_signed_in?
       # If user is signed in but no subdomain, use their shop through location
@@ -25,7 +27,8 @@ module TenantScoped
     else
       # No tenant set - redirect to main site or show selection
       unless public_controller?
-        redirect_to root_url(subdomain: false), alert: 'Please select a shop'
+        base_domain = ENV['APP_DOMAIN'] || request.domain
+        redirect_to "https://#{base_domain}", alert: 'Please select a shop', allow_other_host: true
       end
     end
   end

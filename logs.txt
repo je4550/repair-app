@@ -1,0 +1,200 @@
+2025-08-05T06:14:11.715107+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli/exec.rb:58:in `load'
+2025-08-05T06:14:11.715107+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli/exec.rb:58:in `kernel_load'
+2025-08-05T06:14:11.715107+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli/exec.rb:23:in `run'
+2025-08-05T06:14:11.715107+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli.rb:456:in `exec'
+2025-08-05T06:14:11.715107+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor/command.rb:28:in `run'
+2025-08-05T06:14:11.715108+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+2025-08-05T06:14:11.715108+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor.rb:527:in `dispatch'
+2025-08-05T06:14:11.715108+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli.rb:35:in `dispatch'
+2025-08-05T06:14:11.715108+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor/base.rb:584:in `start'
+2025-08-05T06:14:11.715108+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli.rb:29:in `start'
+2025-08-05T06:14:11.715111+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/exe/bundle:28:in `block in <top (required)>'
+2025-08-05T06:14:11.715111+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/friendly_errors.rb:117:in `with_friendly_errors'
+2025-08-05T06:14:11.715111+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/exe/bundle:20:in `<top (required)>'
+2025-08-05T06:14:11.715111+00:00 app[web.1]: from /app/bin/bundle:108:in `load'
+2025-08-05T06:14:11.715111+00:00 app[web.1]: from /app/bin/bundle:108:in `<main>'
+2025-08-05T06:14:11.768394+00:00 heroku[web.1]: Process exited with status 1
+2025-08-05T06:14:11.789932+00:00 heroku[web.1]: State changed from starting to crashed
+2025-08-05T06:14:28.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=0.825 sample#load-avg-5m=1.075 sample#load-avg-15m=1.19 sample#read-iops=0 sample#write-iops=0.13333 sample#max-iops=3000 sample#iops-percentage-used=0.00004 sample#memory-total=16167804kB sample#memory-free=7221452kB sample#memory-percentage-used=0.55334 sample#memory-cached=2696808kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:15:31.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.035 sample#load-avg-5m=1.105 sample#load-avg-15m=1.195 sample#read-iops=0 sample#write-iops=0.15493 sample#max-iops=3000 sample#iops-percentage-used=0.00005 sample#memory-total=16167804kB sample#memory-free=7228468kB sample#memory-percentage-used=0.55291 sample#memory-cached=2696960kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:16:34.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.485 sample#load-avg-5m=1.16 sample#load-avg-15m=1.205 sample#read-iops=0 sample#write-iops=0.12308 sample#max-iops=3000 sample#iops-percentage-used=0.00004 sample#memory-total=16167804kB sample#memory-free=7224132kB sample#memory-percentage-used=0.55318 sample#memory-cached=2696984kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:17:36.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=0.95 sample#load-avg-5m=1.08 sample#load-avg-15m=1.175 sample#read-iops=0 sample#write-iops=0.089552 sample#max-iops=3000 sample#iops-percentage-used=0.00003 sample#memory-total=16167804kB sample#memory-free=7225080kB sample#memory-percentage-used=0.55312 sample#memory-cached=2697004kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:18:37.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.295 sample#load-avg-5m=1.175 sample#load-avg-15m=1.2 sample#read-iops=0 sample#write-iops=0.1 sample#max-iops=3000 sample#iops-percentage-used=0.00003 sample#memory-total=16167804kB sample#memory-free=7213256kB sample#memory-percentage-used=0.55385 sample#memory-cached=2697020kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:19:17.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=0.965 sample#load-avg-5m=1.125 sample#load-avg-15m=1.18 sample#read-iops=0 sample#write-iops=0.10588 sample#max-iops=3000 sample#iops-percentage-used=0.00004 sample#memory-total=16167804kB sample#memory-free=7218240kB sample#memory-percentage-used=0.55354 sample#memory-cached=2697040kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:19:17.385089+00:00 app[api]: Starting process with command `rails runner "puts 'Test'"` by user je4550@gmail.com
+2025-08-05T06:19:20.822551+00:00 heroku[run.5143]: State changed from starting to up
+2025-08-05T06:19:26.107442+00:00 heroku[run.5143]: Process exited with status 1
+2025-08-05T06:19:26.134494+00:00 heroku[run.5143]: State changed from up to complete
+2025-08-05T06:20:06.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=0.995 sample#load-avg-5m=1.095 sample#load-avg-15m=1.17 sample#read-iops=0 sample#write-iops=0.18367 sample#max-iops=3000 sample#iops-percentage-used=0.00006 sample#memory-total=16167804kB sample#memory-free=7219560kB sample#memory-percentage-used=0.55346 sample#memory-cached=2697052kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:20:34.449527+00:00 heroku[web.1]: State changed from crashed to starting
+2025-08-05T06:20:37.111334+00:00 heroku[web.1]: Starting process with command `bundle exec puma -C config/puma.rb`
+2025-08-05T06:20:37.853987+00:00 app[web.1]: [2] Puma starting in cluster mode...
+2025-08-05T06:20:37.854025+00:00 app[web.1]: [2] * Puma version: 6.6.1 ("Return to Forever")
+2025-08-05T06:20:37.854027+00:00 app[web.1]: [2] * Ruby version: ruby 3.3.8 (2025-04-09 revision b200bad6cd) [x86_64-linux]
+2025-08-05T06:20:37.854030+00:00 app[web.1]: [2] *  Min threads: 5
+2025-08-05T06:20:37.854030+00:00 app[web.1]: [2] *  Max threads: 5
+2025-08-05T06:20:37.854032+00:00 app[web.1]: [2] *  Environment: production
+2025-08-05T06:20:37.854032+00:00 app[web.1]: [2] *   Master PID: 2
+2025-08-05T06:20:37.854032+00:00 app[web.1]: [2] *      Workers: 2
+2025-08-05T06:20:37.854034+00:00 app[web.1]: [2] *     Restarts: (✔) hot (✖) phased (✖) refork
+2025-08-05T06:20:37.854034+00:00 app[web.1]: [2] * Preloading application
+2025-08-05T06:20:39.753774+00:00 app[web.1]: [2] ! Unable to load application: ActiveRecord::AdapterNotSpecified: The `cable` database is not configured for the `production` environment.
+2025-08-05T06:20:39.753793+00:00 app[web.1]: 
+2025-08-05T06:20:39.753794+00:00 app[web.1]: Available database configurations are:
+2025-08-05T06:20:39.753794+00:00 app[web.1]: 
+2025-08-05T06:20:39.753795+00:00 app[web.1]: default
+2025-08-05T06:20:39.753795+00:00 app[web.1]: development
+2025-08-05T06:20:39.753795+00:00 app[web.1]: test
+2025-08-05T06:20:39.753795+00:00 app[web.1]: staging: primary, cache, queue, cable
+2025-08-05T06:20:39.753796+00:00 app[web.1]: production
+2025-08-05T06:20:39.753796+00:00 app[web.1]: 
+2025-08-05T06:20:39.753861+00:00 app[web.1]: bundler: failed to load command: puma (/app/vendor/bundle/ruby/3.3.0/bin/puma)
+2025-08-05T06:20:39.754009+00:00 app[web.1]: /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/database_configurations.rb:229:in `resolve_symbol_connection': The `cable` database is not configured for the `production` environment. (ActiveRecord::AdapterNotSpecified)
+2025-08-05T06:20:39.754009+00:00 app[web.1]: 
+2025-08-05T06:20:39.754010+00:00 app[web.1]: Available database configurations are:
+2025-08-05T06:20:39.754010+00:00 app[web.1]: 
+2025-08-05T06:20:39.754010+00:00 app[web.1]: default
+2025-08-05T06:20:39.754010+00:00 app[web.1]: development
+2025-08-05T06:20:39.754010+00:00 app[web.1]: test
+2025-08-05T06:20:39.754010+00:00 app[web.1]: staging: primary, cache, queue, cable
+2025-08-05T06:20:39.754011+00:00 app[web.1]: production
+2025-08-05T06:20:39.754011+00:00 app[web.1]: 
+2025-08-05T06:20:39.754012+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/database_configurations.rb:179:in `resolve'
+2025-08-05T06:20:39.754012+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/connection_handling.rb:391:in `resolve_config_for_connection'
+2025-08-05T06:20:39.754012+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/connection_handling.rb:100:in `block (2 levels) in connects_to'
+2025-08-05T06:20:39.754012+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/connection_handling.rb:99:in `each'
+2025-08-05T06:20:39.754012+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/connection_handling.rb:99:in `block in connects_to'
+2025-08-05T06:20:39.754013+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/connection_handling.rb:98:in `each'
+2025-08-05T06:20:39.754013+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/activerecord-8.0.2/lib/active_record/connection_handling.rb:98:in `connects_to'
+2025-08-05T06:20:39.754013+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/solid_cable-3.0.11/app/models/solid_cable/record.rb:7:in `<class:Record>'
+2025-08-05T06:20:39.754013+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/solid_cable-3.0.11/app/models/solid_cable/record.rb:4:in `<module:SolidCable>'
+2025-08-05T06:20:39.754013+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/solid_cable-3.0.11/app/models/solid_cable/record.rb:3:in `<main>'
+2025-08-05T06:20:39.754014+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/bundled_gems.rb:69:in `require'
+2025-08-05T06:20:39.754014+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/bundled_gems.rb:69:in `block (2 levels) in replace_require'
+2025-08-05T06:20:39.754014+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bootsnap-1.18.6/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:in `require'
+2025-08-05T06:20:39.754014+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/core_ext/kernel.rb:26:in `require'
+2025-08-05T06:20:39.754014+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/solid_cable-3.0.11/app/models/solid_cable/message.rb:4:in `<module:SolidCable>'
+2025-08-05T06:20:39.754025+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/solid_cable-3.0.11/app/models/solid_cable/message.rb:3:in `<main>'
+2025-08-05T06:20:39.754025+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/bundled_gems.rb:69:in `require'
+2025-08-05T06:20:39.754026+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/bundled_gems.rb:69:in `block (2 levels) in replace_require'
+2025-08-05T06:20:39.754026+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bootsnap-1.18.6/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:in `require'
+2025-08-05T06:20:39.754026+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/core_ext/kernel.rb:26:in `require'
+2025-08-05T06:20:39.754027+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/cref.rb:62:in `const_get'
+2025-08-05T06:20:39.754027+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/cref.rb:62:in `get'
+2025-08-05T06:20:39.754027+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:173:in `block in actual_eager_load_dir'
+2025-08-05T06:20:39.754027+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/helpers.rb:47:in `block in ls'
+2025-08-05T06:20:39.754027+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/helpers.rb:25:in `each'
+2025-08-05T06:20:39.754027+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/helpers.rb:25:in `ls'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:168:in `actual_eager_load_dir'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:17:in `block (2 levels) in eager_load'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:16:in `each'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:16:in `block in eager_load'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:10:in `synchronize'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader/eager_load.rb:10:in `eager_load'
+2025-08-05T06:20:39.754028+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader.rb:431:in `block in eager_load_all'
+2025-08-05T06:20:39.754030+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/registry/loaders.rb:10:in `each'
+2025-08-05T06:20:39.754030+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/registry/loaders.rb:10:in `each'
+2025-08-05T06:20:39.754032+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.3/lib/zeitwerk/loader.rb:429:in `eager_load_all'
+2025-08-05T06:20:39.754032+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/railties-8.0.2/lib/rails/application/finisher.rb:79:in `block in <module:Finisher>'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/railties-8.0.2/lib/rails/initializable.rb:32:in `instance_exec'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/railties-8.0.2/lib/rails/initializable.rb:32:in `run'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/railties-8.0.2/lib/rails/initializable.rb:61:in `block in run_initializers'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:231:in `block in tsort_each'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:353:in `block (2 levels) in each_strongly_connected_component'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:434:in `each_strongly_connected_component_from'
+2025-08-05T06:20:39.754033+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:352:in `block in each_strongly_connected_component'
+2025-08-05T06:20:39.754034+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:350:in `each'
+2025-08-05T06:20:39.754034+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:350:in `call'
+2025-08-05T06:20:39.754034+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:350:in `each_strongly_connected_component'
+2025-08-05T06:20:39.754034+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:229:in `tsort_each'
+2025-08-05T06:20:39.754034+00:00 app[web.1]: from /app/vendor/ruby-3.3.8/lib/ruby/3.3.0/tsort.rb:208:in `tsort_each'
+2025-08-05T06:20:39.754035+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/railties-8.0.2/lib/rails/initializable.rb:60:in `run_initializers'
+2025-08-05T06:20:39.754035+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/railties-8.0.2/lib/rails/application.rb:440:in `initialize!'
+2025-08-05T06:20:39.754035+00:00 app[web.1]: from /app/config/environment.rb:5:in `<top (required)>'
+2025-08-05T06:20:39.754035+00:00 app[web.1]: from config.ru:3:in `require_relative'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from config.ru:3:in `block (2 levels) in <top (required)>'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/rack-3.2.0/lib/rack/builder.rb:108:in `eval'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/rack-3.2.0/lib/rack/builder.rb:108:in `new_from_string'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/rack-3.2.0/lib/rack/builder.rb:97:in `load_file'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/rack-3.2.0/lib/rack/builder.rb:67:in `parse_file'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/lib/puma/configuration.rb:386:in `load_rackup'
+2025-08-05T06:20:39.754036+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/lib/puma/configuration.rb:297:in `app'
+2025-08-05T06:20:39.754037+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/lib/puma/runner.rb:169:in `load_and_bind'
+2025-08-05T06:20:39.754037+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/lib/puma/cluster.rb:383:in `run'
+2025-08-05T06:20:39.754037+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/lib/puma/launcher.rb:203:in `run'
+2025-08-05T06:20:39.754037+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/lib/puma/cli.rb:75:in `run'
+2025-08-05T06:20:39.754037+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/puma-6.6.1/bin/puma:10:in `<top (required)>'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/bin/puma:25:in `load'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/bin/puma:25:in `<top (required)>'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli/exec.rb:58:in `load'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli/exec.rb:58:in `kernel_load'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli/exec.rb:23:in `run'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli.rb:456:in `exec'
+2025-08-05T06:20:39.754041+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor/command.rb:28:in `run'
+2025-08-05T06:20:39.754042+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+2025-08-05T06:20:39.754042+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor.rb:527:in `dispatch'
+2025-08-05T06:20:39.754042+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli.rb:35:in `dispatch'
+2025-08-05T06:20:39.754042+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/vendor/thor/lib/thor/base.rb:584:in `start'
+2025-08-05T06:20:39.754042+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/cli.rb:29:in `start'
+2025-08-05T06:20:39.754045+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/exe/bundle:28:in `block in <top (required)>'
+2025-08-05T06:20:39.754045+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/lib/bundler/friendly_errors.rb:117:in `with_friendly_errors'
+2025-08-05T06:20:39.754045+00:00 app[web.1]: from /app/vendor/bundle/ruby/3.3.0/gems/bundler-2.5.23/exe/bundle:20:in `<top (required)>'
+2025-08-05T06:20:39.754045+00:00 app[web.1]: from /app/bin/bundle:108:in `load'
+2025-08-05T06:20:39.754045+00:00 app[web.1]: from /app/bin/bundle:108:in `<main>'
+2025-08-05T06:20:39.798174+00:00 heroku[web.1]: Process exited with status 1
+2025-08-05T06:20:39.819501+00:00 heroku[web.1]: State changed from starting to crashed
+2025-08-05T06:20:48.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=1.145 sample#load-avg-5m=1.135 sample#load-avg-15m=1.18 sample#read-iops=0 sample#write-iops=0.095238 sample#max-iops=3000 sample#iops-percentage-used=0.00003 sample#memory-total=16167804kB sample#memory-free=7225912kB sample#memory-percentage-used=0.55307 sample#memory-cached=2697064kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:20:52.000000+00:00 app[api]: Build started by user je4550@gmail.com
+2025-08-05T06:21:09.000000+00:00 app[api]: Build failed -- check your build output: https://dashboard.heroku.com/apps/a5209899-6ed0-41fc-b07c-54db7912b312/activity/builds/18cd674a-135f-4816-aa0d-f0b7f64bbfa5
+2025-08-05T06:21:51.000000+00:00 app[api]: Build started by user je4550@gmail.com
+2025-08-05T06:22:16.890957+00:00 app[api]: Running release v17 commands by user je4550@gmail.com
+2025-08-05T06:22:16.890957+00:00 app[api]: Deploy f76d419c by user je4550@gmail.com
+2025-08-05T06:22:17.796813+00:00 app[api]: Starting process with command `/bin/sh -c 'if curl $HEROKU_RELEASE_LOG_STREAM --silent --connect-timeout 10 --retry 3 --retry-delay 1 >/tmp/log-stream; then
+2025-08-05T06:22:17.796813+00:00 app[api]: chmod u+x /tmp/log-stream
+2025-08-05T06:22:17.796813+00:00 app[api]: /tmp/log-stream /bin/sh -c '"'"'bundle exec rails db:migrate'"'"'
+2025-08-05T06:22:17.796813+00:00 app[api]: else
+2025-08-05T06:22:17.796813+00:00 app[api]: bundle exec rails db:migrate
+2025-08-05T06:22:17.796813+00:00 app[api]: fi'` by user je4550@gmail.com
+2025-08-05T06:22:20.358864+00:00 heroku[release.6461]: Starting process with command `/bin/sh -c 'if curl https://heroku-release-output.s3.amazonaws.com/log-stream?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAZSXS6CXKUD5IMVTI%2F20250805%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250805T062217Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=af6fbed7af14720e07d9b0128b89e224a38968df42ce8b77d94b6b29ead65bfe --silent --connect-timeout 10 --retry 3 --retry-delay 1 >/tmp/log-stream; then
+2025-08-05T06:22:20.957921+00:00 heroku[release.6461]: State changed from starting to up
+2025-08-05T06:22:25.000000+00:00 app[api]: Build succeeded
+2025-08-05T06:22:29.417323+00:00 heroku[release.6461]: Process exited with status 0
+2025-08-05T06:22:29.437526+00:00 heroku[release.6461]: State changed from up to complete
+2025-08-05T06:22:29.910728+00:00 app[api]: Release v17 created by user je4550@gmail.com
+2025-08-05T06:22:30.337987+00:00 heroku[web.1]: State changed from crashed to starting
+2025-08-05T06:22:31.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=3.195 sample#load-avg-5m=1.975 sample#load-avg-15m=1.485 sample#read-iops=0 sample#write-iops=0.12621 sample#max-iops=3000 sample#iops-percentage-used=0.00004 sample#memory-total=16167804kB sample#memory-free=7897056kB sample#memory-percentage-used=0.51156 sample#memory-cached=2697216kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
+2025-08-05T06:22:33.176443+00:00 heroku[web.1]: Starting process with command `bundle exec puma -C config/puma.rb`
+2025-08-05T06:22:33.948993+00:00 app[web.1]: [2] Puma starting in cluster mode...
+2025-08-05T06:22:33.949021+00:00 app[web.1]: [2] * Puma version: 6.6.1 ("Return to Forever")
+2025-08-05T06:22:33.949022+00:00 app[web.1]: [2] * Ruby version: ruby 3.3.8 (2025-04-09 revision b200bad6cd) [x86_64-linux]
+2025-08-05T06:22:33.949022+00:00 app[web.1]: [2] *  Min threads: 5
+2025-08-05T06:22:33.949023+00:00 app[web.1]: [2] *  Max threads: 5
+2025-08-05T06:22:33.949024+00:00 app[web.1]: [2] *  Environment: production
+2025-08-05T06:22:33.949024+00:00 app[web.1]: [2] *   Master PID: 2
+2025-08-05T06:22:33.949024+00:00 app[web.1]: [2] *      Workers: 2
+2025-08-05T06:22:33.949043+00:00 app[web.1]: [2] *     Restarts: (✔) hot (✖) phased (✖) refork
+2025-08-05T06:22:33.949044+00:00 app[web.1]: [2] * Preloading application
+2025-08-05T06:22:36.963007+00:00 app[web.1]: [2] * Listening on http://0.0.0.0:43257
+2025-08-05T06:22:36.963084+00:00 app[web.1]: [2] Use Ctrl-C to stop
+2025-08-05T06:22:36.969474+00:00 app[web.1]: [2] - Worker 0 (PID: 8) booted in 0.0s, phase: 0
+2025-08-05T06:22:36.970062+00:00 app[web.1]: [2] - Worker 1 (PID: 21) booted in 0.0s, phase: 0
+2025-08-05T06:22:37.241001+00:00 heroku[web.1]: State changed from starting to up
+2025-08-05T06:22:51.720985+00:00 app[web.1]: [57ca2b22-2e0d-c80d-ba10-ca340255f78f] Started GET "/" for 108.215.140.100 at 2025-08-05 06:22:51 +0000
+2025-08-05T06:22:51.728477+00:00 app[web.1]: [57ca2b22-2e0d-c80d-ba10-ca340255f78f] Redirected to https://autoplanner-staging-17cdee2cd69f.herokuapp.com/users/sign_in
+2025-08-05T06:22:51.728524+00:00 app[web.1]: [57ca2b22-2e0d-c80d-ba10-ca340255f78f] Completed 301 Moved Permanently in 1ms
+2025-08-05T06:22:51.729642+00:00 heroku[router]: at=info method=GET path="/" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=57ca2b22-2e0d-c80d-ba10-ca340255f78f fwd="108.215.140.100" dyno=web.1 connect=0ms service=13ms status=301 bytes=0 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:22:51.772211+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08] Started GET "/users/sign_in" for 108.215.140.100 at 2025-08-05 06:22:51 +0000
+2025-08-05T06:22:51.774657+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08] Processing by Devise::SessionsController#new as HTML
+2025-08-05T06:23:00.644542+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08] Redirected to
+2025-08-05T06:23:00.644872+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08] Completed 500 Internal Server Error in 8870ms (ActiveRecord: 472.2ms (1 query, 0 cached) | GC: 0.0ms)
+2025-08-05T06:23:00.645796+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08]
+2025-08-05T06:23:00.645797+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08] ActionController::Redirecting::UnsafeRedirectError (Unsafe redirect to "https://herokuapp.com/", pass allow_other_host: true to redirect anyway.):
+2025-08-05T06:23:00.645797+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08]
+2025-08-05T06:23:00.645798+00:00 app[web.1]: [cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08] app/controllers/concerns/tenant_scoped.rb:20:in `set_tenant'
+2025-08-05T06:23:00.647075+00:00 heroku[router]: at=info method=GET path="/users/sign_in" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=cf94cf5d-6f0b-6d31-e8dc-ed9df6e5ef08 fwd="108.215.140.100" dyno=web.1 connect=0ms service=8875ms status=500 bytes=7918 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:23:00.816081+00:00 app[web.1]: [f6b015b0-41de-f58a-80dc-f6f70aa97752] Started GET "/favicon.ico" for 108.215.140.100 at 2025-08-05 06:23:00 +0000
+2025-08-05T06:23:00.816650+00:00 app[web.1]: [f6b015b0-41de-f58a-80dc-f6f70aa97752]
+2025-08-05T06:23:00.816651+00:00 app[web.1]: [f6b015b0-41de-f58a-80dc-f6f70aa97752] ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+2025-08-05T06:23:00.816652+00:00 app[web.1]: [f6b015b0-41de-f58a-80dc-f6f70aa97752]
+2025-08-05T06:23:00.817410+00:00 heroku[router]: at=info method=GET path="/favicon.ico" host=autoplanner-staging-17cdee2cd69f.herokuapp.com request_id=f6b015b0-41de-f58a-80dc-f6f70aa97752 fwd="108.215.140.100" dyno=web.1 connect=0ms service=2ms status=404 bytes=4836 protocol=http1.1 tls=true tls_version=unknown
+2025-08-05T06:23:04.000000+00:00 app[heroku-redis]: source=REDIS addon=redis-asymmetrical-31249 sample#active-connections=1 sample#max-connections=18 sample#connection-percentage-used=0.05556 sample#load-avg-1m=4.4 sample#load-avg-5m=2.4 sample#load-avg-15m=1.645 sample#read-iops=0 sample#write-iops=0.090909 sample#max-iops=3000 sample#iops-percentage-used=0.00003 sample#memory-total=16167804kB sample#memory-free=7774180kB sample#memory-percentage-used=0.51916 sample#memory-cached=2697220kB sample#memory-redis=4757312bytes sample#hit-rate=1 sample#evicted-keys=0
