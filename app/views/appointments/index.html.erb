@@ -1,0 +1,402 @@
+<style>
+  .appointments-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .appointments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .filters-bar {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .filter-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 8px 16px;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 6px;
+    color: #495057;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .filter-btn:hover {
+    background: #f8f9fa;
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+  
+  .filter-btn.active {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+  }
+  
+  .search-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+  }
+  
+  .appointment-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .appointment-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+  }
+  
+  .appointment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  
+  .appointment-card.scheduled::before {
+    background: #17a2b8;
+  }
+  
+  .appointment-card.confirmed::before {
+    background: #007bff;
+  }
+  
+  .appointment-card.in_progress::before {
+    background: #ffc107;
+  }
+  
+  .appointment-card.completed::before {
+    background: #28a745;
+  }
+  
+  .appointment-card.cancelled::before,
+  .appointment-card.no_show::before {
+    background: #6c757d;
+  }
+  
+  .appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 16px;
+  }
+  
+  .appointment-time {
+    font-size: 18px;
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  .appointment-date {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 2px;
+  }
+  
+  .appointment-customer {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .appointment-vehicle {
+    color: #6c757d;
+    font-size: 14px;
+  }
+  
+  .appointment-services {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+  }
+  
+  .service-tag {
+    display: inline-block;
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  
+  .appointment-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+  }
+  
+  .appointment-price {
+    font-weight: 600;
+    color: #28a745;
+    font-size: 18px;
+  }
+  
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .status-badge.scheduled {
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .status-badge.confirmed {
+    background: #e1f5fe;
+    color: #0277bd;
+  }
+  
+  .status-badge.in_progress {
+    background: #fff8e1;
+    color: #f57c00;
+  }
+  
+  .status-badge.completed {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .status-badge.cancelled,
+  .status-badge.no_show {
+    background: #f5f5f5;
+    color: #616161;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+  }
+  
+  @media (max-width: 768px) {
+    .appointments-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .appointments-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .filter-group {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Appointments</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="appointments-container">
+    <div class="appointments-header">
+      <h1 style="margin: 0;">Manage Appointments</h1>
+      <div style="display: flex; gap: 10px;">
+        <%= link_to calendar_appointments_path, class: "btn btn-secondary" do %>
+          <span>📅</span> Calendar View
+        <% end %>
+        <%= link_to new_appointment_path, class: "btn btn-primary" do %>
+          <span>➕</span> Schedule Appointment
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filter-group">
+        <span style="font-weight: 500; margin-right: 10px;">Filter by date:</span>
+        <%= link_to "All", appointments_path, 
+            class: "filter-btn #{'active' unless params[:date_filter].present?}" %>
+        <%= link_to "Today", appointments_path(date_filter: 'today'), 
+            class: "filter-btn #{'active' if params[:date_filter] == 'today'}" %>
+        <%= link_to "This Week", appointments_path(date_filter: 'week'), 
+            class: "filter-btn #{'active' if params[:date_filter] == 'week'}" %>
+        <%= link_to "Upcoming", appointments_path(date_filter: 'upcoming'), 
+            class: "filter-btn #{'active' if params[:date_filter] == 'upcoming'}" %>
+        <%= link_to "Past", appointments_path(date_filter: 'past'), 
+            class: "filter-btn #{'active' if params[:date_filter] == 'past'}" %>
+      </div>
+      
+      <div class="filter-group" style="margin-top: 15px;">
+        <span style="font-weight: 500; margin-right: 10px;">Filter by status:</span>
+        <%= link_to "All", appointments_path(date_filter: params[:date_filter]), 
+            class: "filter-btn #{'active' unless params[:status].present?}" %>
+        <%= link_to "Scheduled", appointments_path(status: 'scheduled', date_filter: params[:date_filter]), 
+            class: "filter-btn #{'active' if params[:status] == 'scheduled'}" %>
+        <%= link_to "Confirmed", appointments_path(status: 'confirmed', date_filter: params[:date_filter]), 
+            class: "filter-btn #{'active' if params[:status] == 'confirmed'}" %>
+        <%= link_to "In Progress", appointments_path(status: 'in_progress', date_filter: params[:date_filter]), 
+            class: "filter-btn #{'active' if params[:status] == 'in_progress'}" %>
+        <%= link_to "Completed", appointments_path(status: 'completed', date_filter: params[:date_filter]), 
+            class: "filter-btn #{'active' if params[:status] == 'completed'}" %>
+      </div>
+      
+      <%= form_with url: appointments_path, method: :get, class: "search-form", local: true do |f| %>
+        <%= hidden_field_tag :date_filter, params[:date_filter] %>
+        <%= hidden_field_tag :status, params[:status] %>
+        <%= text_field_tag :search, params[:search], 
+            placeholder: "Search by customer name, vehicle, or license plate...", 
+            class: "search-input" %>
+        <%= submit_tag "Search", class: "btn btn-secondary" %>
+        <% if params[:search].present? %>
+          <%= link_to "Clear", appointments_path(date_filter: params[:date_filter], status: params[:status]), 
+              class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <% if @appointments.any? %>
+      <div class="appointments-grid">
+        <% @appointments.each do |appointment| %>
+          <%= link_to appointment_path(appointment), style: "text-decoration: none; color: inherit;" do %>
+            <div class="appointment-card <%= appointment.status %>">
+              <div class="appointment-header">
+                <div>
+                  <div class="appointment-time">
+                    <%= appointment.scheduled_at.strftime("%l:%M %p") %>
+                  </div>
+                  <div class="appointment-date">
+                    <%= appointment.scheduled_at.strftime("%A, %B %d, %Y") %>
+                  </div>
+                </div>
+                <span class="status-badge <%= appointment.status %>">
+                  <%= appointment.status.humanize %>
+                </span>
+              </div>
+              
+              <div style="margin-bottom: 12px;">
+                <div class="appointment-customer">
+                  <%= appointment.customer.full_name %>
+                </div>
+                <div class="appointment-vehicle">
+                  <%= appointment.vehicle.year %> <%= appointment.vehicle.make %> <%= appointment.vehicle.model %>
+                  <% if appointment.vehicle.license_plate.present? %>
+                    • <%= appointment.vehicle.license_plate %>
+                  <% end %>
+                </div>
+              </div>
+              
+              <% if appointment.services.any? %>
+                <div class="appointment-services">
+                  <% appointment.services.each do |service| %>
+                    <span class="service-tag"><%= service.name %></span>
+                  <% end %>
+                </div>
+              <% end %>
+              
+              <div class="appointment-footer">
+                <div style="font-size: 14px; color: #6c757d;">
+                  Duration: <%= appointment.duration_minutes %> min
+                </div>
+                <div class="appointment-price">
+                  <%= number_to_currency(appointment.total_price) %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      
+      <% if @pagy.pages > 1 %>
+        <div style="margin-top: 40px; text-align: center;">
+          <%== pagy_nav(@pagy) %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="empty-state">
+        <div style="font-size: 48px; margin-bottom: 20px;">📅</div>
+        <h3>No appointments found</h3>
+        <p>
+          <% if params[:search].present? %>
+            No appointments match your search criteria.
+          <% else %>
+            Schedule your first appointment to get started.
+          <% end %>
+        </p>
+        <%= link_to "Schedule Appointment", new_appointment_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

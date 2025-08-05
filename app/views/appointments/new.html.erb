@@ -1,0 +1,498 @@
+<style>
+  .form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .form-header {
+    margin-bottom: 30px;
+  }
+  
+  .form-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+  }
+  
+  .form-header p {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 24px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+  
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #dc3545;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .datetime-inputs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .services-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .services-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .service-item {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s;
+  }
+  
+  .service-item:hover {
+    border-color: #dc3545;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .service-checkbox {
+    margin-right: 12px;
+  }
+  
+  .service-details {
+    flex: 1;
+  }
+  
+  .service-name {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .service-meta {
+    font-size: 12px;
+    color: #6c757d;
+  }
+  
+  .service-price {
+    font-weight: 600;
+    color: #28a745;
+    margin-left: 16px;
+  }
+  
+  .quantity-input {
+    width: 60px;
+    margin-left: 12px;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .required {
+    color: #dc3545;
+  }
+  
+  .help-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+  
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .datetime-inputs {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Schedule Appointment</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="form-container">
+    <div class="form-header">
+      <h1>New Appointment</h1>
+      <p>Schedule a service appointment</p>
+    </div>
+    
+    <%= form_with model: @appointment, local: true, data: { controller: "appointment-form" } do |form| %>
+      <% if @appointment.errors.any? %>
+        <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+          <strong>Please fix the following errors:</strong>
+          <ul style="margin: 8px 0 0 20px; padding: 0;">
+            <% @appointment.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <%= form.label :customer_id, class: "form-label" do %>
+            Customer <span class="required">*</span>
+          <% end %>
+          <%= form.select :customer_id, 
+              options_for_select(@customers.map { |c| [c.full_name, c.id] }, @appointment.customer_id),
+              { prompt: "Select a customer" },
+              class: "form-control #{'is-invalid' if @appointment.errors[:customer_id].any?}",
+              data: { 
+                action: "change->appointment-form#customerChanged",
+                appointment_form_target: "customerSelect"
+              } %>
+          <% if @appointment.errors[:customer_id].any? %>
+            <div class="invalid-feedback">
+              <%= @appointment.errors[:customer_id].first %>
+            </div>
+          <% end %>
+          <div class="help-text">
+            Don't see the customer? <%= link_to "Add new customer", new_customer_path, target: "_blank" %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= form.label :vehicle_id, class: "form-label" do %>
+            Vehicle <span class="required">*</span>
+          <% end %>
+          <%= form.select :vehicle_id,
+              options_for_select(@vehicles.map { |v| [v.full_display_name, v.id] }, @appointment.vehicle_id),
+              { prompt: "Select a vehicle" },
+              class: "form-control #{'is-invalid' if @appointment.errors[:vehicle_id].any?}",
+              disabled: @appointment.customer_id.blank?,
+              data: { appointment_form_target: "vehicleSelect" } %>
+          <% if @appointment.errors[:vehicle_id].any? %>
+            <div class="invalid-feedback">
+              <%= @appointment.errors[:vehicle_id].first %>
+            </div>
+          <% end %>
+          <div class="help-text">
+            Select a customer first to see their vehicles
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :scheduled_at, "Date & Time", class: "form-label" do %>
+          Appointment Date & Time <span class="required">*</span>
+        <% end %>
+        <div class="datetime-inputs">
+          <%= form.date_field :scheduled_at_date,
+              value: @appointment.scheduled_at&.to_date,
+              class: "form-control",
+              required: true,
+              onchange: "checkAvailability()" %>
+          <span style="text-align: center;">at</span>
+          <%= form.time_field :scheduled_at_time,
+              value: @appointment.scheduled_at&.strftime("%H:%M"),
+              class: "form-control",
+              required: true,
+              onchange: "checkAvailability()" %>
+        </div>
+        <% if @appointment.errors[:scheduled_at].any? %>
+          <div class="invalid-feedback">
+            <%= @appointment.errors[:scheduled_at].first %>
+          </div>
+        <% end %>
+        
+        <!-- Availability Status -->
+        <div id="availabilityStatus" style="margin-top: 10px; display: none;">
+          <div id="availabilityMessage" style="padding: 10px; border-radius: 6px; font-size: 14px;"></div>
+        </div>
+        
+        <!-- View Calendar Link -->
+        <div style="margin-top: 10px;">
+          <%= link_to "View Calendar", calendar_appointments_path, target: "_blank", style: "font-size: 14px; color: #dc3545;" %>
+        </div>
+      </div>
+      
+      <div class="services-section">
+        <h3 style="margin: 0 0 8px 0;">Services</h3>
+        <p style="margin: 0; color: #6c757d; font-size: 14px;">Select the services for this appointment</p>
+        
+        <div class="services-grid">
+          <% @services.each do |service| %>
+            <div class="service-item">
+              <%= check_box_tag "service_ids[]", service.id, 
+                  @selected_service_ids&.include?(service.id),
+                  class: "service-checkbox",
+                  id: "service_#{service.id}" %>
+              <div class="service-details">
+                <label for="service_<%= service.id %>" style="cursor: pointer;">
+                  <div class="service-name"><%= service.name %></div>
+                  <div class="service-meta">
+                    <%= service.duration_minutes %> min
+                    <% if service.description.present? %>
+                      • <%= service.description %>
+                    <% end %>
+                  </div>
+                </label>
+              </div>
+              <div class="service-price">
+                <%= number_to_currency(service.price) %>
+              </div>
+              <%= number_field_tag "service_quantities[#{service.id}]", 1,
+                  min: 1,
+                  class: "quantity-input",
+                  style: "display: none;",
+                  data: { service_id: service.id } %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :notes, class: "form-label" %>
+        <%= form.text_area :notes, 
+            class: "form-control",
+            rows: 4,
+            placeholder: "Any special notes or instructions for this appointment..." %>
+      </div>
+      
+      <div class="form-actions">
+        <%= form.submit "Schedule Appointment", class: "btn btn-primary" %>
+        <%= link_to "Cancel", appointments_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Show/hide quantity inputs based on checkbox state
+  document.querySelectorAll('.service-checkbox').forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      const quantityInput = this.parentElement.querySelector('.quantity-input');
+      if (this.checked) {
+        quantityInput.style.display = 'block';
+      } else {
+        quantityInput.style.display = 'none';
+        quantityInput.value = 1;
+      }
+    });
+  });
+  
+  // Initialize quantity inputs visibility
+  document.querySelectorAll('.service-checkbox').forEach(function(checkbox) {
+    const quantityInput = checkbox.parentElement.querySelector('.quantity-input');
+    if (checkbox.checked) {
+      quantityInput.style.display = 'block';
+    }
+  });
+  
+  // Handle customer change to load vehicles
+  const customerSelect = document.querySelector('[data-appointment-form-target="customerSelect"]');
+  const vehicleSelect = document.querySelector('[data-appointment-form-target="vehicleSelect"]');
+  
+  if (customerSelect && vehicleSelect) {
+    customerSelect.addEventListener('change', function() {
+      const customerId = this.value;
+      
+      if (!customerId) {
+        vehicleSelect.innerHTML = '<option value="">Select a customer first</option>';
+        vehicleSelect.disabled = true;
+        return;
+      }
+      
+      // Show loading state
+      vehicleSelect.disabled = false;
+      vehicleSelect.innerHTML = '<option value="">Loading vehicles...</option>';
+      
+      // Fetch vehicles for the selected customer
+      fetch('/appointments/customer_vehicles?customer_id=' + customerId)
+        .then(response => response.json())
+        .then(vehicles => {
+          vehicleSelect.innerHTML = '<option value="">Select a vehicle</option>';
+          
+          vehicles.forEach(vehicle => {
+            const option = document.createElement('option');
+            option.value = vehicle.id;
+            option.textContent = vehicle.display_name;
+            vehicleSelect.appendChild(option);
+          });
+          
+          if (vehicles.length === 0) {
+            vehicleSelect.innerHTML = '<option value="">No vehicles found for this customer</option>';
+          }
+        })
+        .catch(error => {
+          console.error('Error loading vehicles:', error);
+          vehicleSelect.innerHTML = '<option value="">Error loading vehicles</option>';
+        });
+    });
+  }
+});
+
+// Check availability when date/time changes
+function checkAvailability() {
+  const dateField = document.querySelector('[name="appointment[scheduled_at_date]"]');
+  const timeField = document.querySelector('[name="appointment[scheduled_at_time]"]');
+  const customerField = document.querySelector('[name="appointment[customer_id]"]');
+  const statusDiv = document.getElementById('availabilityStatus');
+  const messageDiv = document.getElementById('availabilityMessage');
+  
+  if (!dateField.value || !timeField.value) {
+    statusDiv.style.display = 'none';
+    return;
+  }
+  
+  // Calculate total duration from selected services
+  let totalDuration = 0;
+  document.querySelectorAll('.service-checkbox:checked').forEach(checkbox => {
+    const serviceItem = checkbox.closest('.service-item');
+    const durationText = serviceItem.querySelector('.service-meta').textContent;
+    const durationMatch = durationText.match(/(\d+)\s*min/);
+    if (durationMatch) {
+      const quantity = serviceItem.querySelector('.quantity-input').value || 1;
+      totalDuration += parseInt(durationMatch[1]) * quantity;
+    }
+  });
+  
+  // Default to 60 minutes if no services selected
+  if (totalDuration === 0) totalDuration = 60;
+  
+  // Show checking status
+  statusDiv.style.display = 'block';
+  messageDiv.style.background = '#e3f2fd';
+  messageDiv.style.color = '#1565c0';
+  messageDiv.innerHTML = '🔍 Checking availability...';
+  
+  // Build query parameters
+  const params = new URLSearchParams({
+    date: dateField.value,
+    time: timeField.value,
+    duration: totalDuration
+  });
+  
+  if (customerField.value) {
+    params.append('customer_id', customerField.value);
+  }
+  
+  // Check availability
+  fetch('/appointments/check_availability?' + params.toString())
+    .then(response => response.json())
+    .then(data => {
+      if (data.available) {
+        messageDiv.style.background = '#d4edda';
+        messageDiv.style.color = '#155724';
+        messageDiv.innerHTML = '✅ This time slot is available!';
+      } else {
+        messageDiv.style.background = '#f8d7da';
+        messageDiv.style.color = '#721c24';
+        let message = '❌ This time slot conflicts with existing appointments:<br>';
+        data.conflicts.forEach(conflict => {
+          message += `• ${conflict.time} - ${conflict.end_time}: ${conflict.customer} (${conflict.vehicle})<br>`;
+        });
+        messageDiv.innerHTML = message;
+      }
+    })
+    .catch(error => {
+      console.error('Error checking availability:', error);
+      statusDiv.style.display = 'none';
+    });
+}
+
+// Also check availability when services change
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', checkAvailability);
+  });
+  
+  document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', checkAvailability);
+  });
+});
+</script>

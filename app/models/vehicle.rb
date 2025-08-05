@@ -3,6 +3,7 @@ class Vehicle < ApplicationRecord
   
   # Associations
   belongs_to :customer
+  has_one :shop, through: :customer
   has_many :appointments, dependent: :destroy
   has_many :service_reminders, dependent: :destroy
   

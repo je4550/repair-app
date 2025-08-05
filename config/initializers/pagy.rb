@@ -1,5 +1,4 @@
 # Pagy configuration
-require 'pagy/extras/navs'
 
 # Default items per page
 Pagy::DEFAULT[:limit] = 20

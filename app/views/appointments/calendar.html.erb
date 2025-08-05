@@ -1,0 +1,506 @@
+<style>
+  .calendar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .calendar-nav h2 {
+    margin: 0;
+    font-size: 24px;
+    min-width: 200px;
+    text-align: center;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: #e9ecef;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .calendar-day-header {
+    background: #f8f9fa;
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+  }
+  
+  .calendar-day {
+    background: white;
+    min-height: 120px;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .calendar-day.other-month {
+    background: #f8f9fa;
+  }
+  
+  .calendar-day.today {
+    background: #fff3cd;
+  }
+  
+  .calendar-day-number {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+  }
+  
+  .calendar-day.other-month .calendar-day-number {
+    color: #adb5bd;
+  }
+  
+  .appointment-count {
+    font-size: 12px;
+    color: #dc3545;
+    font-weight: 500;
+  }
+  
+  .appointment-preview {
+    font-size: 11px;
+    color: #6c757d;
+    margin-top: 5px;
+    padding: 3px 5px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .calendar-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .day-appointments-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .schedule-view {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    margin-top: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .time-slot {
+    padding: 15px 10px;
+    border-bottom: 1px solid #e9ecef;
+    border-right: 1px solid #e9ecef;
+    background: #f8f9fa;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c757d;
+    text-align: right;
+  }
+  
+  .time-block {
+    position: relative;
+    border-bottom: 1px solid #e9ecef;
+    min-height: 60px;
+  }
+  
+  .appointment-block {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    background: #dc3545;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+  }
+  
+  .appointment-block:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  }
+  
+  .appointment-block.confirmed {
+    background: #007bff;
+  }
+  
+  .appointment-block.in_progress {
+    background: #ffc107;
+    color: #212529;
+  }
+  
+  .appointment-block.completed {
+    background: #28a745;
+  }
+  
+  .appointment-block-title {
+    font-weight: 600;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .appointment-block-details {
+    font-size: 11px;
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6c757d;
+  }
+  
+  .appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .appointment-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+  }
+  
+  .appointment-time {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 5px;
+  }
+  
+  .appointment-details {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  @media (max-width: 768px) {
+    .calendar-grid {
+      gap: 0;
+    }
+    
+    .calendar-day {
+      min-height: 80px;
+      padding: 5px;
+    }
+    
+    .calendar-day-header {
+      padding: 10px 5px;
+      font-size: 12px;
+    }
+    
+    .appointment-preview {
+      display: none;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Appointment Calendar</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <div class="calendar-nav">
+        <%= link_to "←", calendar_appointments_path(date: @date.prev_month), class: "btn btn-secondary btn-sm" %>
+        <h2><%= @date.strftime("%B %Y") %></h2>
+        <%= link_to "→", calendar_appointments_path(date: @date.next_month), class: "btn btn-secondary btn-sm" %>
+      </div>
+      
+      <div class="calendar-actions">
+        <%= link_to "Today", calendar_appointments_path, class: "btn btn-secondary btn-sm" %>
+        <button onclick="showDayAppointments('<%= Date.today %>')" class="btn btn-secondary btn-sm">
+          Today's Schedule
+        </button>
+        <%= link_to "Schedule Appointment", new_appointment_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+    
+    <div class="calendar-grid">
+      <!-- Day headers -->
+      <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
+        <div class="calendar-day-header"><%= day %></div>
+      <% end %>
+      
+      <!-- Calendar days -->
+      <% start_date = @date.beginning_of_month.beginning_of_week(:sunday) %>
+      <% end_date = @date.end_of_month.end_of_week(:sunday) %>
+      
+      <% (start_date..end_date).each do |day| %>
+        <% appointments = @appointments_by_day[day] || [] %>
+        <% is_today = day == Date.today %>
+        <% is_other_month = day.month != @date.month %>
+        
+        <div class="calendar-day <%= 'today' if is_today %> <%= 'other-month' if is_other_month %>"
+             data-date="<%= day %>"
+             onclick="showDayAppointments('<%= day %>')">
+          <div class="calendar-day-number"><%= day.day %></div>
+          
+          <% if appointments.any? %>
+            <div class="appointment-count">
+              <%= appointments.count %> <%= appointments.count == 1 ? 'appointment' : 'appointments' %>
+            </div>
+            
+            <% appointments.first(2).each do |appointment| %>
+              <div class="appointment-preview">
+                <%= appointment.scheduled_at.strftime("%l:%M%p") %> - <%= appointment.customer.last_name %>
+              </div>
+            <% end %>
+            
+            <% if appointments.count > 2 %>
+              <div class="appointment-preview">
+                +<%= appointments.count - 2 %> more...
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Day Appointments Modal -->
+<div id="dayAppointmentsModal" class="day-appointments-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Appointments</h3>
+      <button class="close-modal" onclick="closeDayModal()">&times;</button>
+    </div>
+    <div id="modalAppointments" class="appointment-list">
+      <!-- Appointments will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<script>
+function showDayAppointments(date) {
+  const modal = document.getElementById('dayAppointmentsModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalAppointments = document.getElementById('modalAppointments');
+  
+  // Format the date nicely
+  const dateObj = new Date(date + 'T00:00:00');
+  modalTitle.textContent = 'Appointments for ' + dateObj.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+  
+  // Show loading state
+  modalAppointments.innerHTML = '<p>Loading appointments...</p>';
+  modal.style.display = 'flex';
+  
+  // Fetch appointments for this day
+  fetch('/appointments/check_availability?date=' + date)
+    .then(response => response.json())
+    .then(data => {
+      if (data.appointments && data.appointments.length > 0) {
+        // Create schedule view
+        modalAppointments.innerHTML = createScheduleView(data.appointments, date);
+      } else {
+        modalAppointments.innerHTML = `
+          <p style="text-align: center; color: #6c757d; padding: 20px;">
+            No appointments scheduled for this day.
+          </p>
+          <div style="text-align: center;">
+            <a href="/appointments/new?scheduled_at=${date}" class="btn btn-primary">
+              Schedule Appointment
+            </a>
+          </div>
+        `;
+      }
+    })
+    .catch(error => {
+      modalAppointments.innerHTML = '<p>Error loading appointments.</p>';
+      console.error('Error:', error);
+    });
+}
+
+function createScheduleView(appointments, date) {
+  // Generate time slots from 8 AM to 6 PM
+  const startHour = 8;
+  const endHour = 18;
+  let scheduleHTML = '<div class="schedule-view">';
+  
+  // Create time slots and blocks
+  for (let hour = startHour; hour < endHour; hour++) {
+    const timeLabel = formatHour(hour);
+    scheduleHTML += `<div class="time-slot">${timeLabel}</div>`;
+    scheduleHTML += '<div class="time-block" data-hour="' + hour + '"></div>';
+  }
+  
+  scheduleHTML += '</div>';
+  
+  // Add "Add Appointment" button
+  scheduleHTML += `
+    <div style="text-align: center; margin-top: 20px;">
+      <a href="/appointments/new?scheduled_at=${date}" class="btn btn-primary">
+        Add New Appointment
+      </a>
+    </div>
+  `;
+  
+  // Convert to DOM to add appointments
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = scheduleHTML;
+  
+  // Position appointments on the schedule
+  appointments.forEach(apt => {
+    const startTime = parseTime(apt.start);
+    const endTime = parseTime(apt.end);
+    const startMinutes = startTime.hours * 60 + startTime.minutes;
+    const endMinutes = endTime.hours * 60 + endTime.minutes;
+    const duration = endMinutes - startMinutes;
+    
+    // Find the time block for this appointment
+    const hourBlock = tempDiv.querySelector(`[data-hour="${startTime.hours}"]`);
+    if (hourBlock) {
+      const appointmentEl = document.createElement('div');
+      appointmentEl.className = `appointment-block ${apt.status}`;
+      appointmentEl.style.top = `${startTime.minutes}px`;
+      appointmentEl.style.height = `${duration}px`;
+      appointmentEl.innerHTML = `
+        <div class="appointment-block-title">${apt.title}</div>
+        <div class="appointment-block-details">${formatTime(apt.start)} - ${formatTime(apt.end)}</div>
+      `;
+      appointmentEl.onclick = () => window.location.href = `/appointments/${apt.id}`;
+      
+      hourBlock.appendChild(appointmentEl);
+    }
+  });
+  
+  return tempDiv.innerHTML;
+}
+
+function parseTime(timeStr) {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return { hours, minutes };
+}
+
+function formatHour(hour) {
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 || 12;
+  return `${displayHour}:00 ${ampm}`;
+}
+
+function closeDayModal() {
+  document.getElementById('dayAppointmentsModal').style.display = 'none';
+}
+
+function formatTime(time) {
+  const [hours, minutes] = time.split(':');
+  const hour = parseInt(hours);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 || 12;
+  return `${displayHour}:${minutes} ${ampm}`;
+}
+
+// Close modal when clicking outside
+document.getElementById('dayAppointmentsModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeDayModal();
+  }
+});
+</script>

@@ -39,6 +39,11 @@ Rails.application.routes.draw do
         patch :complete
         patch :cancel
       end
+      collection do
+        get :customer_vehicles
+        get :check_availability
+        get :calendar
+      end
       resources :appointment_services
     end
 

@@ -1,0 +1,482 @@
+<style>
+  .appointment-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .appointment-header-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .appointment-header-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: <%= appointment_status_gradient(@appointment.status) %>;
+  }
+  
+  .status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  
+  .status-indicator.scheduled {
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .status-indicator.confirmed {
+    background: #e1f5fe;
+    color: #0277bd;
+  }
+  
+  .status-indicator.in_progress {
+    background: #fff8e1;
+    color: #f57c00;
+  }
+  
+  .status-indicator.completed {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .status-indicator.cancelled,
+  .status-indicator.no_show {
+    background: #f5f5f5;
+    color: #616161;
+  }
+  
+  .appointment-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+  }
+  
+  .info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  
+  .info-value {
+    font-size: 16px;
+    color: #212529;
+    font-weight: 500;
+  }
+  
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .services-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .services-table th {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #e9ecef;
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .services-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .services-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .service-name {
+    font-weight: 500;
+    color: #212529;
+  }
+  
+  .service-description {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+  
+  .total-row {
+    background: #f8f9fa;
+    font-weight: 600;
+  }
+  
+  .total-row td {
+    padding: 20px 12px;
+    font-size: 18px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background: #218838;
+  }
+  
+  .btn-warning {
+    background: #ffc107;
+    color: #212529;
+  }
+  
+  .btn-warning:hover {
+    background: #e0a800;
+  }
+  
+  .btn-danger {
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .notes-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+  
+  .timeline-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .timeline-item:last-child {
+    border-bottom: none;
+  }
+  
+  .timeline-icon {
+    width: 40px;
+    height: 40px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .timeline-content {
+    flex: 1;
+  }
+  
+  .timeline-title {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .timeline-meta {
+    font-size: 12px;
+    color: #6c757d;
+  }
+</style>
+
+<% 
+def appointment_status_gradient(status)
+  case status
+  when 'scheduled' then 'linear-gradient(90deg, #17a2b8, #20c9a6)'
+  when 'confirmed' then 'linear-gradient(90deg, #007bff, #0056b3)'
+  when 'in_progress' then 'linear-gradient(90deg, #ffc107, #ff9800)'
+  when 'completed' then 'linear-gradient(90deg, #28a745, #20c997)'
+  else 'linear-gradient(90deg, #6c757d, #495057)'
+  end
+end
+%>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Appointment Details</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="appointment-detail-container">
+    <!-- Appointment Header -->
+    <div class="appointment-header-card">
+      <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+          <span class="status-indicator <%= @appointment.status %>">
+            <%= status_icon(@appointment.status) %> <%= @appointment.status.humanize %>
+          </span>
+          
+          <h1 style="margin: 0 0 10px 0; font-size: 32px;">
+            <%= @appointment.scheduled_at.strftime("%A, %B %d") %>
+          </h1>
+          <p style="font-size: 24px; margin: 0; color: #6c757d;">
+            <%= @appointment.scheduled_at.strftime("%l:%M %p") %>
+          </p>
+        </div>
+        
+        <div class="action-buttons">
+          <%= link_to "Edit", edit_appointment_path(@appointment), class: "btn btn-secondary" %>
+          <%= link_to "Back", appointments_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+      
+      <div class="appointment-info-grid">
+        <div class="info-group">
+          <span class="info-label">Customer</span>
+          <span class="info-value">
+            <%= link_to @appointment.customer.full_name, customer_path(@appointment.customer), 
+                style: "color: #dc3545; text-decoration: none;" %>
+          </span>
+        </div>
+        
+        <div class="info-group">
+          <span class="info-label">Vehicle</span>
+          <span class="info-value">
+            <%= @appointment.vehicle.year %> <%= @appointment.vehicle.make %> <%= @appointment.vehicle.model %>
+            <% if @appointment.vehicle.license_plate.present? %>
+              <span style="color: #6c757d;">(#<%= @appointment.vehicle.license_plate %>)</span>
+            <% end %>
+          </span>
+        </div>
+        
+        <div class="info-group">
+          <span class="info-label">Duration</span>
+          <span class="info-value"><%= @appointment.duration_minutes %> minutes</span>
+        </div>
+        
+        <div class="info-group">
+          <span class="info-label">Total Price</span>
+          <span class="info-value" style="color: #28a745; font-size: 20px; font-weight: 600;">
+            <%= number_to_currency(@appointment.total_price) %>
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Status Actions -->
+    <% if @appointment.scheduled? || @appointment.confirmed? || @appointment.in_progress? %>
+      <div class="section-card">
+        <h2 class="section-title">Actions</h2>
+        <div class="action-buttons">
+          <% if @appointment.scheduled? %>
+            <%= link_to confirm_appointment_path(@appointment), method: :patch, 
+                data: { turbo_method: :patch }, class: "btn btn-primary" do %>
+              ✓ Confirm Appointment
+            <% end %>
+          <% end %>
+          
+          <% if @appointment.scheduled? || @appointment.confirmed? %>
+            <%= link_to start_appointment_path(@appointment), method: :patch,
+                data: { turbo_method: :patch }, class: "btn btn-warning" do %>
+              ▶ Start Service
+            <% end %>
+          <% end %>
+          
+          <% if @appointment.in_progress? %>
+            <%= link_to complete_appointment_path(@appointment), method: :patch,
+                data: { turbo_method: :patch }, class: "btn btn-success" do %>
+              ✓ Complete Service
+            <% end %>
+          <% end %>
+          
+          <% if @appointment.scheduled? || @appointment.confirmed? %>
+            <%= link_to cancel_appointment_path(@appointment), method: :patch,
+                data: { 
+                  turbo_method: :patch,
+                  turbo_confirm: "Are you sure you want to cancel this appointment?" 
+                }, class: "btn btn-danger" do %>
+              ✕ Cancel Appointment
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    
+    <!-- Services -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">Services</h2>
+      </div>
+      
+      <% if @appointment_services.any? %>
+        <table class="services-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th style="text-align: center;">Quantity</th>
+              <th style="text-align: right;">Unit Price</th>
+              <th style="text-align: right;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @appointment_services.each do |appointment_service| %>
+              <tr>
+                <td>
+                  <div class="service-name"><%= appointment_service.service.name %></div>
+                  <% if appointment_service.service.description.present? %>
+                    <div class="service-description"><%= appointment_service.service.description %></div>
+                  <% end %>
+                </td>
+                <td style="text-align: center;"><%= appointment_service.quantity %></td>
+                <td style="text-align: right;"><%= number_to_currency(appointment_service.price) %></td>
+                <td style="text-align: right;">
+                  <%= number_to_currency(appointment_service.price * appointment_service.quantity) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="3" style="text-align: right;">Total:</td>
+              <td style="text-align: right; color: #28a745;">
+                <%= number_to_currency(@appointment.total_price) %>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      <% else %>
+        <p style="text-align: center; color: #6c757d; padding: 40px 0;">
+          No services added to this appointment yet.
+        </p>
+      <% end %>
+    </div>
+    
+    <!-- Notes -->
+    <% if @appointment.notes.present? %>
+      <div class="section-card">
+        <h2 class="section-title">Notes</h2>
+        <div class="notes-section">
+          <%= simple_format(@appointment.notes) %>
+        </div>
+      </div>
+    <% end %>
+    
+    <!-- Activity Timeline -->
+    <div class="section-card">
+      <h2 class="section-title">Activity</h2>
+      <div class="timeline-item">
+        <div class="timeline-icon">📅</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Appointment created</div>
+          <div class="timeline-meta">
+            <%= @appointment.created_at.strftime("%B %d, %Y at %l:%M %p") %>
+          </div>
+        </div>
+      </div>
+      
+      <% if @appointment.updated_at != @appointment.created_at %>
+        <div class="timeline-item">
+          <div class="timeline-icon">✏️</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Last updated</div>
+            <div class="timeline-meta">
+              <%= @appointment.updated_at.strftime("%B %d, %Y at %l:%M %p") %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% 
+def status_icon(status)
+  case status
+  when 'scheduled' then '📅'
+  when 'confirmed' then '✓'
+  when 'in_progress' then '🔧'
+  when 'completed' then '✓'
+  when 'cancelled' then '✕'
+  when 'no_show' then '👻'
+  else '•'
+  end
+end
+%>

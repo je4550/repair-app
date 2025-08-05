@@ -18,6 +18,7 @@ class Appointment < ApplicationRecord
   validates :scheduled_at, presence: true
   validates :status, presence: true
   validate :vehicle_belongs_to_customer
+  validate :no_scheduling_conflicts, if: :scheduled_at_changed?
   
   # State machine for appointment status
   aasm column: :status do
@@ -90,6 +91,38 @@ class Appointment < ApplicationRecord
     scheduled? && scheduled_at < Time.current
   end
   
+  # Check for conflicts with other appointments
+  def conflicts_with?(other_appointment)
+    return false if other_appointment == self
+    return false if other_appointment.cancelled? || other_appointment.no_show?
+    
+    # Calculate time ranges
+    self_start = scheduled_at
+    self_end = estimated_end_time
+    other_start = other_appointment.scheduled_at
+    other_end = other_appointment.estimated_end_time
+    
+    # Check for overlap
+    (self_start < other_end) && (other_start < self_end)
+  end
+  
+  # Get all conflicting appointments
+  def conflicting_appointments
+    return Appointment.none unless scheduled_at.present?
+    
+    shop = ActsAsTenant.current_tenant
+    return Appointment.none unless shop
+    
+    # Find appointments that might conflict (within the same day)
+    potential_conflicts = shop.appointments
+      .where.not(id: id)
+      .where.not(status: [:cancelled, :no_show])
+      .where(scheduled_at: scheduled_at.beginning_of_day..scheduled_at.end_of_day)
+    
+    # Filter to actual conflicts
+    potential_conflicts.select { |apt| conflicts_with?(apt) }
+  end
+  
   private
   
   def vehicle_belongs_to_customer
@@ -97,6 +130,16 @@ class Appointment < ApplicationRecord
     
     unless vehicle.customer_id == customer_id
       errors.add(:vehicle, "must belong to the selected customer")
+    end
+  end
+  
+  def no_scheduling_conflicts
+    return unless scheduled_at.present?
+    
+    conflicts = conflicting_appointments
+    if conflicts.any?
+      conflict_times = conflicts.map { |c| c.scheduled_at.strftime("%l:%M %p") }.join(", ")
+      errors.add(:scheduled_at, "conflicts with existing appointments at: #{conflict_times}")
     end
   end
 end

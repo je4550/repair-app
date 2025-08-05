@@ -1,0 +1,81 @@
+<% if customers.any? %>
+  <div class="customers-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Contact</th>
+          <th>Vehicles</th>
+          <th>Last Visit</th>
+          <th>Total Spent</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% customers.each do |customer| %>
+          <tr>
+            <td>
+              <%= link_to customer.full_name, customer_path(customer), class: "customer-name" %>
+              <div class="customer-meta">
+                Customer since <%= customer.created_at.strftime("%b %Y") %>
+              </div>
+            </td>
+            <td>
+              <div><%= customer.email %></div>
+              <div class="customer-meta"><%= customer.phone %></div>
+            </td>
+            <td>
+              <% customer.vehicles.limit(3).each do |vehicle| %>
+                <span class="vehicle-badge">
+                  <%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %>
+                </span>
+              <% end %>
+              <% if customer.vehicles.count > 3 %>
+                <span class="customer-meta">+<%= customer.vehicles.count - 3 %> more</span>
+              <% end %>
+            </td>
+            <td>
+              <% if customer.last_visit %>
+                <%= customer.last_visit.strftime("%b %d, %Y") %>
+              <% else %>
+                <span class="customer-meta">No visits yet</span>
+              <% end %>
+            </td>
+            <td>
+              <%= number_to_currency(customer.total_spent) %>
+            </td>
+            <td>
+              <div class="action-links">
+                <%= link_to "View", customer_path(customer), class: "action-link" %>
+                <%= link_to "Edit", edit_customer_path(customer), class: "action-link" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+  <% if pagy.pages > 1 %>
+    <div style="margin-top: 20px; text-align: center;">
+      <%== pagy_nav(pagy) %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="empty-state">
+    <div style="font-size: 48px; margin-bottom: 20px;">👥</div>
+    <h3>No customers found</h3>
+    <p>
+      <% if params[:search].present? %>
+        No customers match your search "<%= params[:search] %>".
+        <br>
+        <%= link_to "Clear search", customers_path, class: "action-link", style: "margin-top: 10px; display: inline-block;" %>
+      <% else %>
+        Get started by adding your first customer.
+      <% end %>
+    </p>
+    <% unless params[:search].present? %>
+      <%= link_to "Add Customer", new_customer_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% end %>
