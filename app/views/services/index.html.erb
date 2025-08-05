@@ -1,0 +1,418 @@
+<style>
+  .services-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .filter-bar {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .filter-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .search-form {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .filter-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .filter-btn {
+    padding: 8px 16px;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 6px;
+    color: #495057;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .filter-btn:hover {
+    background: #f8f9fa;
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+  
+  .filter-btn.active {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+  }
+  
+  .services-table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  
+  .services-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .services-table th {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+  }
+  
+  .services-table th a {
+    color: #495057;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .services-table th a:hover {
+    color: #dc3545;
+  }
+  
+  .sort-arrow {
+    font-size: 12px;
+    color: #adb5bd;
+  }
+  
+  .sort-arrow.active {
+    color: #dc3545;
+  }
+  
+  .services-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+  
+  .services-table tr:hover {
+    background: #f8f9fa;
+  }
+  
+  .services-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .service-name {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .service-description {
+    font-size: 14px;
+    color: #6c757d;
+    max-width: 400px;
+  }
+  
+  .price {
+    font-weight: 600;
+    color: #28a745;
+    font-size: 16px;
+  }
+  
+  .duration {
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .status-badge.active {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background: #218838;
+  }
+  
+  .btn-warning {
+    background: #ffc107;
+    color: #212529;
+  }
+  
+  .btn-warning:hover {
+    background: #e0a800;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+  }
+  
+  @media (max-width: 768px) {
+    .services-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .filter-controls {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .search-form {
+      min-width: 100%;
+    }
+    
+    .services-table-container {
+      overflow-x: auto;
+    }
+    
+    .services-table {
+      min-width: 700px;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Services</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="services-container">
+    <div class="services-header">
+      <h1 style="margin: 0;">Service Catalog</h1>
+      <%= link_to new_service_path, class: "btn btn-primary" do %>
+        <span>🔧</span> Add Service
+      <% end %>
+    </div>
+    
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-controls">
+        <%= form_with url: services_path, method: :get, class: "search-form", local: true do |f| %>
+          <%= text_field_tag :search, params[:search], 
+              placeholder: "Search services by name or description...", 
+              class: "search-input" %>
+          <%= hidden_field_tag :status, params[:status] %>
+          <%= submit_tag "Search", class: "btn btn-secondary" %>
+          <% if params[:search].present? %>
+            <%= link_to "Clear", services_path(status: params[:status]), class: "btn btn-secondary" %>
+          <% end %>
+        <% end %>
+        
+        <div class="filter-buttons">
+          <%= link_to "All", services_path(search: params[:search]), 
+              class: "filter-btn #{'active' unless params[:status].present?}" %>
+          <%= link_to "Active", services_path(status: 'active', search: params[:search]), 
+              class: "filter-btn #{'active' if params[:status] == 'active'}" %>
+          <%= link_to "Inactive", services_path(status: 'inactive', search: params[:search]), 
+              class: "filter-btn #{'active' if params[:status] == 'inactive'}" %>
+        </div>
+      </div>
+    </div>
+    
+    <% if @services.any? %>
+      <div class="services-table-container">
+        <table class="services-table">
+          <thead>
+            <tr>
+              <th>
+                <%= link_to services_path(params.permit(:search, :status).merge(sort: 'name', direction: params[:sort] == 'name' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Service
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'name' %>">
+                    <%= params[:sort] == 'name' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th>
+                <%= link_to services_path(params.permit(:search, :status).merge(sort: 'price', direction: params[:sort] == 'price' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Price
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'price' %>">
+                    <%= params[:sort] == 'price' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th>
+                <%= link_to services_path(params.permit(:search, :status).merge(sort: 'duration', direction: params[:sort] == 'duration' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Duration
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'duration' %>">
+                    <%= params[:sort] == 'duration' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th>
+                <%= link_to services_path(params.permit(:search, :status).merge(sort: 'active', direction: params[:sort] == 'active' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Status
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'active' %>">
+                    <%= params[:sort] == 'active' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th width="200">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @services.each do |service| %>
+              <tr>
+                <td>
+                  <div class="service-name"><%= service.name %></div>
+                  <% if service.description.present? %>
+                    <div class="service-description"><%= service.description %></div>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="price"><%= number_to_currency(service.price) %></span>
+                </td>
+                <td>
+                  <span class="duration"><%= service.duration_minutes %> minutes</span>
+                </td>
+                <td>
+                  <span class="status-badge <%= service.active? ? 'active' : 'inactive' %>">
+                    <%= service.active? ? 'Active' : 'Inactive' %>
+                  </span>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <%= link_to "View", service_path(service), class: "btn btn-secondary btn-sm" %>
+                    <%= link_to "Edit", edit_service_path(service), class: "btn btn-secondary btn-sm" %>
+                    <% if service.active? %>
+                      <%= link_to "Deactivate", toggle_active_service_path(service), 
+                          method: :patch,
+                          data: { turbo_method: :patch },
+                          class: "btn btn-warning btn-sm" %>
+                    <% else %>
+                      <%= link_to "Activate", toggle_active_service_path(service), 
+                          method: :patch,
+                          data: { turbo_method: :patch },
+                          class: "btn btn-success btn-sm" %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <% if @pagy.pages > 1 %>
+        <div style="margin-top: 40px; text-align: center;">
+          <%== pagy_nav(@pagy) %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="empty-state">
+        <div style="font-size: 48px; margin-bottom: 20px;">🔧</div>
+        <h3>No services found</h3>
+        <p>
+          <% if params[:search].present? %>
+            No services match your search criteria.
+          <% else %>
+            Start by adding services that your shop offers.
+          <% end %>
+        </p>
+        <%= link_to "Add First Service", new_service_path, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

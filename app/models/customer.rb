@@ -49,6 +49,10 @@ class Customer < ApplicationRecord
     vehicles.count
   end
   
+  def initials
+    "#{first_name.first}#{last_name.first}".upcase
+  end
+  
   # Search
   def self.search(query)
     return all if query.blank?

@@ -1,0 +1,335 @@
+<style>
+  .form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .form-header {
+    margin-bottom: 30px;
+  }
+  
+  .form-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+  }
+  
+  .form-header p {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 24px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #495057;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #dc3545;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+  }
+  
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #dc3545;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .form-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .form-section {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .form-section:last-of-type {
+    border-bottom: none;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #212529;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .required {
+    color: #dc3545;
+  }
+  
+  .help-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+  
+  @media (max-width: 768px) {
+    .form-row,
+    .form-row-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Add Vehicle</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="form-container">
+    <div class="form-header">
+      <h1>New Vehicle</h1>
+      <p>Add a vehicle to the system</p>
+    </div>
+    
+    <%= form_with model: @vehicle, local: true do |form| %>
+      <% if @vehicle.errors.any? %>
+        <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+          <strong>Please fix the following errors:</strong>
+          <ul style="margin: 8px 0 0 20px; padding: 0;">
+            <% @vehicle.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <!-- Owner Section -->
+      <div class="form-section">
+        <h3 class="section-title">Owner Information</h3>
+        
+        <div class="form-group">
+          <%= form.label :customer_id, class: "form-label" do %>
+            Vehicle Owner <span class="required">*</span>
+          <% end %>
+          <%= form.select :customer_id, 
+              options_for_select(@customers.map { |c| ["#{c.full_name} - #{c.phone}", c.id] }, @vehicle.customer_id),
+              { prompt: "Select a customer" },
+              class: "form-control #{'is-invalid' if @vehicle.errors[:customer_id].any?}" %>
+          <% if @vehicle.errors[:customer_id].any? %>
+            <div class="invalid-feedback">
+              <%= @vehicle.errors[:customer_id].first %>
+            </div>
+          <% end %>
+          <div class="help-text">
+            Don't see the customer? <%= link_to "Add new customer", new_customer_path, target: "_blank" %>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Vehicle Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">Vehicle Information</h3>
+        
+        <div class="form-row-3">
+          <div class="form-group">
+            <%= form.label :year, class: "form-label" do %>
+              Year <span class="required">*</span>
+            <% end %>
+            <%= form.number_field :year, 
+                class: "form-control #{'is-invalid' if @vehicle.errors[:year].any?}",
+                min: 1900,
+                max: Date.current.year + 1,
+                placeholder: "e.g., 2020" %>
+            <% if @vehicle.errors[:year].any? %>
+              <div class="invalid-feedback">
+                <%= @vehicle.errors[:year].first %>
+              </div>
+            <% end %>
+          </div>
+          
+          <div class="form-group">
+            <%= form.label :make, class: "form-label" do %>
+              Make <span class="required">*</span>
+            <% end %>
+            <%= form.text_field :make, 
+                class: "form-control #{'is-invalid' if @vehicle.errors[:make].any?}",
+                placeholder: "e.g., Toyota" %>
+            <% if @vehicle.errors[:make].any? %>
+              <div class="invalid-feedback">
+                <%= @vehicle.errors[:make].first %>
+              </div>
+            <% end %>
+          </div>
+          
+          <div class="form-group">
+            <%= form.label :model, class: "form-label" do %>
+              Model <span class="required">*</span>
+            <% end %>
+            <%= form.text_field :model, 
+                class: "form-control #{'is-invalid' if @vehicle.errors[:model].any?}",
+                placeholder: "e.g., Camry" %>
+            <% if @vehicle.errors[:model].any? %>
+              <div class="invalid-feedback">
+                <%= @vehicle.errors[:model].first %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <%= form.label :color, class: "form-label" %>
+            <%= form.text_field :color, 
+                class: "form-control",
+                placeholder: "e.g., Silver" %>
+          </div>
+          
+          <div class="form-group">
+            <%= form.label :license_plate, class: "form-label" %>
+            <%= form.text_field :license_plate, 
+                class: "form-control #{'is-invalid' if @vehicle.errors[:license_plate].any?}",
+                placeholder: "e.g., ABC-1234",
+                style: "text-transform: uppercase;" %>
+            <% if @vehicle.errors[:license_plate].any? %>
+              <div class="invalid-feedback">
+                <%= @vehicle.errors[:license_plate].first %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= form.label :vin, "VIN (Vehicle Identification Number)", class: "form-label" %>
+          <%= form.text_field :vin, 
+              class: "form-control #{'is-invalid' if @vehicle.errors[:vin].any?}",
+              placeholder: "17-character VIN",
+              maxlength: 17,
+              style: "text-transform: uppercase; font-family: monospace;" %>
+          <% if @vehicle.errors[:vin].any? %>
+            <div class="invalid-feedback">
+              <%= @vehicle.errors[:vin].first %>
+            </div>
+          <% end %>
+          <div class="help-text">
+            The VIN can usually be found on the dashboard near the windshield or on the driver's side door jamb
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <%= form.label :mileage, "Current Mileage", class: "form-label" %>
+          <%= form.number_field :mileage, 
+              class: "form-control",
+              min: 0,
+              placeholder: "e.g., 45000" %>
+          <div class="help-text">
+            Enter the current odometer reading
+          </div>
+        </div>
+      </div>
+      
+      <!-- Notes Section -->
+      <div class="form-section">
+        <h3 class="section-title">Additional Information</h3>
+        
+        <div class="form-group">
+          <%= form.label :notes, class: "form-label" %>
+          <%= form.text_area :notes, 
+              class: "form-control",
+              rows: 4,
+              placeholder: "Any special notes about this vehicle (e.g., modifications, known issues, maintenance history)..." %>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <%= form.submit "Add Vehicle", class: "btn btn-primary" %>
+        <%= link_to "Cancel", vehicles_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+// Auto-uppercase license plate and VIN fields
+document.addEventListener('DOMContentLoaded', function() {
+  const licensePlateField = document.getElementById('vehicle_license_plate');
+  const vinField = document.getElementById('vehicle_vin');
+  
+  if (licensePlateField) {
+    licensePlateField.addEventListener('input', function() {
+      this.value = this.value.toUpperCase();
+    });
+  }
+  
+  if (vinField) {
+    vinField.addEventListener('input', function() {
+      this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    });
+  }
+});
+</script>

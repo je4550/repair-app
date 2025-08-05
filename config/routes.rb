@@ -31,7 +31,12 @@ Rails.application.routes.draw do
       resources :communications
     end
 
-    resources :services
+    resources :vehicles
+    resources :services do
+      member do
+        patch :toggle_active
+      end
+    end
     resources :appointments do
       member do
         patch :confirm

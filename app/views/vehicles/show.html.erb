@@ -1,0 +1,432 @@
+<style>
+  .vehicle-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .vehicle-header-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .vehicle-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 30px;
+  }
+  
+  .vehicle-name {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+  }
+  
+  .vehicle-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  
+  .info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  
+  .info-value {
+    font-size: 16px;
+    color: #212529;
+    font-weight: 500;
+  }
+  
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .owner-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .owner-avatar {
+    width: 60px;
+    height: 60px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  
+  .owner-details {
+    flex: 1;
+  }
+  
+  .owner-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .owner-contact {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .appointment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+  }
+  
+  .appointment-item.completed {
+    border-left-color: #28a745;
+  }
+  
+  .appointment-date {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .appointment-services {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .service-history-item {
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .service-date {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 8px;
+  }
+  
+  .service-name {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .service-details {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .notes-section {
+    background: #fffbf0;
+    border: 1px solid #ffecc2;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-danger {
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  @media (max-width: 768px) {
+    .vehicle-title {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .owner-card {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .owner-contact {
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Vehicle Details</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="vehicle-detail-container">
+    <!-- Vehicle Header -->
+    <div class="vehicle-header-card">
+      <div class="vehicle-title">
+        <div>
+          <h1 class="vehicle-name">
+            <%= @vehicle.year %> <%= @vehicle.make %> <%= @vehicle.model %>
+          </h1>
+          <% if @vehicle.color.present? %>
+            <p style="font-size: 20px; margin: 0; color: #6c757d;">
+              <%= @vehicle.color %>
+            </p>
+          <% end %>
+        </div>
+        
+        <div class="action-buttons">
+          <%= link_to "Edit", edit_vehicle_path(@vehicle), class: "btn btn-secondary" %>
+          <%= link_to "Back", vehicles_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+      
+      <div class="vehicle-info-grid">
+        <% if @vehicle.license_plate.present? %>
+          <div class="info-group">
+            <span class="info-label">License Plate</span>
+            <span class="info-value" style="font-family: monospace;">
+              <%= @vehicle.license_plate %>
+            </span>
+          </div>
+        <% end %>
+        
+        <% if @vehicle.vin.present? %>
+          <div class="info-group">
+            <span class="info-label">VIN</span>
+            <span class="info-value" style="font-family: monospace; font-size: 14px;">
+              <%= @vehicle.vin %>
+            </span>
+          </div>
+        <% end %>
+        
+        <% if @vehicle.mileage.present? %>
+          <div class="info-group">
+            <span class="info-label">Current Mileage</span>
+            <span class="info-value">
+              <%= number_with_delimiter(@vehicle.mileage) %> miles
+            </span>
+          </div>
+        <% end %>
+        
+        <div class="info-group">
+          <span class="info-label">Added to System</span>
+          <span class="info-value">
+            <%= @vehicle.created_at.strftime("%B %d, %Y") %>
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Owner Information -->
+    <div class="section-card">
+      <h2 class="section-title">Owner Information</h2>
+      <div class="owner-card">
+        <div class="owner-avatar">
+          <%= @vehicle.customer.initials %>
+        </div>
+        <div class="owner-details">
+          <div class="owner-name">
+            <%= link_to @vehicle.customer.full_name, customer_path(@vehicle.customer), 
+                style: "color: inherit; text-decoration: none;" %>
+          </div>
+          <div class="owner-contact">
+            <% if @vehicle.customer.phone.present? %>
+              <span>📞 <%= @vehicle.customer.phone %></span>
+            <% end %>
+            <% if @vehicle.customer.email.present? %>
+              <span>📧 <%= @vehicle.customer.email %></span>
+            <% end %>
+          </div>
+        </div>
+        <div>
+          <%= link_to "View Customer", customer_path(@vehicle.customer), class: "btn btn-secondary" %>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Notes -->
+    <% if @vehicle.notes.present? %>
+      <div class="section-card">
+        <h2 class="section-title">Notes</h2>
+        <div class="notes-section">
+          <%= simple_format(@vehicle.notes) %>
+        </div>
+      </div>
+    <% end %>
+    
+    <!-- Appointments -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">Appointments</h2>
+        <%= link_to "Schedule Service", new_appointment_path(vehicle_id: @vehicle.id, customer_id: @vehicle.customer_id), 
+            class: "btn btn-primary" %>
+      </div>
+      
+      <% if @appointments.any? %>
+        <div class="appointment-list">
+          <% @appointments.each do |appointment| %>
+            <div class="appointment-item <%= appointment.status %>">
+              <div>
+                <div class="appointment-date">
+                  <%= appointment.scheduled_at.strftime("%B %d, %Y at %l:%M %p") %>
+                </div>
+                <div class="appointment-services">
+                  <% if appointment.services.any? %>
+                    <%= appointment.services.map(&:name).join(", ") %>
+                  <% else %>
+                    No services scheduled
+                  <% end %>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 12px; color: #6c757d; margin-bottom: 4px;">
+                  <%= appointment.status.humanize %>
+                </div>
+                <%= link_to "View", appointment_path(appointment), class: "btn btn-secondary btn-sm" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
+        <% if @vehicle.appointments.count > 10 %>
+          <div style="text-align: center; margin-top: 20px;">
+            <%= link_to "View All Appointments", appointments_path(search: @vehicle.license_plate), 
+                class: "btn btn-secondary" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <p>No appointments scheduled for this vehicle.</p>
+          <%= link_to "Schedule First Service", new_appointment_path(vehicle_id: @vehicle.id, customer_id: @vehicle.customer_id), 
+              class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+    
+    <!-- Service History -->
+    <div class="section-card">
+      <h2 class="section-title">Service History</h2>
+      
+      <% if @recent_services.any? %>
+        <% @recent_services.each do |appointment_service| %>
+          <div class="service-history-item">
+            <div class="service-date">
+              <%= appointment_service.appointment.scheduled_at.strftime("%B %d, %Y") %>
+            </div>
+            <div class="service-name">
+              <%= appointment_service.service.name %>
+            </div>
+            <div class="service-details">
+              <% if appointment_service.quantity > 1 %>
+                Quantity: <%= appointment_service.quantity %> •
+              <% end %>
+              <%= number_to_currency(appointment_service.price) %>
+              <% if appointment_service.service.duration_minutes.present? %>
+                • <%= appointment_service.service.duration_minutes %> minutes
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="empty-state">
+          <p>No service history available.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

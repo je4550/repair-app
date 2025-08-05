@@ -1,0 +1,369 @@
+<style>
+  .service-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .service-header-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .service-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 30px;
+  }
+  
+  .service-name {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+  }
+  
+  .service-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  
+  .service-status.active {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .service-status.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  .service-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+  
+  .info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .info-label {
+    font-size: 12px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  
+  .info-value {
+    font-size: 20px;
+    color: #212529;
+    font-weight: 600;
+  }
+  
+  .info-value.price {
+    color: #28a745;
+  }
+  
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .stat-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .appointment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+  }
+  
+  .appointment-item.completed {
+    border-left-color: #28a745;
+  }
+  
+  .appointment-date {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 4px;
+  }
+  
+  .appointment-customer {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .description-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background: #218838;
+  }
+  
+  .btn-warning {
+    background: #ffc107;
+    color: #212529;
+  }
+  
+  .btn-warning:hover {
+    background: #e0a800;
+  }
+  
+  .btn-danger {
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  @media (max-width: 768px) {
+    .service-title {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Service Details</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="service-detail-container">
+    <!-- Service Header -->
+    <div class="service-header-card">
+      <div class="service-title">
+        <div>
+          <span class="service-status <%= @service.active? ? 'active' : 'inactive' %>">
+            <%= @service.active? ? '✓ Active' : '✕ Inactive' %>
+          </span>
+          <h1 class="service-name"><%= @service.name %></h1>
+        </div>
+        
+        <div class="action-buttons">
+          <%= link_to "Edit", edit_service_path(@service), class: "btn btn-secondary" %>
+          <% if @service.active? %>
+            <%= link_to "Deactivate", toggle_active_service_path(@service), 
+                method: :patch,
+                data: { turbo_method: :patch },
+                class: "btn btn-warning" %>
+          <% else %>
+            <%= link_to "Activate", toggle_active_service_path(@service), 
+                method: :patch,
+                data: { turbo_method: :patch },
+                class: "btn btn-success" %>
+          <% end %>
+          <%= link_to "Back", services_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+      
+      <div class="service-info-grid">
+        <div class="info-group">
+          <span class="info-label">Service Price</span>
+          <span class="info-value price"><%= number_to_currency(@service.price) %></span>
+        </div>
+        
+        <div class="info-group">
+          <span class="info-label">Duration</span>
+          <span class="info-value"><%= @service.duration_minutes %> minutes</span>
+        </div>
+        
+        <div class="info-group">
+          <span class="info-label">Added to Catalog</span>
+          <span class="info-value" style="font-size: 16px;">
+            <%= @service.created_at.strftime("%B %d, %Y") %>
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Description -->
+    <% if @service.description.present? %>
+      <div class="section-card">
+        <h2 class="section-title">Description</h2>
+        <div class="description-section">
+          <%= simple_format(@service.description) %>
+        </div>
+      </div>
+    <% end %>
+    
+    <!-- Statistics -->
+    <div class="section-card">
+      <h2 class="section-title">Service Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value"><%= @times_used %></div>
+          <div class="stat-label">Times Performed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value"><%= number_to_currency(@total_revenue) %></div>
+          <div class="stat-label">Total Revenue</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">
+            <%= @times_used > 0 ? number_to_currency(@total_revenue / @times_used) : number_to_currency(0) %>
+          </div>
+          <div class="stat-label">Average Price</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent Appointments -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">Recent Appointments</h2>
+      </div>
+      
+      <% if @recent_appointments.any? %>
+        <div class="appointments-list">
+          <% @recent_appointments.each do |appointment| %>
+            <div class="appointment-item <%= appointment.status %>">
+              <div>
+                <div class="appointment-date">
+                  <%= appointment.scheduled_at.strftime("%B %d, %Y at %l:%M %p") %>
+                </div>
+                <div class="appointment-customer">
+                  <%= appointment.customer.full_name %> - 
+                  <%= appointment.vehicle.year %> <%= appointment.vehicle.make %> <%= appointment.vehicle.model %>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 12px; color: #6c757d; margin-bottom: 4px;">
+                  <%= appointment.status.humanize %>
+                </div>
+                <%= link_to "View", appointment_path(appointment), class: "btn btn-secondary btn-sm" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <p>This service hasn't been used in any appointments yet.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

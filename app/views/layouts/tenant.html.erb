@@ -162,7 +162,7 @@
           <%= link_to calendar_appointments_path, class: "sidebar-item #{'active' if controller_name == 'appointments' && action_name == 'calendar'}" do %>
             <span style="margin-right: 12px;">📆</span> Calendar
           <% end %>
-          <%= link_to "#", class: "sidebar-item" do %>
+          <%= link_to vehicles_path, class: "sidebar-item #{'active' if controller_name == 'vehicles'}" do %>
             <span style="margin-right: 12px;">🚗</span> Vehicles
           <% end %>
           <%= link_to services_path, class: "sidebar-item #{'active' if controller_name == 'services'}" do %>

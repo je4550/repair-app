@@ -1,0 +1,423 @@
+<style>
+  .vehicles-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .vehicles-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .search-bar {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .search-form {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .vehicles-table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  
+  .vehicles-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .vehicles-table th {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+  }
+  
+  .vehicles-table th a {
+    color: #495057;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .vehicles-table th a:hover {
+    color: #dc3545;
+  }
+  
+  .sort-arrow {
+    font-size: 12px;
+    color: #adb5bd;
+  }
+  
+  .sort-arrow.active {
+    color: #dc3545;
+  }
+  
+  .vehicles-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+  
+  .vehicles-table tr:hover {
+    background: #f8f9fa;
+  }
+  
+  .vehicles-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .vehicle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .vehicle-make-model {
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  .vehicle-color {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .license-plate {
+    font-family: monospace;
+    font-weight: 600;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 13px;
+  }
+  
+  .vin {
+    font-family: monospace;
+    font-size: 12px;
+    color: #6c757d;
+  }
+  
+  .mileage {
+    font-weight: 500;
+  }
+  
+  .customer-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .customer-avatar {
+    width: 32px;
+    height: 32px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  
+  .customer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .customer-name {
+    font-weight: 500;
+    color: #212529;
+  }
+  
+  .customer-phone {
+    font-size: 12px;
+    color: #6c757d;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+  
+  .btn-secondary:hover {
+    background: #e9ecef;
+  }
+  
+  .btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+  }
+  
+  .customer-filter-notice {
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  @media (max-width: 1200px) {
+    .vehicles-table th:nth-child(4),
+    .vehicles-table td:nth-child(4) {
+      display: none; /* Hide VIN on smaller screens */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .vehicles-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .vehicles-table-container {
+      overflow-x: auto;
+    }
+    
+    .vehicles-table {
+      min-width: 600px;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<!-- Header -->
+<div class="header">
+  <h1 style="margin: 0; font-size: 24px;">Vehicles</h1>
+</div>
+
+<!-- Content -->
+<div class="content">
+  <div class="vehicles-container">
+    <div class="vehicles-header">
+      <h1 style="margin: 0;">All Vehicles</h1>
+      <%= link_to new_vehicle_path, class: "btn btn-primary" do %>
+        <span>🚗</span> Add Vehicle
+      <% end %>
+    </div>
+    
+    <% if @customer %>
+      <div class="customer-filter-notice">
+        <span>
+          Showing vehicles for <strong><%= @customer.full_name %></strong>
+        </span>
+        <%= link_to "Show all vehicles", vehicles_path, class: "btn btn-secondary btn-sm" %>
+      </div>
+    <% end %>
+    
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <%= form_with url: vehicles_path, method: :get, class: "search-form", local: true do |f| %>
+        <%= hidden_field_tag :customer_id, params[:customer_id] %>
+        <%= text_field_tag :search, params[:search], 
+            placeholder: "Search by make, model, plate, VIN, year, or customer...", 
+            class: "search-input" %>
+        <%= submit_tag "Search", class: "btn btn-secondary" %>
+        <% if params[:search].present? %>
+          <%= link_to "Clear", vehicles_path(customer_id: params[:customer_id]), class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <% if @vehicles.any? %>
+      <div class="vehicles-table-container">
+        <table class="vehicles-table">
+          <thead>
+            <tr>
+              <th>
+                <%= link_to vehicles_path(params.permit(:search, :customer_id).merge(sort: 'year', direction: params[:sort] == 'year' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Year
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'year' %>">
+                    <%= params[:sort] == 'year' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th>
+                <%= link_to vehicles_path(params.permit(:search, :customer_id).merge(sort: 'make', direction: params[:sort] == 'make' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Make/Model
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'make' %>">
+                    <%= params[:sort] == 'make' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th>License Plate</th>
+              <th>VIN</th>
+              <th>
+                <%= link_to vehicles_path(params.permit(:search, :customer_id).merge(sort: 'mileage', direction: params[:sort] == 'mileage' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Mileage
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'mileage' %>">
+                    <%= params[:sort] == 'mileage' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th>
+                <%= link_to vehicles_path(params.permit(:search, :customer_id).merge(sort: 'customer', direction: params[:sort] == 'customer' && params[:direction] != 'desc' ? 'desc' : 'asc')) do %>
+                  Owner
+                  <span class="sort-arrow <%= 'active' if params[:sort] == 'customer' %>">
+                    <%= params[:sort] == 'customer' && params[:direction] == 'desc' ? '▼' : '▲' %>
+                  </span>
+                <% end %>
+              </th>
+              <th width="100">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @vehicles.each do |vehicle| %>
+              <tr>
+                <td>
+                  <strong><%= vehicle.year %></strong>
+                </td>
+                <td>
+                  <div class="vehicle-info">
+                    <span class="vehicle-make-model">
+                      <%= vehicle.make %> <%= vehicle.model %>
+                    </span>
+                    <% if vehicle.color.present? %>
+                      <span class="vehicle-color"><%= vehicle.color %></span>
+                    <% end %>
+                  </div>
+                </td>
+                <td>
+                  <% if vehicle.license_plate.present? %>
+                    <span class="license-plate"><%= vehicle.license_plate %></span>
+                  <% else %>
+                    <span style="color: #adb5bd;">—</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if vehicle.vin.present? %>
+                    <span class="vin"><%= vehicle.vin %></span>
+                  <% else %>
+                    <span style="color: #adb5bd;">—</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if vehicle.mileage.present? %>
+                    <span class="mileage"><%= number_with_delimiter(vehicle.mileage) %></span>
+                  <% else %>
+                    <span style="color: #adb5bd;">—</span>
+                  <% end %>
+                </td>
+                <td>
+                  <div class="customer-info">
+                    <div class="customer-avatar">
+                      <%= vehicle.customer.initials %>
+                    </div>
+                    <div class="customer-details">
+                      <%= link_to customer_path(vehicle.customer), class: "customer-name", style: "text-decoration: none; color: inherit;" do %>
+                        <%= vehicle.customer.full_name %>
+                      <% end %>
+                      <span class="customer-phone"><%= vehicle.customer.phone %></span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <%= link_to "View", vehicle_path(vehicle), class: "btn btn-secondary btn-sm" %>
+                    <%= link_to "Edit", edit_vehicle_path(vehicle), class: "btn btn-secondary btn-sm" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      
+      <% if @pagy.pages > 1 %>
+        <div style="margin-top: 40px; text-align: center;">
+          <%== pagy_nav(@pagy) %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="empty-state">
+        <div style="font-size: 48px; margin-bottom: 20px;">🚗</div>
+        <h3>No vehicles found</h3>
+        <p>
+          <% if params[:search].present? %>
+            No vehicles match your search criteria.
+          <% elsif @customer %>
+            No vehicles found for <%= @customer.full_name %>.
+          <% else %>
+            Add a vehicle to get started.
+          <% end %>
+        </p>
+        <%= link_to "Add Vehicle", new_vehicle_path(customer_id: @customer&.id), class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
