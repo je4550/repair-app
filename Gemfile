@@ -30,7 +30,7 @@ gem "devise", "~> 4.9"
 gem "pundit", "~> 2.3"
 
 # Background jobs
-gem "sidekiq", "~> 7.3"
+gem "sidekiq", "~> 8.0"
 
 # Pagination
 gem "pagy", "~> 9.0"
