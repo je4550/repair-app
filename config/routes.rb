@@ -8,13 +8,7 @@ Rails.application.routes.draw do
     # Check if it's a Heroku app domain (ends with random hash)
     is_heroku_app = request.host.match?(/\.herokuapp\.com$/) && 
                     subdomain.match?(/^[a-z0-9-]+-[a-f0-9]+$/)
-    result = subdomain.blank? || is_heroku_app
-    Rails.logger.info "=== ROUTE CONSTRAINT ==="
-    Rails.logger.info "Host: #{request.host}"
-    Rails.logger.info "Subdomain: #{subdomain}"
-    Rails.logger.info "Is Heroku app: #{is_heroku_app}"
-    Rails.logger.info "Is base domain: #{result}"
-    result
+    subdomain.blank? || is_heroku_app
   end
   
   is_tenant_subdomain = lambda do |request|
