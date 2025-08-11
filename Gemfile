@@ -32,7 +32,7 @@ gem "devise", "~> 4.9"
 gem "pundit", "~> 2.3"
 
 # Background jobs
-gem "sidekiq", "~> 7.3"
+gem "sidekiq", "~> 8.0"
 
 # Redis for caching and ActionCable in production
 gem "redis", ">= 4.0.1"
