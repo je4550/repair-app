@@ -38,7 +38,7 @@ gem "sidekiq", "~> 7.3"
 gem "redis", ">= 4.0.1"
 
 # Pagination
-gem "pagy", "~> 9.0"
+gem "pagy", "~> 9.4"
 
 # Form handling
 gem "simple_form", "~> 5.3"
