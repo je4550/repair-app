@@ -221,7 +221,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    pagy (9.3.5)
+    pagy (9.4.0)
     parallel (1.27.0)
     paranoia (3.0.1)
       activerecord (>= 6, < 8.1)
@@ -457,7 +457,7 @@ DEPENDENCIES
   jsonapi-serializer (~> 2.2)
   kamal
   money-rails (~> 1.15)
-  pagy (~> 9.0)
+  pagy (~> 9.4)
   paranoia (~> 3.0)
   pg (~> 1.5)
   phonelib (~> 0.9)
